@@ -1,0 +1,5 @@
+target
+.DS_Store
+node_modules
+# the scans are not kept: see sources/README.md
+sources/*/pages/

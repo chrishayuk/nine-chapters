@@ -1,0 +1,19 @@
+[package]
+name = "jiuzhang"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Chapter 8 of the Nine Chapters on the Mathematical Art (九章算術), run on a counting board: every procedure and every figure of the text and its commentaries worked again and compared"
+
+[lib]
+name = "jiuzhang"
+path = "src/lib.rs"
+
+[[bin]]
+name = "jiuzhang"
+path = "src/main.rs"
+
+[dependencies]
+
+[profile.release]
+opt-level = 3
