@@ -257,7 +257,7 @@ export async function mount(host, { onError } = {}) {
     world.createCollider(RAPIER.ColliderDesc.capsule(ROD / 2 - R, R).setDensity(2).setFriction(0.6).setRestitution(0.2), body);
     // off the near edge of the felt, towards the reader, with a turn
     const side = Math.random() - 0.5;
-    body.applyImpulse({ x: side * 0.08, y: 0.12 + Math.random() * 0.06, z: 0.22 + Math.random() * 0.1 }, true);
+    body.applyImpulse({ x: side * 0.1, y: 0.16 + Math.random() * 0.06, z: 0.55 + Math.random() * 0.2 }, true);
     body.applyTorqueImpulse({ x: (Math.random() - 0.5) * 0.01, y: (Math.random() - 0.5) * 0.02, z: (Math.random() - 0.5) * 0.01 }, true);
     void along;
     fallen.push({ mesh, body, born: performance.now() });

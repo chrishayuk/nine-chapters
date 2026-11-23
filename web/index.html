@@ -164,21 +164,34 @@ function showStep(i, instant = false) {
   if (!steps.length) return;
   at = Math.max(0, Math.min(steps.length - 1, i));
   const s = steps[at];
-  if (board3d) board3d.show(s.board, { widths, actor: s.actor, target: s.target, instant });
+  const lit = s.actor != null;
+  if (board3d) board3d.show(s.board, { widths, actor: lit ? s.actor : null, target: lit ? s.target : null, instant });
   else $("stage").querySelector("pre.fallback").textContent = textBoard(s.board);
   // the line
   $("page").querySelectorAll(".now").forEach((x) => x.classList.remove("now"));
   const row = $("page").children[s.line];
-  if (row) { row.classList.add("now"); row.scrollIntoView({ block: "nearest" }); }
+  if (row) {
+    row.classList.add("now");
+    // scroll the page panel only, never the window
+    const box = $("page");
+    const top = row.offsetTop - box.offsetTop;
+    if (top < box.scrollTop || top + row.offsetHeight > box.scrollTop + box.clientHeight) box.scrollTop = top - box.clientHeight / 3;
+  }
   const line = run.lines[s.line];
   const cap = $("caption");
   cap.replaceChildren(el("span", "what", `${at + 1}/${steps.length}  ${s.what}`));
   if (line.quote) cap.appendChild(el("span", "zh", "「" + line.quote + "」"));
-  const after = run.lines.slice(s.line + 1).find((l) => l.kind === "op" && l.steps.length === 0 && l.marks.length);
+  // what the source states right after this step, up to the next line that works the board
   const lastOfLine = !steps[at + 1] || steps[at + 1].line !== s.line;
-  if (after && lastOfLine) {
-    const m = after.marks[0];
-    cap.appendChild(el("span", "marks" + (m.kind === "wrong" ? " wrong" : ""), `${after.text.split('"')[0].trim()}  ${m.text}`));
+  if (lastOfLine) {
+    const own = line.marks.filter((m) => m.kind !== "info" || !/^法|steps$/.test(m.text));
+    for (const m of own) cap.appendChild(el("span", "marks" + (m.kind === "wrong" ? " wrong" : ""), m.text));
+    for (const l of run.lines.slice(s.line + 1)) {
+      if (l.steps.length) break;
+      if (l.kind !== "op" || !l.marks.length) continue;
+      const m = l.marks[0];
+      cap.appendChild(el("span", "marks" + (m.kind === "wrong" ? " wrong" : ""), `${l.text.split('"')[0].trim()}  ${m.text}`));
+    }
   }
   let plain = 0, worked = 0, most = 0;
   for (let k = 0; k <= at; k++) { plain += steps[k].count.plain; worked += steps[k].count.worked; }
@@ -211,6 +224,14 @@ function draw(r) {
   while (start + 1 < steps.length && steps[start + 1].what.startsWith("set ")) start++;
   board3d?.clearFloor();
   showStep(start, true);
+  // ?step=N plays forward to step N (from 1), so a link can open part-way through
+  const want = Number(new URL(location.href).searchParams.get("step"));
+  if (want > start + 1 && !draw.linked) {
+    draw.linked = true;
+    let k = start;
+    const go = () => { if (k + 1 < Math.min(want, steps.length)) { showStep(++k); setTimeout(go, 500); } };
+    setTimeout(go, 400);
+  }
 }
 
 async function check(text) {
