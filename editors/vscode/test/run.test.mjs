@@ -38,7 +38,7 @@ test("the built-in jiuzhang runs every page of the corpus", () => {
     assert.ok(result.status === 0 || result.status === 1, `${file}: ${result.status} ${result.stderr}`);
     const out = result.stdout.toString();
     assert.match(out, /^No\. /, file);
-    assert.match(out, /\d+ figures? checked, \d+ right, \d+ wrong\.\n/, file);
+    assert.match(out, /\d+ figures? checked, \d+ right, \d+ wrong\.( \d+ not reached\.)?\n/, file);
     if (existsSync(native)) {
       const want = spawnSync(native, [corpus + file]);
       assert.equal(out, want.stdout.toString(), file);
