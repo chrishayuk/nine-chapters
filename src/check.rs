@@ -244,7 +244,11 @@ pub fn run(text: &str) -> Run {
 
 /// Run a page with chosen readings: `(line, reading)`.
 pub fn run_with(text: &str, choices: &[(usize, usize)]) -> Run {
-    let lines = page::parse(text);
+    run_lines(page::parse(text), choices)
+}
+
+/// Run lines already read.
+pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
     // the board's size: its positions from `Things` (or the first `Set`),
     // its columns from the `Set`s.
     let mut things: Option<Vec<String>> = None;

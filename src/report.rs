@@ -21,9 +21,8 @@ The choices this reconstruction makes that the text does not fix.
 
 3. 徧乘 and 直除. \"以右行上禾徧乘中行而以直除\" is read as: multiply every
    figure of the middle column by the head of the right, then take the right
-   column from it as many times as empties its head. The Sibu congkan text
-   (from the Weiboxie edition) reads 而以除, without 直; the reading is the
-   same either way here.
+   column from it as many times as empties its head. The scan reads 直除;
+   Wikisource's unproofread transcription of it drops 直 throughout.
 
 4. The last step. The text finds each thing through the 法: the 法 times a
    column's 實, less the 實s already found, divided by the column's own
@@ -248,27 +247,48 @@ pub fn counts() -> i32 {
         }
         let board = board_before_solve(text);
         if let Some(board) = board {
-            println!("Problem 18 by each method, counted under each rule:");
+            println!("Problem 18 by each method, counted under each rule, and the board it needs:");
             print!("  {:<9}", "");
             for r in crate::count::RULES {
                 print!("{:>9}", r.name());
             }
-            println!();
+            println!("{:>8}{:>8}", "rods", "places");
             for m in METHODS {
                 if let Ok(s) = solve(&board, *m) {
                     print!("  {:<9}", m.name());
                     for r in crate::count::RULES {
                         print!("{:>9}", crate::count::count(*r, &s.ops()));
                     }
-                    println!();
+                    let rods = s.steps.iter().map(|st| st.board.rod_count()).max().unwrap_or(0).max(board.rod_count());
+                    let places = s.steps.iter().map(|st| st.board.widest()).max().unwrap_or(0).max(board.widest());
+                    println!("{:>8}{:>8}", rods, places);
                 }
             }
+            println!("  rods: the most rods on the board at once; places: the most digits in any figure.");
+        }
+    }
+    println!();
+    for (id, stated) in LIU_HUI {
+        let Some((_, text)) = crate::corpus::find(id) else { continue };
+        match readings::all(text) {
+            Ok(c) => println!(
+                "{}: Liu Hui says {} 算. Of {} readings of his working, {} can be done to the end and {} agree with the figures he states, so there is nothing to count.",
+                id,
+                stated,
+                c.total,
+                c.total - c.stopped(),
+                c.agree.len()
+            ),
+            Err(e) => println!("{}: {}", id, e),
         }
     }
     let _ = Method::Text;
     let _ = Mark::Right;
     0
 }
+
+/// The commentary pages whose count of 算 is stated, and the count.
+pub const LIU_HUI: &[(&str, u64)] = &[("liu-hui-18-old", 77), ("liu-hui-18-new", 124)];
 
 /// The board as it stands before the first `Solve` of a page.
 pub fn board_before_solve(text: &str) -> Option<crate::board::Board> {

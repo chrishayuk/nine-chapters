@@ -1,0 +1,42 @@
+No. 8.18 (Liu Hui: the old method made short, 77 算)
+% Sibu congkan pp. 31-32 (the 77 read on p. 32). Liu Hui's commentary on Problem 18, after his
+% 方程新術. He works the problem by the old method "made short" (要約), clause by clause, and
+% says it uses 77 算. Dai Zhen (p. 48) calls this passage corrupt and impossible to follow
+% (訛舛不可通). Each clause is given here in every reading this project could think of:
+% the columns as written; and 減 / 去 done once, until the head is gone (直除), as far as it
+% goes (不足減乃止), in turn (相減), or crosswise (互乘). `jiuzhang readings` runs them all.
+"以舊術爲之凡應置五行今欲要約"
+% "Done by the old method, five columns should be set. To make it short:"
+Things 麻 麥 菽 荅 黍 實
+Set right 9 7 3 2 5 140
+Set 2nd   7 6 4 5 3 128
+Set 3rd   3 5 7 6 4 116
+Set 4th   2 5 3 9 4 112
+Set left  1 3 2 8 5  95
+% "first set the 3rd column, and take it from the 4th,"
+Take 3rd from 4th | Take 3rd from 4th until the head is gone | Take 3rd from 4th as far as it goes | Take 3rd from 4th in turn | Take 3rd from 4th crosswise | Take 4th from 3rd | Take 4th from 3rd until the head is gone | Take 4th from 3rd as far as it goes | Take 4th from 3rd in turn | Take 4th from 3rd crosswise   "先置第三行以減第四行"
+% "and take [from?] the 3rd": as written it takes the 3rd from itself. Read as nothing (corrupt),
+% as the 4th taken back from the 3rd, or as the 3rd taken from the left (第五行) or the 2nd.
+Nothing | Take 4th from 3rd | Take 4th from 3rd until the head is gone | Take 4th from 3rd as far as it goes | Take 4th from 3rd in turn | Take 4th from 3rd crosswise | Take 3rd from left | Take 3rd from left until the head is gone | Take 3rd from left as far as it goes | Take 3rd from left in turn | Take 3rd from left crosswise | Take 3rd from 2nd | Take 3rd from 2nd until the head is gone | Take 3rd from 2nd as far as it goes | Take 3rd from 2nd in turn | Take 3rd from 2nd crosswise   "及減第三行"
+% "next set the 2nd column, and take the 2nd from the 3rd, removing its head;"
+Take 2nd from 3rd | Take 2nd from 3rd until the head is gone | Take 2nd from 3rd as far as it goes | Take 2nd from 3rd in turn | Take 2nd from 3rd crosswise   "次置第二行以第二行減第三行去其頭位"
+% "next set the right column, and remove its head" (with which column, it does not say)
+Take 2nd from right | Take 2nd from right until the head is gone | Take 2nd from right as far as it goes | Take 2nd from right in turn | Take 2nd from right crosswise | Take 3rd from right | Take 3rd from right until the head is gone | Take 3rd from right as far as it goes | Take 3rd from right in turn | Take 3rd from right crosswise | Take 4th from right | Take 4th from right until the head is gone | Take 4th from right as far as it goes | Take 4th from right in turn | Take 4th from right crosswise | Take left from right | Take left from right until the head is gone | Take left from right as far as it goes | Take left from right in turn | Take left from right crosswise   "次置右行去其頭位"
+% "next take the 4th from the head of the left;"
+Take 4th from left | Take 4th from left until the head is gone | Take 4th from left as far as it goes | Take 4th from left in turn | Take 4th from left crosswise   "次以第四行減左行頭位"
+% "next with the left remove the head of the 4th and the 2nd;"
+Take left from 4th | Take left from 4th until the head is gone | Take left from 4th as far as it goes | Take left from 4th in turn | Take left from 4th crosswise   "次以左行去第四行"
+Take left from 2nd | Take left from 2nd until the head is gone | Take left from 2nd as far as it goes | Take left from 2nd in turn | Take left from 2nd crosswise   "及第二行頭位"
+% "next take the 5th from the head of the 2nd; what is left can be halved;"
+Take left from 2nd | Take left from 2nd until the head is gone | Take left from 2nd as far as it goes | Take left from 2nd in turn | Take left from 2nd crosswise   "次以第五行減第二行頭位"
+Halve 2nd.                                   "餘可半"
+% "next with the 2nd remove the head of the 4th; reduce what is left for the 法;"
+Take 2nd from 4th | Take 2nd from 4th until the head is gone | Take 2nd from 4th as far as it goes | Take 2nd from 4th in turn | Take 2nd from 4th crosswise   "次以第二行去第四行頭位"
+Reduce 4th.                                  "餘約之爲法"
+% "divide the 實 by the 法: it gives 空 [六?], the price of 黍." The 黍 is 6 (Problem 18's answer);
+% 空 is read here as 六 by sense, and not emended in the quotation. Either sign of the column is allowed.
+Gives 4th 0 0 0 0 1 6 | Gives 4th 0 0 0 0 -1 -6   "實如法而一得空卽有黍價"
+"以法減第二行得荅價左行得麥價第三行麻價右行得菽價如此凡用七十七算"
+% "With the 法 take from the 2nd column, and get the price of 荅; the left gives the price of
+% 麥, the 3rd of 麻, the right of 菽. This way uses 77 算 in all." The working back is not
+% written here: no reading gets as far as needing it (see `jiuzhang readings`).

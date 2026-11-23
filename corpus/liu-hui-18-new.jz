@@ -1,0 +1,70 @@
+No. 8.18 (Liu Hui: the new method, 124 算)
+% Sibu congkan pp. 31-35. Liu Hui's 方程新術 worked on Problem 18: the 實s are taken away first,
+% so that each column says only that some things are worth others (相當之率), and the rates are
+% read off two things at a time. He states four such pairs and, at the end, the count: 124 算.
+% Dai Zhen (p. 50) calls this passage too corrupt to follow (亦訛舛不可通).
+% 下位 is the 實 (the bottom position); 頭位 the head. 去 is read as until gone (直除); 減 as once,
+% as far as it goes, or in turn (相減); 不足減乃止 as far as it goes. Where the text names a
+% position for 減, it is used.
+"方程新術曰以正負術入之令左右相減先去下實又轉去物位求其一行二物正負相借者易其相當之率"
+% "The new method: by the rule of signs, take left and right from each other; first remove the
+% 實s, then the things, to find a column of two things, one positive and one negative, and exchange
+% them for the rates at which they are worth each other."
+Things 麻 麥 菽 荅 黍 實
+Set right 9 7 3 2 5 140
+Set 2nd   7 6 4 5 3 128
+Set 3rd   3 5 7 6 4 116
+Set 4th   2 5 3 9 4 112
+Set left  1 3 2 8 5  95
+Take 4th from 3rd | Take 4th from 3rd as far as it goes | Take 4th from 3rd in turn   "以新術爲此先以第四行減第三行"
+Take 3rd from right until 實 is gone | Nothing   "次以第三行去右行"
+Take 3rd from 2nd until 實 is gone | Take 3rd from 2nd in turn until 實 is gone   "及第二行"
+Take 3rd from 4th until 實 is gone | Take 3rd from 4th in turn until 實 is gone   "第四行下位"
+Take 3rd from right as far as the 實 goes | Nothing   "又以減右行下位不足減乃止"
+Take left from 3rd | Take left from 3rd as far as the 實 goes | Take left from 3rd in turn until 實 is gone   "次以左行減第三行下位"
+Take 3rd from left until 實 is gone | Take 3rd from left in turn until 實 is gone   "次以第三行去左行下位"
+Drop 3rd.                                    "訖廢去第三行"
+Take 4th from left until 實 is gone | Take 4th from left in turn until 實 is gone   "次以第四行去左行下位"
+"右行當左行下位"
+% "the right stands against the left's bottom position": not an operation; kept as words.
+Take right from 2nd until 實 is gone | Take right from 2nd in turn until 實 is gone   "次以右行去第二行"
+Take right from 4th until 實 is gone | Take right from 4th in turn until 實 is gone   "及第四行下位"
+Take 2nd from 4th | Take 2nd from 4th as far as it goes | Take 2nd from 4th in turn   "次以第二行減第四行"
+Take 2nd from left | Take 2nd from left as far as it goes | Take 2nd from left in turn   "及左行願位"
+% 願 is read as 頭 (head), as Dai Zhen reads it.
+Take 4th from right as far as the 菽 goes   "次以第四行減右行菽位不足減乃止"
+Take left from 2nd | Take left from 2nd as far as it goes | Take left from 2nd in turn   "次以左行減第二行頭位"
+Halve 2nd.                                   "餘可再半"
+Halve 2nd.
+Take 4th from right until the head is gone | Take 4th from right in turn   "次以第四行去右行"
+Take 4th from 2nd until the head is gone | Take 4th from 2nd in turn   "及第二行頭位"
+Take 2nd from right until the head is gone | Take 2nd from right in turn   "次以第二行去右行頭位"
+Reduce right.                                "餘約之"
+Gives right 0 0 5 -3 0 0 | Gives right 0 0 -5 3 0 0   "上得五下得三是菽五當荅三"
+% 菽 5 against 荅 3, the 實 gone.
+% "Next with the left remove the 菽 of the 3rd": the 3rd was dropped above. Read as the 4th, or as nothing.
+Take left from 4th until 菽 is gone | Nothing   "次以左行去第三行菽位"
+Take left from 4th as far as the 菽 goes   "又以減第四行"
+Take left from right as far as the 菽 goes   "及右行菽位不足減乃止"
+Take right from 2nd as far as it goes   "次以右行減第二行頭位不足減乃止"
+% "next with the 3rd remove the head of the left": the 3rd again. Read as the 4th, or nothing.
+Take 4th from left until the head is gone | Nothing   "次以第三行去左行頭位"
+Take left from right until the head is gone | Take left from right in turn   "次以左行去右行頭位"
+Gives right 0 0 0 6 -5 0 | Gives right 0 0 0 -6 5 0   "餘上得六下得五是爲荅六當黍五"
+Take right from left until 荅 is gone | Take right from left in turn until 荅 is gone   "次以右行去左行荅位"
+Reduce left.                                 "餘約之上爲二下爲三"
+% which two things are 2 and 3, it does not say.
+Take left from 2nd until 實 is gone | Take left from 2nd in turn until 實 is gone   "次以左行去第二行下位"
+Take 2nd from 4th until 實 is gone | Take 2nd from 4th in turn until 實 is gone   "以第二行去第四行下位"
+Take 2nd from left as far as the 實 goes   "又以減左行下位"
+Take right from 2nd until 實 is gone | Take right from 2nd in turn until 實 is gone   "次右行去第二行下位"
+Gives 2nd 0 3 -4 0 0 0 | Gives 2nd 0 -3 4 0 0 0   "餘上得三下得四是爲麥三當菽四"
+Take 2nd from 4th | Take 2nd from 4th as far as the 實 goes | Take 2nd from 4th in turn until 實 is gone   "次以第二行減第四行下位"
+Take 4th from 2nd until 實 is gone | Take 4th from 2nd in turn until 實 is gone   "次以第四行去第二行下位"
+Gives 2nd 4 -7 0 0 0 0 | Gives 2nd -4 7 0 0 0 0   "餘上得四下得七是爲麻四當麥七"
+"是爲相當之率舉矣據麻四當麥七卽爲麻價率七而麥價率四又麥三當菽四卽爲麥價率四而菽價率三又荅六當黍五卽爲荅價率五而黍價率六而率通矣"
+% "So the rates at which things are worth each other are all found: 麻 4 for 麥 7 gives the rates
+% 麻 7, 麥 4; 麥 3 for 菽 4, 麥 4, 菽 3; 荅 6 for 黍 5, 荅 5, 黍 6: the rates agree." They are the prices.
+"如此則凡用一百二十四算也"
+% The last part of the method, from 更置第三行, is on the page liu-hui-18-rates.
+% "This way uses 124 算 in all." (p. 35) Not compared: no reading of the ratio-finding gets through it.

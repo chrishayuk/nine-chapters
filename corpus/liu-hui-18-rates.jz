@@ -1,0 +1,15 @@
+No. 8.18 (Liu Hui: the new method, the last part)
+% Sibu congkan pp. 33-34. After the rates are found (麻 7, 麥 4, 菽 3, 荅 5, 黍 6), Liu Hui sets the
+% 3rd column afresh and takes the 4th, as first set, from it, so that one column with 麻 at its
+% head is left; the rates turn every thing in it into 麻, and the 麻 price follows.
+Things 麻 麥 菽 荅 黍 實
+Set right 9 7 3 2 5 140
+Set 2nd   7 6 4 5 3 128
+Set 3rd   3 5 7 6 4 116                     "更置第三行"
+Set 4th   2 5 3 9 4 112
+Set left  1 3 2 8 5  95
+Take 4th from 3rd.                           "以第四行減之"
+Gives 3rd 1 0 4 -3 0 4                       "餘有麻一斗菽四斗荅三斗負下實四正"
+"求其同爲麻之數以菽率三荅率五各乘菽荅斗數如麻率七而一菽得一斗七分斗之五正荅得二斗七分斗之一負則菽荅化爲麻以并之令同名相從異名相消餘爲定麻七分斗之四以爲法置下實四爲實以分母乘之實得二十八而分子化爲法矣以法除得七卽麻一斗之價"
+% The rest is arithmetic in fractions, off the board; checked by hand: 4 菽 × 3/7 = 1 5/7 (正),
+% 3 荅 × 5/7 = 2 1/7 (負), 1 + 1 5/7 − 2 1/7 = 4/7 (the 法), 4 × 7 = 28, 28 ÷ 4 = 7, the 麻.

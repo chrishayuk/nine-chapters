@@ -1,0 +1,44 @@
+No. 8.18 (Dai Zhen, 訂訛: 145 and 99)
+% Sibu congkan pp. 48-49, Dai Zhen's collation notes on Liu Hui's commentary to Problem 18.
+% He calls Liu Hui's account of the old method corrupt (訛舛不可通) and gives his own,
+% with his own counts of 算.
+"以上所言舊術訛舛不可通據方程術凡五物及總價求其各物之價者應列五行行五位及價以上一位互乘因徧乘次位以下及價兩兩相對減去其頭位所減之餘重列之減至一物一價乃止物爲法價爲實實如法而一得一物之價轉減而上以知各價"
+% "What is said above of the old method is corrupt and cannot be followed. By the fangcheng
+% procedure, to find each price from five things and their total prices, set five columns of
+% five positions and the price; cross-multiply by the top positions, and so multiply through the
+% positions below and the price; take each pair from the other to remove its head; set out again
+% what is left; go on until one thing and one price remain. The thing is the 法, the price the 實;
+% divide, and one price is found; work back upwards to know each price."
+Things 麻 麥 菽 荅 黍 實
+Set right 9 7 3 2 5 140
+Set 2nd   7 6 4 5 3 128
+Set 3rd   3 5 7 6 4 116
+Set 4th   2 5 3 9 4 112
+Set left  1 3 2 8 5  95
+Solve by cross.
+Answer 7, 4, 3, 5, 6
+"先化五爲四次化四爲三次化三爲二次化二爲一凡用十算兼乘減除言之則一百四十五算"
+% "First five become four, then four three, three two, two one: ten [eliminations] in all;
+% counting multiplications, takings and divisions together, 145 算."
+Count 145                                    "兼乘減除言之則一百四十五算"
+
+"凡上一位互乘其數必同可省乘若遇上一位數同則省徧乘或上一位遇一則省其與對行徧乘"
+% "After cross-multiplying, the heads are always equal, and need not be multiplied. Where the
+% heads are equal, the multiplying through is saved; where a head is one, the multiplying
+% through of the column against it is saved."
+"考問意左行上一位是一先以左行減右行次減第二行次減第三行次減第四行所減之餘重列爲四行其左行上一位又是一以左行減右行次減第二行次減第三行所減之餘重列爲三行其上一位數皆同卽以本數減之餘列爲兩行依術得荅價轉而上求得菽價及麥價麻價凡用九十九算"
+% "In this problem the left column's head is one: first take the left from the right, then from
+% the 2nd, 3rd and 4th; set out what is left as four columns. Its left column's head is again one:
+% take it from the right, the 2nd and the 3rd; set out what is left as three. Their heads are all
+% equal: take them by the figures as they stand; set out what is left as two columns, and by the
+% procedure find the price of 荅; work upwards for 菽, 麥 and 麻. In all, 99 算."
+% Dai Zhen's arrangement keeps the column with a head of one on the left; `Solve by one` chooses
+% it so. Dai Zhen does not say whether his 黍 (the last) is found before the 荅; it is found first here.
+Set right 9 7 3 2 5 140
+Set 2nd   7 6 4 5 3 128
+Set 3rd   3 5 7 6 4 116
+Set 4th   2 5 3 9 4 112
+Set left  1 3 2 8 5  95
+Solve by one.
+Answer 7, 4, 3, 5, 6
+Count 99                                     "凡用九十九算"

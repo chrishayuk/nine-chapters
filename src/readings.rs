@@ -68,7 +68,8 @@ fn tally(v: &mut Vec<(usize, String, u128)>, line: usize, why: String, n: u128) 
 }
 
 pub fn all(text: &str) -> Result<Census, String> {
-    let base = check::run(text);
+    let parsed = crate::page::parse(text);
+    let base = check::run_lines(parsed.clone(), &[]);
     let alts = base.alternatives();
     let sizes: Vec<u128> = alts.iter().map(|a| a.1 as u128).collect();
     let total: u128 = sizes.iter().product();
@@ -81,7 +82,7 @@ pub fn all(text: &str) -> Result<Census, String> {
             return Err(format!("more than {} combinations would have to be run; give fewer readings", LIMIT));
         }
         let choice: Vec<(usize, usize)> = alts.iter().zip(&idx).map(|(a, &k)| (a.0, k)).collect();
-        let run = check::run_with(text, &choice);
+        let run = check::run_lines(parsed.clone(), &choice);
         c.run += 1;
         // the first line at which this combination fails, if it does
         let fail = run

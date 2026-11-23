@@ -1,0 +1,18 @@
+How each answer is written, and which reading of the last step writes it so.
+board: every 實 over the 法 as the board leaves it.  約: the 法 and all the 實s divided by what
+they share.  lowest: each answer in its lowest terms.  ✓: writes it as the text does.
+
+problem  written                   board        約   lowest   法 by the text, after 約
+1        1/4 1/4 3/4                36        4 ✓    1/4 ✓   4
+2        18/52 41/52                52 ✓     52 ✓   9/26     52
+3        9/25 7/25 4/25             25 ✓     25 ✓   9/25 ✓   25
+7        13/21 20/21                21 ✓     21 ✓  13/21 ✓   21
+9        13/19 5/19                 19 ✓     19 ✓  13/19 ✓   19
+10       1/2                         4        2 ✓    1/2 ✓   2
+11       6/11 2/11                  11 ✓     11 ✓   6/11 ✓   11
+12       6/7 1/7 5/7                 7 ✓      7 ✓    6/7 ✓   7
+14       33/111 28/111 17/111 1    666      111 ✓  11/37     111
+15       17/23 11/23 10/23          23 ✓     23 ✓  17/23 ✓   23
+16       45/122 41/122 97/122      976      122 ✓ 45/122 ✓   122
+
+Of 11 answers with a fraction: board writes 7 as the text does, 約 11, lowest terms 9.
