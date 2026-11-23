@@ -1,0 +1,30 @@
+No. 8.7
+% Sibu congkan p. 15
+"今有牛五羊二直金十兩，牛二羊五直金八兩，問牛羊各直金幾何"
+% Now there are 5 oxen and 2 sheep, worth 10 liang of gold; 2 oxen and 5 sheep, worth 8 liang of gold. How much gold is one ox, and one sheep, worth?
+% The scan has 直 (worth) three times; the Wikisource text (卷第八.paged.txt) leaves it out each time.
+"荅曰牛一直金一兩二十一分兩之十三，羊一直金二十一分兩之二十"
+% Answer: one ox is worth 1 13/21 liang of gold; one sheep is worth 20/21 liang of gold.
+"術曰如方程"
+% Unit: 兩 (liang) of gold.
+% The text says only 如方程: each condition is a column, in the order of the statement;
+% the first (牛五羊二直金十兩) is the right-hand column, the second (牛二羊五直金八兩) the left.
+Things 牛 羊 金
+Set right  5 2 10
+Set left   2 5 8
+Solve.
+Answer 1 13/21, 20/21
+
+% Liu Hui's commentary works the board by making the heads equal (齊同), and states its figures.
+"假令爲同齊頭位爲牛左右行相乘定"
+% The board set again as the statement gives it, for Liu Hui's working.
+Set right  5 2 10
+Set left   2 5 8
+Multiply right by the head of left.                "左右行相乘"
+Multiply left by 5.                                % by the head right had before it was multiplied
+Gives right 10 4 20                                "更置牛十羊四直金二十兩"
+Gives left  10 25 40                               "左行牛十羊二十五直金四十兩"
+"牛數等同金多二十兩者羊差二十一使之然也"
+Take right from left.                              "以少行減多行"
+Gives left  0 21 20                                "則牛數盡惟羊與金之數見可得而知也"
+"以小推大雖四五行不異也"

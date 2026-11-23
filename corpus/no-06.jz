@@ -1,0 +1,20 @@
+No. 8.6
+% Sibu congkan pp. 13-14
+"今有上禾三秉，益實六斗，當下禾十秉，下禾五秉，益實一斗，當上禾二秉，問上下禾實一秉各幾何"
+% Suppose the yield of 3 bundles of top-grade grain, increased by 6 dou, equals that of 10 bundles
+% of low-grade; the yield of 5 bundles of low-grade, increased by 1 dou, equals that of 2 bundles
+% of top-grade. How much does one bundle of each grade yield?
+"荅曰，上禾一秉實八斗，下禾一秉實三斗"
+% Answer: one bundle of top grain yields 8 dou; one of low grain, 3 dou.
+"術曰，如方程，置上禾三秉正，下禾十秉負，益實六斗正，次置上禾二秉負，下禾五秉正，益實一斗正，以正負術入之"
+% in 斗
+% The signs are set as the procedure states them, 益實 正 in both columns (image p. 14
+% reads 正 after 益實六斗 and after 益實一斗; re-read, it says so). The Wikisource
+% text of this scan agrees (正, 正). The punctuated Wikisource text of another edition
+% (jiuzhang.wiki) reads 益實六斗負 ... 益實一斗負; with those signs the board gives 8, 3.
+% Not changed: this page follows the scan. jiuzhang finds -8, -3 (法 -5, 實 40 15).
+Things 上禾 下禾 實
+Set right  3 -10 6       "置上禾三秉正，下禾十秉負，益實六斗正"
+Set left   -2 5 1        "次置上禾二秉負，下禾五秉正，益實一斗正"
+Solve.                   "以正負術入之"
+Answer 8, 3

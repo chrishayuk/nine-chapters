@@ -1,0 +1,16 @@
+No. 8.16
+% Sibu congkan pp. 26-27
+"今有令一人，吏五人，從者十人，食雞十，令十人，吏一人，從者五人，食雞八，令五人，吏十人，從者一人，食雞六，問令吏從者食雞各幾何"
+% One magistrate, 5 clerks and 10 attendants eat 10 chickens; 10 magistrates, 1 clerk and 5 attendants
+% eat 8; 5 magistrates, 10 clerks and 1 attendant eat 6. How much chicken does each eat?
+"荅曰令一人食一百二十二分雞之四十五，吏一人食一百二十二分雞之四十一，從者一人食一百二十二分雞之九十七"
+% Answer: a magistrate eats 45/122 of a chicken; a clerk 41/122; an attendant 97/122.
+"術曰如方程以正負術入之"
+% The 術 does not say how to set the board: each group of eaters is a column, in the order the text
+% gives them, the first as the right-hand column. Every figure is positive. Unit: one chicken.
+Things 令 吏 從者 實
+Set right   1  5 10 10
+Set middle 10  1  5  8
+Set left    5 10  1  6
+Solve.
+Answer 45/122, 41/122, 97/122

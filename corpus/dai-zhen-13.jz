@@ -1,0 +1,30 @@
+No. 8.13 (Dai Zhen, 訂訛)
+% Sibu congkan pp. 43-45: Dai Zhen's collation notes (九章算術卷八訂訛) on Problem 13.
+% He repeats the problem and answer (pp. 43-44; the figures are those of pp. 22-23) and adds, after the answer:
+"此問不言丈尺，無由知井深綆長於丈尺幾何，使井深半之，爲三丈六尺有半寸，則甲綆一丈三尺二寸半，乙綆九尺五寸半，丙綆七尺四寸，丁綆六尺四寸半，戊綆三尺八寸，使井深倍之，爲十四丈四尺二寸，則甲綆五丈三尺，乙綆三丈八尺二寸，丙綆二丈九尺六寸，丁綆二丈五尺八寸，戊綆一丈五尺二寸，皆合所問"
+% Half the depth, 360 1/2 cun, gives ropes 132 1/2, 95 1/2, 74, 64 1/2, 38 cun; double, 1442 cun, gives
+% 530, 382, 296, 258, 152 cun. These are the text's figures halved and doubled; they are not figures of a
+% board, and are kept as words. Both sets are in the ratio of the rates below.
+"由是言之，問旣不定，以丈尺依術推求，先得七百二十一，無以定百爲丈十爲尺也，問井深綆長之率各幾何，荅以井深之率七百二十一，甲綆長率二百六十五，乙綆長率一百九十一，丙綆長率一百四十八，丁綆長率一百二十九，戊綆長率七十六，於義乃通"
+% The board as the 術 sets it (see no-13): each column's 實 one depth.
+Things 甲 乙 丙 丁 戊 實
+Set right 2 1 0 0 0 1
+Set 2nd   0 3 1 0 0 1
+Set 3rd   0 0 4 1 0 1
+Set 4th   0 0 0 5 1 1
+Set left  1 0 0 0 6 1
+Solve.
+Rates 721 265 191 148 129 76    "荅以井深之率七百二十一，甲綆長率二百六十五……戊綆長率七十六"
+
+% After Liu Hui's "此率初如方程爲之名各一逮井其後法得七百二十一實七十六" he writes (p. 45):
+"此上訛舛不可通，據術先得七百二十一，爲所列五行之通率，卽井深率也，以此率列各行下，爲各行之下實，重求之，法得七百二十一，實得五萬四千七百九十六，以法除實，得用逮之數七十六"
+% The board set again with 721 as every column's 下實 (以此率列各行下), and worked again (重求之).
+Set right 2 1 0 0 0 721     "以此率列各行下，爲各行之下實"
+Set 2nd   0 3 1 0 0 721
+Set 3rd   0 0 4 1 0 721
+Set 4th   0 0 0 5 1 721
+Set left  1 0 0 0 6 721
+Solve.                      "重求之"
+Gives left 0 0 0 0 721 54796    "法得七百二十一，實得五萬四千七百九十六"
+% 以法除實得用逮之數七十六: 54796 / 721 = 76, the 戊 rope. He states no figure for the other ropes,
+% so no Answer line is written.

@@ -53,6 +53,8 @@ pub enum How {
     AsFar(Pos),
     /// 互乘: cross-multiplied, then taken.
     Crosswise(Pos),
+    /// 相減: each taken from the other in turn until the position is gone.
+    InTurn(Pos),
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -94,6 +96,8 @@ pub enum Stmt {
     Answer(Vec<Mixed>),
     Rates(Vec<Num>),
     Count(u64),
+    /// The reading that does nothing: a clause taken as corrupt or idle.
+    Nothing,
 }
 
 impl Stmt {
@@ -113,6 +117,7 @@ impl Stmt {
             Stmt::Answer(_) => "Answer",
             Stmt::Rates(_) => "Rates",
             Stmt::Count(_) => "Count",
+            Stmt::Nothing => "Nothing",
         }
     }
     /// Does it change the board?
@@ -133,7 +138,7 @@ impl Stmt {
 
 pub const KEYWORDS: &[&str] = &[
     "Things", "Set", "Multiply", "Take", "Add", "Halve", "Reduce", "Divide", "Drop", "Gives", "Solve", "Answer", "Rates",
-    "Count",
+    "Count", "Nothing",
 ];
 
 /// The kind of a token, for colouring.
@@ -419,12 +424,25 @@ fn stmt(text: &str, base: usize) -> (Result<Stmt, String>, Vec<(usize, usize, To
                             How::AsFar(pos)
                         }
                     }
+                    Some("in") => {
+                        p.next(Tok::Word);
+                        p.word("turn")?;
+                        let pos = if p.eat("until") {
+                            let pos = p.pos()?;
+                            p.word("is")?;
+                            p.word("gone")?;
+                            pos
+                        } else {
+                            Pos::Head
+                        };
+                        How::InTurn(pos)
+                    }
                     Some("crosswise") => {
                         p.next(Tok::Word);
                         let pos = if p.eat("at") { p.pos()? } else { Pos::Head };
                         How::Crosswise(pos)
                     }
-                    Some(w) => return Err(format!("`{}`: after `Take A from B`, `until the head is gone`, `as far as it goes` or `crosswise`", w)),
+                    Some(w) => return Err(format!("`{}`: after `Take A from B`, `until the head is gone`, `as far as it goes`, `in turn` or `crosswise`", w)),
                 };
                 Stmt::Take { a, t, how }
             }
@@ -451,6 +469,7 @@ fn stmt(text: &str, base: usize) -> (Result<Stmt, String>, Vec<(usize, usize, To
                 Stmt::Solve(m)
             }
             "Rates" => Stmt::Rates(p.nums()?),
+            "Nothing" => Stmt::Nothing,
             "Count" => {
                 let n = p.num()?;
                 if n < 0 {

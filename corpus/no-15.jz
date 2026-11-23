@@ -1,0 +1,23 @@
+No. 8.15
+% Sibu congkan pp. 25-26
+"今有甲禾二秉，乙禾三秉，丙禾四秉，重皆過於石，甲二重如乙一，乙三重如丙一，丙四重如甲一，問甲乙丙禾一秉各重幾何"
+% There are 2 bundles of grain A, 3 of B and 4 of C, each weighing more than a dan. The excess of A's two
+% is as one of B; of B's three, as one of C; of C's four, as one of A. What does one bundle of each weigh?
+"荅曰甲禾一秉重二十三分石之十七，乙禾一秉重二十三分石之十一，丙禾一秉重二十三分石之十"
+% Answer: one bundle of A weighs 17/23 dan; of B, 11/23 dan; of C, 10/23 dan.
+"術曰如方程置重過於石之物爲負"
+"以正負術入之"
+% Each condition is read: n bundles, less one bundle of the other grain (the excess), weigh one dan.
+% The thing the excess is equal to (重過於石之物) is set negative, as the 術 says; the first condition
+% (甲) is the right-hand column. Unit: the dan (石).
+Things 甲禾 乙禾 丙禾 實
+Set right   2 -1  0 1    "甲二重如乙一；置重過於石之物爲負"
+Set middle  0  3 -1 1    "乙三重如丙一"
+Set left   -1  0  4 1    "丙四重如甲一"
+Solve.
+Answer 17/23, 11/23, 10/23
+
+% Liu Hui's commentary (pp. 25-26) explains the negative setting and the rule for entering the head
+% positions; it states no figures:
+"此問者言甲禾二秉之重過於一石也，其過者幾何，如乙一秉重矣，互其算，令相折除，以石爲之差實，差實者如甲禾餘實，故置算相與同也"
+"此入頭位異名相除者，正無入正之，負無入負之也"

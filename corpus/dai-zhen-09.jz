@@ -1,0 +1,20 @@
+No. 8.9
+% Dai Zhen, 九章算術卷八訂訛, Sibu congkan p. 43: Liu Hui's 異術 for Problem 9 worked out.
+% Unit: 兩.
+"此卽末條所言新術"
+Things 雀 燕 重
+Set right  4 1 8
+Set left   1 5 8
+% 以下實俱重八兩徧乘上雀燕: each column is multiplied by the other's 實, which is 8 in both. He names only
+% the 雀 and 燕 figures (右雀三十二, 左雀八, 左燕四十, 右燕八), so no Gives is written for the multiplied columns.
+Multiply right by the 重 of left.                  "以下實俱重八兩徧乘上雀燕"
+Multiply left by 8.                                % the 重 of the right as it was set, 八兩 (俱重八兩)
+Take left from right.                              "以左雀八減右雀三十二餘二十四以右燕八減左燕四十餘三十二"
+% 雀 24 over on the right, 燕 32 over on the left: as a column, 雀 24 正 and 燕 32 負; the 實 is gone,
+% which he does not say in figures (是爲二物): the 0 is the transcriber's.
+Gives right 24 -32 0                               "是爲二物正負相借"
+Reduce right.                                      "因而約之"
+Gives right 3 -4 0                                 "雀得三燕得四乃三雀當四燕也"
+"對易其數卽雀率重四而燕率重三"
+% The rates 4 and 3 are not a column, and `Rates` cannot check them here (see corpus/liu-hui-09.jz).
+"注於此突入異術幾不解其所謂"

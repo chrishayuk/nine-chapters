@@ -1,0 +1,29 @@
+No. 8.1
+% Sibu congkan pp. 2-6 (statement p. 2, answer and procedure pp. 3-6; Liu Hui's commentary throughout)
+"今有上禾三秉，中禾二秉，下禾一秉，實三十九斗，上禾二秉，中禾三秉，下禾一秉，實三十四斗，上禾一秉，中禾二秉，下禾三秉，實二十六斗，問上中下禾實一秉各幾何"
+% Suppose 3 bundles of top-grade grain, 2 of middle-grade and 1 of low-grade yield 39 dou of grain;
+% 2 top, 3 middle and 1 low yield 34 dou; 1 top, 2 middle and 3 low yield 26 dou.
+% How much grain does one bundle of each grade yield?
+"荅曰，上禾一秉九斗四分斗之一，中禾一秉四斗四分斗之一，下禾一秉二斗四分斗之三"
+% Answer: one bundle of top grain, 9 1/4 dou; of middle, 4 1/4 dou; of low, 2 3/4 dou.
+"術曰，置上禾三秉，中禾二秉，下禾一秉，實三十九斗，於右方，中左禾列如右方，以右行上禾徧乘中行，而以直除，又乘其次，亦以直除，然以中行中禾不盡者，徧乘左行，而以直除，左方下禾不盡者，上爲法，下爲實，實卽下禾之實，求中禾，以法乘中行下實，而除下禾之實，餘如中禾秉數而一，卽中禾之實，求上禾，亦以法乘右行下實，而除下禾中禾之實，餘如上禾秉數而一，卽上禾之實，實皆如法，各得一斗"
+% The image reads 而以直除 / 亦以直除 / 而以直除 (pp. 3-4); the Wikisource text drops 直 each time.
+% in 斗
+Things 上禾 中禾 下禾 實
+Set right   3 2 1 39          "置上禾三秉，中禾二秉，下禾一秉，實三十九斗，於右方"
+Set middle  2 3 1 34          "中左禾列如右方"
+Set left    1 2 3 26
+Multiply middle by the head of right.            "以右行上禾徧乘中行"
+Take right from middle until the head is gone.   "而以直除"
+Multiply left by the head of right.              "又乘其次"
+Take right from left until the head is gone.     "亦以直除"
+% 其次 read as the next column, the left (so Liu Hui: 復去左行首).
+Multiply left by the 中禾 of middle.             "然以中行中禾不盡者，徧乘左行"
+Take middle from left until the head is gone.    "而以直除"
+% Liu Hui: 亦令兩行相乘去行之中禾也. No figure for any column is stated by
+% the text, Liu Hui, or Dai Zhen, so there are no Gives lines.
+% Dai Zhen (訂訛 p. 36) reads each 徧乘 ... 直除 as mutual: 以右行上禾徧乘中行，
+% 復以中行上禾徧乘右行，然後可相對減 (i.e. `crosswise`), the text naming only one
+% multiplication 古人文省. He gives no figures.
+Solve.
+Answer 9 1/4, 4 1/4, 2 3/4

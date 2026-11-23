@@ -1,0 +1,18 @@
+No. 8.11
+% Sibu congkan pp. 19-20
+"今有二馬一牛價過一萬如半馬之價，一馬二牛價不滿一萬如半牛之價，問牛馬價各幾何"
+% Now 2 horses and 1 ox cost more than 10000 by as much as half a horse; 1 horse and 2 oxen cost less than 10000 by as much as half an ox. What is the price of an ox, and of a horse?
+"荅曰馬價五千四百五十四錢十一分錢之六，牛價一千八百一十八錢十一分錢之二"
+% Answer: a horse costs 5454 6/11 cash; an ox 1818 2/11 cash.
+"術曰如方程損益之"
+% Unit: 錢 (cash).
+% The procedure says only 損益之. Taking away half a horse from the first condition and adding half an ox to the
+% second gives 一馬半與一牛 and 一馬二牛半, each worth 10000, with fractions; Liu Hui makes them whole
+% (通分内子) and gives the columns, which are set as he gives them, the first condition as the right-hand column.
+% The things are set in the order of the statement and of Liu Hui's columns (馬 above 牛); the question asks 牛馬.
+"此一馬半與一牛價直一萬也二牛半與一馬亦直一萬也"
+Things 馬 牛 錢
+Set right  3 2 20000    "一馬半與一牛通分内子右行爲三馬二牛直錢二萬"
+Set left   2 5 20000    "二牛半於一馬通分内子左行爲二馬五牛直錢二萬也"
+Solve.
+Answer 5454 6/11, 1818 2/11

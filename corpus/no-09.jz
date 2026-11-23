@@ -1,0 +1,17 @@
+No. 8.9
+% Sibu congkan pp. 17-18
+"今有五雀六燕集稱之衡，雀俱重燕俱輕，一雀一燕交而處衡適平，并燕雀重一斤，問燕雀一枚各重幾何"
+% Now 5 sparrows and 6 swallows are gathered on the pans of a balance: the sparrows together are heavier, the swallows together lighter. Exchange one sparrow and one swallow, and the balance is level. Swallows and sparrows together weigh 1 jin. How much does one swallow, and one sparrow, weigh?
+"荅曰雀重一兩十九分兩之十三，燕重一兩十九分兩之五"
+% Answer: a sparrow weighs 1 13/19 liang; a swallow 1 5/19 liang.
+"術曰如方程交易質之各重八兩"
+% Unit: 兩 (liang); 1 斤 is 16 兩, so each pan, level, holds 8 兩.
+% The procedure says only to exchange them and that each pan weighs 8 兩. The pans after the exchange are
+% columns: the sparrows' pan (五雀 less one sparrow, with one swallow: 四雀一燕) is the right-hand column,
+% the swallows' pan (六燕 less one swallow, with one sparrow: 一雀五燕) the left. Liu Hui reads the board
+% so: 此四雀一燕與一雀五燕衡適平并重一斤故各八兩列兩行程數 (his working: corpus/liu-hui-09.jz).
+Things 雀 燕 重
+Set right  4 1 8      "交易質之各重八兩"
+Set left   1 5 8
+Solve.
+Answer 1 13/19, 1 5/19

@@ -1,0 +1,18 @@
+No. 8.10
+% Sibu congkan pp. 18-19
+"今有甲乙二人持錢不知其數，甲得乙半而錢五十，乙得甲太半而亦錢五十，問甲乙持錢各幾何"
+% Now two men, Jia and Yi, hold cash, how much is not known. If Jia gets half of Yi's, he has 50 cash; if Yi gets two thirds of Jia's, he too has 50 cash. How much does each of Jia and Yi hold?
+"荅曰甲持三十七錢半，乙持二十五錢"
+% Answer: Jia holds 37 1/2 cash; Yi holds 25 cash.
+"術曰如方程損益之"
+% Unit: 錢 (cash).
+% The procedure says only 損益之. The statement's conditions have fractions (乙半, 甲太半), which a column of
+% whole numbers cannot hold. Liu Hui's commentary says how they are made whole: 此問者言一甲半乙而五十太半甲一乙
+% 亦五十也各以分母乘其全内子 (each multiplied by its denominator, 2 and 3), and gives the columns; they are set
+% as he gives them, the first condition as the right-hand column.
+Things 甲 乙 錢
+Set right  2 1 100     "行定二甲一乙而錢一百"
+Set left   2 3 150     "二甲三乙而錢一百五十"
+"於是乃如方程諸物有分者倣此"
+Solve.
+Answer 37 1/2, 25

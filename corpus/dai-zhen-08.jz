@@ -1,0 +1,29 @@
+No. 8.8
+% Dai Zhen, 九章算術卷八訂訛, Sibu congkan pp. 41-42: his working of Problem 8 by cross-multiplication (互乘).
+"此注訛脫不分曉據術意應列三行"
+% Unit: 錢 (cash). The board as the procedure sets it (corpus/no-08.jz).
+Things 牛 羊 豕 錢
+Set right   2  5 -13 1000
+Set middle  3 -9   3    0
+Set left   -5  6   8 -600
+Take middle from right crosswise.   "先令右行牛二徧乘中行復令中行牛三徧乘右行而以直除"
+% The signs he gives (羊正, 豕負, 錢正) are those of 3 x right less 2 x middle: the middle is taken from the right.
+Gives right 0 33 -45 3000           "得羊三十三正豕四十五負餘錢三千正"
+"此同名相除異名相益正無入負之負無入正之也"
+% Dai Zhen uses the right column as first set again (右行牛二) in the next step, and later lays the two
+% results out as a new pair (重列爲左右兩行). `Take` writes its result over the column it takes from,
+% so the result is moved to the middle and the right is set again as it stood. These two Set lines are
+% the transcriber's, not Dai Zhen's.
+Set middle  0 33 -45 3000
+Set right   2  5 -13 1000
+Take right from left crosswise.     "次令右行牛二徧乘左行復令左行牛五徧乘右行而以直除"
+% 牛 heads of opposite sign (2 and -5): 2 x left less -5 x right, i.e. the two are added (異名相除).
+Gives left  0 37 -49 3800           "得羊三十七正豕四十九負餘錢三千八百正"
+"此異名相除同名相益正無入正之負無入負之也"
+"重列爲左右兩行"
+% His new right is the middle here (羊三十三), his new left the left (羊三十七).
+Take middle from left crosswise.    "先令右行羊三十三徧乘左行復令左行羊三十七徧乘右行而以直除"
+Gives left  0 0 48 14400            "得豕四十八正以爲法錢一萬四千四百正爲實"
+Solve.                              "實如法而一得豕價三百轉減而上得羊價五百牛價一千二百"
+Answer 1200, 500, 300
+"此亦同名相除異名相益正無入負之負無入正之也中行下實虛缺本無庸論葢注文傳寫失眞後人又妄加改竄遂不可通"

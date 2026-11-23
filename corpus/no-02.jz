@@ -1,0 +1,22 @@
+No. 8.2
+% Sibu congkan pp. 6-7
+"今有上禾七秉，損實一斗，益之下禾二秉，而實十斗，下禾八秉，益實一斗，與上禾二秉，而實十斗，問上下禾實一秉各幾何"
+% Suppose 7 bundles of top-grade grain, their yield lessened by 1 dou, with 2 bundles of low-grade
+% grain added, yield 10 dou; 8 bundles of low-grade grain, their yield increased by 1 dou, with
+% 2 bundles of top-grade, yield 10 dou. How much does one bundle of each grade yield?
+"荅曰，上禾一秉實一斗五十二分斗之十八，下禾一秉實五十二分斗之四十一"
+% Answer: one bundle of top grain yields 1 dou and 18/52 of a dou; one of low grain, 41/52 of a dou.
+% (十 / 八 of the first answer is broken across pp. 6-7.)
+"術曰，如方程，損之曰益，益之曰損，損實一斗者，其實過十斗也，益實一斗者，其實不滿十斗也"
+% in 斗
+% The procedure says only 如方程, with 損之曰益，益之曰損: the 斗 taken off the first
+% condition is added to its 實 (10 + 1), and the 斗 put on the second is taken from
+% its 實 (10 - 1). Each condition is a column, the first the right.
+Things 上禾 下禾 實
+Set right  7 2 11        "損之曰益"
+Set left   2 8 9         "益之曰損"
+Gives right 7 2 11       "今按實云上禾七秉，下禾二秉，實十一斗"
+Gives left  2 8 9        "上禾二秉，下禾八秉，實九斗也"
+% Liu Hui's commentary states both columns; the Gives lines record it.
+Solve.
+Answer 1 18/52, 41/52

@@ -213,6 +213,32 @@ impl Board {
         self.take(a, t, q, known)
     }
 
+    /// 相減: take each column from the other in turn, the larger head from
+    /// the smaller as many times as goes, until `t`'s figure at `pos` is
+    /// gone. Both columns change. No multiplication: what Liu Hui's
+    /// 令左右相減 may mean.
+    pub fn mutual(&mut self, a: usize, t: usize, pos: usize) -> Result<Vec<(Op, Board)>, Trouble> {
+        let mut ops = vec![];
+        for _ in 0..64 {
+            let ap = self.col(a)?[pos];
+            let tp = self.col(t)?[pos];
+            if tp == 0 {
+                return Ok(ops);
+            }
+            if ap == 0 {
+                return Err(Trouble::Empty { col: a, pos });
+            }
+            if tp.abs() >= ap.abs() {
+                let op = self.take(a, t, tp / ap, if tp % ap == 0 { Some(pos) } else { None })?;
+                ops.push((op, self.clone()));
+            } else {
+                let op = self.take(t, a, ap / tp, None)?;
+                ops.push((op, self.clone()));
+            }
+        }
+        Err(Trouble::Empty { col: t, pos })
+    }
+
     /// 互乘: multiply `t` by `a`'s figure at `pos` and `a` by `t`'s, and
     /// take one from the other, so that `pos` is cleared in `t`. `a` is left
     /// as it was: its products are worked and taken, not set down.

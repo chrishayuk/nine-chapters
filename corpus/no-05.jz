@@ -1,0 +1,15 @@
+No. 8.5
+% Sibu congkan pp. 12-13
+"今有上禾六秉，損實一斗八升，當下禾十秉，下禾十五秉，損實五升，當上禾五秉，問上下禾實一秉各幾何"
+% Suppose the yield of 6 bundles of top-grade grain, lessened by 1 dou 8 sheng, equals that of 10
+% bundles of low-grade; the yield of 15 bundles of low-grade, lessened by 5 sheng, equals that of 5
+% bundles of top-grade. How much does one bundle of each grade yield?
+"荅曰，上禾一秉實八升，下禾一秉實三升"
+% Answer: one bundle of top grain yields 8 sheng; one of low grain, 3 sheng.
+"術曰，如方程，置上禾六秉正，下禾十秉負，損實一斗八升正，次置上禾五秉負，下禾十五秉正，損實五升正，以正負術入之"
+% in 升: 1 斗 is 10 升
+Things 上禾 下禾 實
+Set right  6 -10 18      "置上禾六秉正，下禾十秉負，損實一斗八升正"
+Set left   -5 15 5       "次置上禾五秉負，下禾十五秉正，損實五升正"
+Solve.                   "以正負術入之"
+Answer 8, 3

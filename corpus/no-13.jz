@@ -1,0 +1,30 @@
+No. 8.13
+% Sibu congkan pp. 22-23
+"今有五家共井，甲二綆不足如乙一綆，乙三綆不足如丙一綆，丙四綆不足如丁一綆，丁五綆不足如戊一綆，戊六綆不足如甲一綆，各得所不足一綆皆逮，問井深綆長各幾何"
+% Five households share a well. Two of A's ropes fall short of the water by one of B's ropes; three of B's
+% fall short by one of C's; four of C's by one of D's; five of D's by one of E's; six of E's by one of A's.
+% Each, given the one rope it lacks, just reaches. How deep is the well, and how long is each rope?
+"荅曰井深七丈二尺一寸，甲綆長二丈六尺五寸，乙綆長一丈九尺一寸，丙綆長一丈四尺八寸，丁綆長一丈二尺九寸，戊綆長七尺六寸"
+% Answer: the well is 7 zhang 2 chi 1 cun deep (721 cun); A's rope 2 zhang 6 chi 5 cun (265 cun);
+% B's 1 zhang 9 chi 1 cun (191); C's 1 zhang 4 chi 8 cun (148); D's 1 zhang 2 chi 9 cun (129); E's 7 chi 6 cun (76).
+"術曰如方程以正負術入之"
+% The text does not say how to set the board. Six unknowns, five conditions: the depth is taken as the
+% 實 of every column ("名各一逮井": each column comes to one well-depth), and the five ropes are the things.
+% Each condition "X n 綆不足如 Y 一綆" is read n·X + 1·Y = 1 depth, and set as a column, the first
+% condition (甲, 乙) as the right-hand column, the rest leftwards in the order the text gives them.
+% Unit: one well-depth. The answer is then a set of rates (率): the 法 is the depth, the 實s the ropes.
+Things 甲 乙 丙 丁 戊 實
+Set right 2 1 0 0 0 1     "甲二綆不足如乙一綆"
+Set 2nd   0 3 1 0 0 1     "乙三綆不足如丙一綆"
+Set 3rd   0 0 4 1 0 1     "丙四綆不足如丁一綆"
+Set 4th   0 0 0 5 1 1     "丁五綆不足如戊一綆"
+Set left  1 0 0 0 6 1     "戊六綆不足如甲一綆"
+Solve.
+% The text's answer, in 寸: the depth 721 as the 法, then the ropes 甲 to 戊.
+Rates 721 265 191 148 129 76
+
+% Liu Hui's commentary (small characters after 術曰, p. 23):
+"此率初如方程爲之，名各一逮井，其後法得七百二十一，實七十六，是爲七百二十一綆而七十六逮井，而戊一綆逮之數定，逮七百二十一分之七十六，是故七百二十一爲井深，七十六爲戊綆之長，舉率以言之"
+% The column he describes is the last left standing, which holds 戊 and the 實: the left-hand column,
+% after the 甲, 乙, 丙, 丁 positions have been cleared from it. (721 戊-ropes make 76 well-depths.)
+Gives left 0 0 0 0 721 76     "其後法得七百二十一，實七十六"

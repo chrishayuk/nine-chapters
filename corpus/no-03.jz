@@ -1,0 +1,24 @@
+No. 8.3
+% Sibu congkan pp. 7-8 (the 正負術, which follows on pp. 9-11, is not part of this page)
+"今有上禾二秉，中禾三秉，下禾四秉，實皆不滿斗，上取中，中取下，下取上，各一秉而實滿斗，問上中下禾實一秉各幾何"
+% Suppose 2 bundles of top-grade grain, 3 of middle-grade and 4 of low-grade each yield less than
+% a dou. If the top takes one bundle of the middle, the middle one of the low, and the low one of
+% the top, each yields a full dou. How much does one bundle of each grade yield?
+"荅曰，上禾一秉實二十五分斗之九，中禾一秉實二十五分斗之七，下禾一秉實二十五分斗之四"
+% Answer: one bundle of top grain yields 9/25 dou; of middle, 7/25 dou; of low, 4/25 dou.
+"術曰，如方程，各置所取，以正負術入之"
+"正負術曰，同名相除，異名相益，正無入負之，負無入正之，其異名相除，同名相益，正無入正之，負無入負之"
+% The rule of signs (pp. 9-10), which follows this problem. When taking a column from another:
+% like signs subtract, unlike signs add; a positive with nothing opposite becomes negative, a
+% negative with nothing opposite becomes positive. When adding: unlike signs subtract, like signs
+% add; a positive with nothing opposite stays positive, a negative stays negative.
+% jiuzhang uses it as signed arithmetic. Liu Hui's commentary on it states no figures.
+% in 斗
+% Set as Liu Hui says: 置上禾二秉爲右行之上，中禾三秉爲中行之中，下禾四秉爲左行之下，
+% 所取一秉及實一斗各從其位.
+Things 上禾 中禾 下禾 實
+Set right   2 1 0 1      "置上禾二秉爲右行之上"
+Set middle  0 3 1 1      "中禾三秉爲中行之中"
+Set left    1 0 4 1      "下禾四秉爲左行之下，所取一秉及實一斗各從其位"
+Solve.
+Answer 9/25, 7/25, 4/25

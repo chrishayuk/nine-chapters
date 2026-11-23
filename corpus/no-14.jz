@@ -1,0 +1,20 @@
+No. 8.14
+% Sibu congkan pp. 23-25
+"今有白禾二步，靑禾三步，黃禾四步，黑禾五步，實各不滿斗，白取靑黃，靑取黃黑，黃取黑白，黑取白靑各一步，而實滿斗，問白靑黃黑禾實一步各幾何"
+% There are 2 bu of white grain, 3 bu of green, 4 bu of yellow and 5 bu of black; the yield of each falls
+% short of a dou. If the white takes one bu each of green and yellow, the green one each of yellow and black,
+% the yellow one each of black and white, and the black one each of white and green, each yield makes a full dou.
+% What does one bu of each grain yield?
+"荅曰白禾一步實一百一十一分斗之三十三，靑禾一步實一百一十一分斗之二十八，黃禾一步實一百一十一分斗之十七，黑禾一步實一百一十一分斗之十"
+% Answer: white 33/111 dou a bu; green 28/111; yellow 17/111; black 10/111.
+"術曰如方程各置所取以正負術入之"
+% 各置所取: each column is one grain's own bu with the one bu it takes of each of the other two, and
+% comes to one dou. The white grain's condition is the right-hand column, then green, yellow, black.
+% Unit: the dou.
+Things 白禾 靑禾 黃禾 黑禾 實
+Set right 2 1 1 0 1      "白取靑黃"
+Set 2nd   0 3 1 1 1      "靑取黃黑"
+Set 3rd   1 0 4 1 1      "黃取黑白"
+Set left  1 1 0 5 1      "黑取白靑"
+Solve.
+Answer 33/111, 28/111, 17/111, 10/111

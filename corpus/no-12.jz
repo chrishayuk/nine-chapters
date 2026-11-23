@@ -1,0 +1,16 @@
+No. 8.12
+% Sibu congkan pp. 21-22
+"今有武馬一匹中馬二匹下馬三匹皆載四十石至阪皆不能上，武馬借中馬一匹，中馬借下馬一匹，下馬借武馬一匹，乃皆上，問武中下馬一匹各力引幾何"
+% Now 1 strong horse, 2 middling horses and 3 poor horses each carry 40 dan to a slope, and none can get up it. If the strong horse borrows one middling horse, the middling horses one poor horse, and the poor horses one strong horse, then all get up. How much can one strong, one middling and one poor horse each pull?
+"荅曰武馬一匹力引二十二石七分石之六，中馬一匹力引十七石七分石之一，下馬一匹力引五石七分石之五"
+% Answer: one strong horse pulls 22 6/7 dan; one middling horse 17 1/7 dan; one poor horse 5 5/7 dan.
+"術曰如方程各置所借以正負術入之"
+% Unit: 石 (dan).
+% 各置所借: each team with the horse it borrows is a column, in the order of the statement, the first as
+% the right-hand column: 武馬一匹 with 中馬一匹 (40 石); 中馬二匹 with 下馬一匹 (40 石); 下馬三匹 with 武馬一匹 (40 石).
+Things 武馬 中馬 下馬 石
+Set right   1 1 0 40     "武馬借中馬一匹"
+Set middle  0 2 1 40     "中馬借下馬一匹"
+Set left    1 0 3 40     "下馬借武馬一匹"
+Solve.                   "以正負術入之"
+Answer 22 6/7, 17 1/7, 5 5/7

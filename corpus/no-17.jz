@@ -1,0 +1,18 @@
+No. 8.17
+% Sibu congkan pp. 27-28
+"今有五羊四犬三雞二兔直錢一千四百九十六，四羊二犬六雞三兔直錢一千一百七十五，三羊一犬七雞五兔直錢九百五十八，二羊三犬五雞一兔直錢八百六十一，問羊犬雞兔價各幾何"
+% Five sheep, 4 dogs, 3 chickens and 2 hares are worth 1496 cash; 4 sheep, 2 dogs, 6 chickens and 3 hares
+% 1175; 3 sheep, 1 dog, 7 chickens and 5 hares 958; 2 sheep, 3 dogs, 5 chickens and 1 hare 861.
+% What is the price of each?
+"荅曰羊價一百七十七，犬價一百二十一，雞價二十三，兔價二十九"
+% Answer: a sheep 177; a dog 121; a chicken 23; a hare 29.
+"術曰如方程以正負術入之"
+% The 術 does not say how to set the board: each purchase is a column, in the order the text gives
+% them, the first as the right-hand column. Every figure is positive. Unit: one cash (錢).
+Things 羊 犬 雞 兔 實
+Set right 5 4 3 2 1496
+Set 2nd   4 2 6 3 1175
+Set 3rd   3 1 7 5  958
+Set left  2 3 5 1  861
+Solve.
+Answer 177, 121, 23, 29

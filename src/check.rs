@@ -309,7 +309,7 @@ pub fn run_with(text: &str, choices: &[(usize, usize)]) -> Run {
                         Ok(())
                     };
                     match &s {
-                        Stmt::Things(_) => {}
+                        Stmt::Things(_) | Stmt::Nothing => {}
                         Stmt::Set(c, f) => {
                             let t = col(c)?;
                             let op = b.set(t, f.clone());
@@ -343,6 +343,17 @@ pub fn run_with(text: &str, choices: &[(usize, usize)]) -> Run {
                                 How::Crosswise(p) => {
                                     let pos = position(&b, t, p)?;
                                     b.cross(a, t, pos)
+                                }
+                                How::InTurn(p) => {
+                                    let pos = position(&b, t, p)?;
+                                    let ops = b.mutual(a, t, pos).map_err(|e| tr(&b, e))?;
+                                    if ops.is_empty() {
+                                        return Err(format!("the {} of {} is already empty", b.thing(pos), b.name(t)));
+                                    }
+                                    for (op, board) in ops {
+                                        lr.steps.push(Step { op, board });
+                                    }
+                                    return Ok(());
                                 }
                             };
                             did(&b, op, &mut lr)?;

@@ -1,0 +1,16 @@
+No. 8.8
+% Sibu congkan pp. 16-17
+"今有賣牛二羊五以買十三豕有餘錢一千，賣牛三豕三以買九羊錢適足，賣羊六豕八以買五牛錢不足六百，問牛羊豕價各幾何"
+% Now someone sells 2 oxen and 5 sheep to buy 13 pigs, and has 1000 cash over; sells 3 oxen and 3 pigs to buy 9 sheep, and the cash is just enough; sells 6 sheep and 8 pigs to buy 5 oxen, and is 600 cash short. What is the price of an ox, a sheep and a pig?
+"荅曰牛價一千二百，羊價五百，豕價三百"
+% Answer: an ox costs 1200, a sheep 500, a pig 300.
+"術曰如方程置牛二羊五正豕十三負餘錢數正次置牛三正羊九負豕三正次置牛五負羊六正豕八正不足錢負以正負術入之"
+% Unit: 錢 (cash).
+Things 牛 羊 豕 錢
+Set right   2  5 -13 1000     "置牛二羊五正豕十三負餘錢數正"
+Set middle  3 -9   3    0     "次置牛三正羊九負豕三正"   % 錢適足: the middle 實 is empty
+Set left   -5  6   8 -600     "次置牛五負羊六正豕八正不足錢負"
+Solve.                        "以正負術入之"
+Answer 1200, 500, 300
+% Liu Hui's note on the middle column (此中行買賣相折錢適足…) supposes a working (設欲以此行如方程法先令牛二徧乘左行而以右行直除之) but states no figure for this board.
+% Dai Zhen's working of the board, with its figures, is corpus/dai-zhen-08.jz.

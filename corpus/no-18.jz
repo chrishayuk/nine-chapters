@@ -1,0 +1,22 @@
+No. 8.18
+% Sibu congkan pp. 28-30
+"今有麻九斗，麥七斗，菽三斗，荅二斗，黍五斗，直錢一百四十，麻七斗，麥六斗，菽四斗，荅五斗，黍三斗，直錢一百二十八，麻三斗，麥五斗，菽七斗，荅六斗，黍四斗，直錢一百一十六，麻二斗，麥五斗，菽三斗，答九斗，黍四斗，直錢一百一十二，麻一斗，麥三斗，菽二斗，荅八斗，黍五斗，直錢九十五，問一斗直幾何"
+% 9 dou of hemp, 7 of wheat, 3 of soybeans, 2 of small beans and 5 of millet are worth 140 cash;
+% 7, 6, 4, 5, 3 dou are worth 128; 3, 5, 7, 6, 4 dou, 116; 2, 5, 3, 9, 4 dou, 112; 1, 3, 2, 8, 5 dou, 95.
+% What is a dou of each worth?
+% (p. 29: the fourth purchase writes 答 for 荅, as the scan has it. 黍 is written in the scan with the
+% form Wikisource gives as 𮮐; transcribed here as 黍.)
+"荅曰麻一斗七錢，麥一斗四錢，菽一斗三錢，荅一斗五錢，黍一斗六錢"
+% Answer: a dou of hemp is worth 7 cash; of wheat 4; of soybeans 3; of small beans 5; of millet 6.
+"術曰如方程以正負術入之"
+% The 術 does not say how to set the board: each purchase is a column, in the order the text gives
+% them, the first as the right-hand column. Unit: one cash (錢).
+% Liu Hui's commentary on this 術 and his 方程新術 (pp. 30-35) are transcribed on another page.
+Things 麻 麥 菽 荅 黍 實
+Set right 9 7 3 2 5 140
+Set 2nd   7 6 4 5 3 128
+Set 3rd   3 5 7 6 4 116
+Set 4th   2 5 3 9 4 112
+Set left  1 3 2 8 5  95
+Solve.
+Answer 7, 4, 3, 5, 6

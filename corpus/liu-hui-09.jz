@@ -1,0 +1,23 @@
+No. 8.9
+% Liu Hui's commentary on Problem 9, Sibu congkan p. 18 (and repeated in Dai Zhen's 訂訛, p. 42).
+% Unit: 兩.
+Things 雀 燕 重
+"此四雀一燕與一雀五燕衡適平并重一斤故各八兩"
+Set right  4 1 8      "列兩行程數"
+Set left   1 5 8
+% 左行頭位其數是一可省乘: the left head is 1, so the right column need not be multiplied.
+Multiply left by the head of right.                "令右行徧乘左行"
+Take right from left until the head is gone.       "而取其法實於左左行數多以右行取其數左頭位減盡"
+% He names the 法 and 實 left in the left column (中法下實) but gives no figure for them.
+Solve.                                             "中法下實卽每枚當重宜可知也"
+Answer 1 13/19, 1 5/19
+
+% His other way (按…): the board set again as he lists it, the two pans compared.
+"按此四雀一燕與一雀五燕其重等"
+Set right  4 1 8
+Set left   1 5 8
+Take left from right.
+Gives right 3 -4 0                                 "是三雀四燕重相當"
+"雀率重四燕率重三也諸再程之率皆可異術求之卽其數也"
+% 雀率重四燕率重三 (the rates of weight, sparrow 4 to swallow 3) are not a column of the board, and `Rates`
+% checks only the 法 and 實s of a board solved through a 法: kept as a quoted line, not checked.

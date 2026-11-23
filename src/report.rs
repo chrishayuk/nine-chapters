@@ -182,17 +182,21 @@ pub fn counts() -> i32 {
             continue;
         }
         println!("{}  {}", id, run.title().unwrap_or_default());
-        let outs = match readings::all(text) {
-            Ok(o) => o,
+        let census = match readings::all(text) {
+            Ok(c) => c,
             Err(e) => {
                 println!("  {}", e);
                 continue;
             }
         };
-        let n = outs.len();
-        let agree: Vec<_> = outs.iter().filter(|o| o.agrees()).collect();
-        if n > 1 {
-            println!("  {} readings, {} run to the end and agree with the source", n, agree.len());
+        let agree: Vec<_> = census.agree.iter().collect();
+        if census.total > 1 {
+            println!(
+                "  {} readings: {} can be done to the end, {} agree with every figure the source states",
+                census.total,
+                census.total - census.stopped(),
+                agree.len()
+            );
         }
         let mut lines: Vec<(usize, u64)> = vec![];
         for o in &agree {
@@ -206,7 +210,7 @@ pub fn counts() -> i32 {
             for l in &run.lines {
                 if let Kind::Stmt(v) = &l.line.kind {
                     if let Stmt::Count(c) = v[l.choice] {
-                        println!("  Count {}: no reading runs to it", c);
+                        println!("  Count {}: no reading gets that far", c);
                     }
                 }
             }
