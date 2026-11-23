@@ -3,3 +3,7 @@ target
 node_modules
 # the scans are not kept: see sources/README.md
 sources/*/pages/
+# the downloaded texts are not kept either: scripts/fetch-text.py fetches them again
+sources/sibu-congkan/*.html
+sources/sibu-congkan/*.txt
+sources/wikisource/
