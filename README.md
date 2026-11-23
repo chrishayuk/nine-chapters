@@ -104,8 +104,9 @@ wrong answer, the file has the text's signs.
 These are results against this project's transcription, under the choices in
 `jiuzhang decisions`. The transcription was made by a coding agent and its
 sub-agents, from the scans; no person has checked it. Nothing here is claimed
-as new: the literature on chapter 8 is large (below), and this project has not
-read it.
+as new. A literature search by a second model (below, and
+[`docs/literature-check.md`](docs/literature-check.md)) found that several of
+these results are already in the literature, and says which.
 
 `jiuzhang verify` runs 26 pages: the 18 problems and 8 pages of commentary.
 They make 39 checked statements (a column a commentator gives, an answer, a
@@ -133,7 +134,10 @@ quarters; Problem 16's 976, the text 122), and not each fraction in its own
 lowest terms (52 and 111 survive). The 約 reading gives the same denominators
 as reducing each answer and then writing them all over the least of their
 common denominators: the table shows how the answers are written, not where
-in the working a reduction was made. Problem 13's answer is the extreme case: the
+in the working a reduction was made. That the denominators reflect the board
+is known: Hart (2011, pp. 173-174) discusses Problem 14's 33/111, not 11/37,
+and its relation to the determinant. The count across all eleven answers was
+not found in the literature searched. Problem 13's answer is the extreme case: the
 depth of the well, 721, is the 法 itself, given as a rate (舉率以言之), and
 Liu Hui's 法得七百二十一實七十六 is the board's left column, checked.
 
@@ -143,6 +147,9 @@ In this edition (the Weiboxie text), Problem 6's procedure sets its 實 as
 正 in both columns: 益實六斗正 … 益實一斗正. Run as printed, the board gives
 −8 and −3 where the answer is 8 and 3. The other text consulted has 負 in both
 places, and with 負 the board gives the answer. The scan was read twice.
+This is known: Li Huang (李潢, 九章算術細草圖說, juan 8) says "正正皆當作負", and
+Chemla and Guo (2004, p. 632, n. 51) print 負, credit him, and record 正 in
+other witnesses too, so it is not peculiar to this edition.
 
 ### Dai Zhen's counts
 
@@ -194,7 +201,18 @@ crosswise. That is 100,000,000 combinations of a small menu of operations,
 not 100,000,000 interpretations. 229,906 of them can be done to the end. None
 leaves the 4th column giving the price of 黍, as the passage says it should.
 So none of these readings of the passage works; that does not show that no
-reading does, and Liu Hui's 77 is not tested. Among what the menu leaves out
+reading does, and Liu Hui's 77 is not tested.
+
+The passage has been emended and worked by others. Chemla and Guo (2004,
+pp. 652-655, nn. 93-104) repair its opening (及減第三行 to 又減第五行, among
+other changes) and restore 六 for 空 (crediting Dai Dunyuan); Guo Shuchun
+(*九章筭術譯注*, revised 2020, ch. 8, nn. 22-40) works it through and tallies
+77, counting each placing of rods, each operation on a whole column and each
+division of a 實 by a 法 as one 算. Wei Xuegang and Guo Shirong (2016) and
+Zhu Yiwen (2025) read 算 as counting rods. The census here ran the text as
+printed, not these emendations: it says only that the unemended passage does
+not work under the readings offered, which is what Dai Zhen said. Running the
+published emendations is the next thing to do. Among what the menu leaves out
 (the review lists more): 頭位 as anything but the first figure of the column
 worked on; the columns set one at a time, as 先置第三行 … 次置第二行 …
 次置右行 says, with copies kept; other repairs of 及減第三行; mutual
@@ -202,10 +220,11 @@ subtraction ending in either column. The independent review tried a wider
 search of its own (heads of either column, other orders) and found no
 working reading either.
 
-His new method (124 算) was given the same treatment and stops, under every
+His new method (124 算), which Guo (2020, nn. 41-82) also works through, was
+given the same treatment and stops, under every
 reading offered, by the passage's fourth clause. Its last part, where the
 columns are set afresh, checks: the 3rd less the 4th leaves 麻 1, 菽 4, 荅 −3,
-實 4, as he says.
+實 4, as he says, and as Guo (2020, nn. 63-69) explains.
 
 ## Reading the text
 
@@ -290,15 +309,26 @@ Chapter 8 and its commentaries have been edited, translated and studied at
 length: Qian Baocong's and Guo Shuchun's critical editions; Shen Kangshen,
 J. N. Crossley and A. W.-C. Lun, *The Nine Chapters on the Mathematical Art:
 Companion and Commentary* (1999); K. Chemla and Guo Shuchun, *Les neuf
-chapitres* (2004); R. Hart, *The Chinese Roots of Linear Algebra* (2011),
-on the board and the procedures of this chapter; and, on the gap between the
-written procedures and what was done with the rods, Yiwen Zhu, "The interplay
-between textual procedures and material operations from the viewpoint of
-Chinese mathematical texts", *Science in Context* (2025). This project has
-read none of them beyond Zhu's abstract, and so does not say how its readings
-compare: the emendations of Problem 6, of 得空 in the 77 passage, and of the
-77 and 124 passages themselves, are very likely discussed there. Nothing here
-is claimed as new until it has been checked against that literature.
+chapitres* (2004); R. Hart, *The Chinese Roots of Linear Algebra* (2011);
+and on the rods and the cost of the procedures, Zhu Yiwen, "數：筭與術" (漢學研究
+28, 2010) and "The interplay between textual procedures and material
+operations" (*Science in Context*, 2025).
+
+This project did not read them. A second model, OpenAI's Codex with web
+search, looked for each finding in what it could reach (parts of Hart,
+Chemla and Guo, Guo 2020, Zhu, and Li Huang); its report, with sources, is
+[`docs/literature-check.md`](docs/literature-check.md). In short:
+
+| finding | in the literature? |
+|---|---|
+| Problem 6's 正 should be 負 | known: Li Huang; Chemla and Guo 2004 |
+| the answers' denominators and the board | partly: Hart 2011 (33/111, the determinant); not the count of eleven |
+| Dai Zhen's 145 as a count of single-figure operations | not found (Shen et al. and Guo's 彙校 could not be read) |
+| Liu Hui's 77 and 124 passages | partly: emended and worked by Chemla and Guo, and Guo 2020, who tallies 77; 算 read as rods by Wei and Guo 2016 and Zhu 2025 |
+| the cost of the literal reading | partly: Zhu 2010 on rods against steps; not these figures |
+| Liu Hui's rates 7:4:3:5:6 | known: Guo 2020; Chemla and Guo 2004 |
+
+"Not found" means not found in what could be read, not that a finding is new.
 
 It follows the method of the other reconstructions in this collection (the
 Rhind papyrus, JOSS, Turing's ACE and others): rebuild from the documents
