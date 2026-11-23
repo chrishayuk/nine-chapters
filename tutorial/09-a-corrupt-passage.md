@@ -134,6 +134,14 @@ no reading could. The readings are the transcriber's, and a reading not
 offered is not tried. The passage may be corrupt in a way none of them
 repairs.
 
+Others have repaired it. Chemla and Guo (2004) emend its opening, 及減第三行
+among other words, and restore 六 for 空; Guo Shuchun (2020) works the
+emended passage through and tallies 77, counting each placing of rods, each
+operation on a whole column and each division as one 算. Those emendations are
+not among the readings on this page, which is the text as printed. What the
+census shows is the unemended passage failing, as Dai Zhen said it would; the
+emended passage is the next page to write. See `docs/literature-check.md`.
+
 ## The 124
 
 Liu Hui's new method takes the 實s away first, so that each column says

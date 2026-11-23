@@ -140,3 +140,8 @@ again to be sure. Another edition (the punctuated Wikisource text) reads 負
 in both. The page follows the scan, and the ✗ stays: it is what the board
 says about this edition's text. Every other problem in the chapter comes out
 as the text says (`jiuzhang verify`).
+
+This was not news. Li Huang, in the Qing, worked the problem and wrote that
+both 正 should be 負 (正正皆當作負); Chemla and Guo's edition (2004) prints 負 and
+credits him, and records 正 in other witnesses as well. The board finds the
+same thing by another road: it cannot get 8 and 3 from the signs as printed.
