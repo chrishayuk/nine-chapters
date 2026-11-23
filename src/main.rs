@@ -142,7 +142,11 @@ fn solve_cmd(rest: &[&str]) -> i32 {
     let joined = cols.join(" ");
     let columns: Vec<Vec<i128>> = joined
         .split('/')
-        .map(|c| c.split_whitespace().map(|w| jiuzhang::page::parse_num(w)).collect::<Option<Vec<_>>>())
+        .map(|c| {
+            c.split_whitespace()
+                .map(jiuzhang::page::parse_num)
+                .collect::<Option<Vec<_>>>()
+        })
         .collect::<Option<Vec<_>>>()
         .unwrap_or_else(|| {
             eprintln!("jiuzhang: columns are whole numbers, separated by /");
@@ -160,7 +164,11 @@ fn solve_cmd(rest: &[&str]) -> i32 {
     text.push_str(" 實\n");
     for (i, c) in columns.iter().enumerate() {
         let name = jiuzhang::board::col_name(i, columns.len());
-        text.push_str(&format!("Set {} {}\n", name, c.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" ")));
+        text.push_str(&format!(
+            "Set {} {}\n",
+            name,
+            c.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" ")
+        ));
     }
     text.push_str(&format!("Solve by {}.\n", m.name()));
     let run = check::run(&text);
@@ -169,7 +177,11 @@ fn solve_cmd(rest: &[&str]) -> i32 {
         let ops = s.ops();
         println!(
             "\n{}",
-            RULES.iter().map(|r| format!("{} {}", r.name(), count::count(*r, &ops))).collect::<Vec<_>>().join(", ")
+            RULES
+                .iter()
+                .map(|r| format!("{} {}", r.name(), count::count(*r, &ops)))
+                .collect::<Vec<_>>()
+                .join(", ")
         );
         let _ = Board::rods;
     }

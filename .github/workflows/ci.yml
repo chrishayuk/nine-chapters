@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip1
+          components: rustfmt, clippy
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Format
+        run: cargo fmt --all --check
+
+      - name: Lint
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Test (the board, the corpus, the review's probes and every page of the tutorial)
+        run: cargo test --release
+
+      - name: Browser playground (the wasm build, in node, against the native one)
+        run: |
+          node web/build.mjs
+          node web/test.mjs
+
+      - name: VS Code extension (grammar, language server, run)
+        working-directory: editors/vscode
+        run: |
+          npm ci
+          npm run build
+          npm test

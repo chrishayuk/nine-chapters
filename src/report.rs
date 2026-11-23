@@ -101,7 +101,10 @@ pub fn answers() -> i32 {
     println!("How each answer is written, and which reading of the last step writes it so.");
     println!("board: every 實 over the 法 as the board leaves it.  約: the 法 and all the 實s divided by what");
     println!("they share.  lowest: each answer in its lowest terms.  ✓: writes it as the text does.\n");
-    println!("{:<8} {:<22} {:>8} {:>8} {:>8}   {}", "problem", "written", "board", "約", "lowest", "法 by the text, after 約");
+    println!(
+        "{:<8} {:<22} {:>8} {:>8} {:>8}   法 by the text, after 約",
+        "problem", "written", "board", "約", "lowest"
+    );
     let mut tally = [0usize; 3];
     let mut n = 0;
     for (id, text) in CORPUS {
@@ -123,15 +126,23 @@ pub fn answers() -> i32 {
         }
         n += 1;
         let f = forms(sol);
-        let written: Vec<String> = a.iter().filter(|m| m.has_fraction()).map(|m| format!("{}/{}", m.num, m.den)).collect();
+        let written: Vec<String> = a
+            .iter()
+            .filter(|m| m.has_fraction())
+            .map(|m| format!("{}/{}", m.num, m.den))
+            .collect();
         let first = a.iter().find(|m| m.has_fraction()).unwrap();
         let same_as_text = |den: Option<i128>| -> bool {
             match den {
-                Some(d) => a.iter().all(|m| over(m.value(), d).map(|s| s == written_of(m)).unwrap_or(false)),
+                Some(d) => a
+                    .iter()
+                    .all(|m| over(m.value(), d).map(|s| s == written_of(m)).unwrap_or(false)),
                 None => false,
             }
         };
-        let lowest_ok = a.iter().all(|m| !m.has_fraction() || m.value().fract().denom() == m.den);
+        let lowest_ok = a
+            .iter()
+            .all(|m| !m.has_fraction() || m.value().fract().denom() == m.den);
         let b = same_as_text(f.board);
         let c = same_as_text(f.common);
         for (k, ok) in [b, c, lowest_ok].iter().enumerate() {
@@ -146,7 +157,14 @@ pub fn answers() -> i32 {
             written.join(" ").chars().take(22).collect::<String>(),
             cell(b, f.board.map(|d| d.to_string()).unwrap_or("-".into())),
             cell(c, f.common.map(|d| d.to_string()).unwrap_or("-".into())),
-            cell(lowest_ok, show_mixed(first.value()).split(' ').last().unwrap_or("").to_string()),
+            cell(
+                lowest_ok,
+                show_mixed(first.value())
+                    .split(' ')
+                    .next_back()
+                    .unwrap_or("")
+                    .to_string()
+            ),
             f.common.map(|d| d.to_string()).unwrap_or("-".into()),
         );
     }
@@ -176,7 +194,10 @@ fn written_of(m: &crate::page::Mixed) -> String {
 pub fn counts() -> i32 {
     for (id, text) in CORPUS {
         let run = check::run(text);
-        let has_count = run.lines.iter().any(|l| matches!(&l.line.kind, Kind::Stmt(v) if v.iter().any(|s| matches!(s, Stmt::Count(_)))));
+        let has_count = run
+            .lines
+            .iter()
+            .any(|l| matches!(&l.line.kind, Kind::Stmt(v) if v.iter().any(|s| matches!(s, Stmt::Count(_)))));
         if !has_count {
             continue;
         }
@@ -193,7 +214,7 @@ pub fn counts() -> i32 {
             println!(
                 "  {} readings: {} can be done to the end, {} agree with every figure the source states",
                 census.total,
-                census.total - census.stopped(),
+                census.executable,
                 agree.len()
             );
         }
@@ -218,7 +239,12 @@ pub fn counts() -> i32 {
             for rule in crate::count::RULES {
                 let mut vals: Vec<u64> = agree
                     .iter()
-                    .flat_map(|o| o.counts().into_iter().filter(|x| x.0 == line).flat_map(|x| x.2.into_iter().filter(|r| r.0 == rule.name()).map(|r| r.1)))
+                    .flat_map(|o| {
+                        o.counts()
+                            .into_iter()
+                            .filter(|x| x.0 == line)
+                            .flat_map(|x| x.2.into_iter().filter(|r| r.0 == rule.name()).map(|r| r.1))
+                    })
                     .collect();
                 vals.sort();
                 vals.dedup();
@@ -228,23 +254,19 @@ pub fn counts() -> i32 {
                 } else {
                     vals.iter().map(|v| v.to_string()).collect::<Vec<_>>().join(", ")
                 };
-                println!("  Count {:<4} {:<9} {}{}", c, rule.name(), shown, if hit { "   ✓" } else { "" });
+                println!(
+                    "  Count {:<4} {:<9} {}{}",
+                    c,
+                    rule.name(),
+                    shown,
+                    if hit { "   ✓" } else { "" }
+                );
             }
         }
         println!();
     }
     // the methods on Problem 18, for comparison
     if let Some((_, text)) = crate::corpus::find("18") {
-        let run = check::run(text);
-        if let Some(b) = run.lines.iter().find_map(|l| {
-            if matches!(&l.line.kind, Kind::Stmt(v) if matches!(v[l.choice], Stmt::Solve(_))) {
-                l.steps.first().map(|_| ())
-            } else {
-                None
-            }
-        }) {
-            let _ = b;
-        }
         let board = board_before_solve(text);
         if let Some(board) = board {
             println!("Problem 18 by each method, counted under each rule, and the board it needs:");
@@ -259,8 +281,20 @@ pub fn counts() -> i32 {
                     for r in crate::count::RULES {
                         print!("{:>9}", crate::count::count(*r, &s.ops()));
                     }
-                    let rods = s.steps.iter().map(|st| st.board.rod_count()).max().unwrap_or(0).max(board.rod_count());
-                    let places = s.steps.iter().map(|st| st.board.widest()).max().unwrap_or(0).max(board.widest());
+                    let rods = s
+                        .steps
+                        .iter()
+                        .map(|st| st.board.rod_count())
+                        .max()
+                        .unwrap_or(0)
+                        .max(board.rod_count());
+                    let places = s
+                        .steps
+                        .iter()
+                        .map(|st| st.board.widest())
+                        .max()
+                        .unwrap_or(0)
+                        .max(board.widest());
                     println!("{:>8}{:>8}", rods, places);
                 }
             }
@@ -269,14 +303,16 @@ pub fn counts() -> i32 {
     }
     println!();
     for (id, stated) in LIU_HUI {
-        let Some((_, text)) = crate::corpus::find(id) else { continue };
+        let Some((_, text)) = crate::corpus::find(id) else {
+            continue;
+        };
         match readings::all(text) {
             Ok(c) => println!(
                 "{}: Liu Hui says {} 算. Of {} readings of his working, {} can be done to the end and {} agree with the figures he states, so there is nothing to count.",
                 id,
                 stated,
                 c.total,
-                c.total - c.stopped(),
+                c.executable,
                 c.agree.len()
             ),
             Err(e) => println!("{}: {}", id, e),

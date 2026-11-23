@@ -57,7 +57,11 @@ fn worked(name: &str, text: &str) -> String {
                 out.push(lines[i].to_string());
                 i += 1;
             }
-            assert!(lines[i].starts_with("```"), "{}: a page must be followed by its output", name);
+            assert!(
+                lines[i].starts_with("```"),
+                "{}: a page must be followed by its output",
+                name
+            );
             out.push(lines[i].to_string());
             i += 1;
             while lines[i] != "```" {
@@ -147,5 +151,9 @@ fn every_page_and_command_in_the_tutorial() {
             ));
         }
     }
-    assert!(failures.is_empty(), "the tutorial and jiuzhang disagree (JIUZHANG_BLESS=1 to accept):\n{}", failures.join("\n"));
+    assert!(
+        failures.is_empty(),
+        "the tutorial and jiuzhang disagree (JIUZHANG_BLESS=1 to accept):\n{}",
+        failures.join("\n")
+    );
 }

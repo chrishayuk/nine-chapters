@@ -20,6 +20,11 @@ pub enum Rule {
     /// economies: 上一位遇一則省其與對行徧乘). This gives his 99 for the
     /// shorter way.
     Worked,
+    /// As `Plain`, but a division by one (or minus one) is read off, not
+    /// worked. Proposed by the independent review, after the counts were
+    /// known, as a uniform rule that gives both of Dai Zhen's figures: so it
+    /// is a candidate fitted after the fact, and is reported as one.
+    Readoff,
     /// Every multiplication, taking and division of one figure, by one or
     /// not, known or not.
     Every,
@@ -30,13 +35,21 @@ pub enum Rule {
     Columns,
 }
 
-pub const RULES: &[Rule] = &[Rule::Plain, Rule::Worked, Rule::Every, Rule::Repeated, Rule::Columns];
+pub const RULES: &[Rule] = &[
+    Rule::Plain,
+    Rule::Worked,
+    Rule::Readoff,
+    Rule::Every,
+    Rule::Repeated,
+    Rule::Columns,
+];
 
 impl Rule {
     pub fn name(self) -> &'static str {
         match self {
             Rule::Plain => "plain",
             Rule::Worked => "worked",
+            Rule::Readoff => "readoff",
             Rule::Every => "every",
             Rule::Repeated => "repeated",
             Rule::Columns => "columns",
@@ -46,6 +59,7 @@ impl Rule {
         match self {
             Rule::Plain => "each multiplication, taking or division of one figure, except a head known to cancel; a taking several times over is a multiplication and a taking",
             Rule::Worked => "each multiplication, taking or division of one figure that has to be worked (not by one, not a head known to cancel); a taking several times over is a multiplication and a taking",
+            Rule::Readoff => "as plain, but a division by one is read off, not worked (proposed by the review, after the counts were known)",
             Rule::Every => "each multiplication, taking or division of one figure, by one or not",
             Rule::Repeated => "as worked, but a taking several times over is that many takings, one at a time",
             Rule::Columns => "each operation on a whole column",
@@ -81,7 +95,7 @@ pub fn tally(rule: Rule, ops: &[Op]) -> Tally {
         for ev in &op.events {
             match (*ev, rule) {
                 (Ev::Mul { .. }, Rule::Every) => t.mul += 1,
-                (Ev::Mul { known, .. }, Rule::Plain) => {
+                (Ev::Mul { known, .. }, Rule::Plain | Rule::Readoff) => {
                     if !known {
                         t.mul += 1
                     }

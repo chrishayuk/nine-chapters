@@ -62,6 +62,45 @@ impl Rat {
     }
 }
 
+impl Rat {
+    fn try_new(n: Option<i128>, d: Option<i128>) -> Option<Rat> {
+        let (n, d) = (n?, d?);
+        if d == 0 {
+            return None;
+        }
+        let g = gcd(n, d).max(1);
+        let s = if d < 0 { -1 } else { 1 };
+        Some(Rat {
+            n: s * n / g,
+            d: s * d / g,
+        })
+    }
+    /// Arithmetic that says when it would not fit, instead of wrapping.
+    pub fn try_add(self, o: Rat) -> Option<Rat> {
+        let g = gcd(self.d, o.d);
+        let a = self.n.checked_mul(o.d / g)?;
+        let b = o.n.checked_mul(self.d / g)?;
+        Rat::try_new(a.checked_add(b), (self.d / g).checked_mul(o.d))
+    }
+    pub fn try_sub(self, o: Rat) -> Option<Rat> {
+        self.try_add(Rat {
+            n: o.n.checked_neg()?,
+            d: o.d,
+        })
+    }
+    pub fn try_mul(self, o: Rat) -> Option<Rat> {
+        let g1 = gcd(self.n, o.d).max(1);
+        let g2 = gcd(o.n, self.d).max(1);
+        Rat::try_new((self.n / g1).checked_mul(o.n / g2), (self.d / g2).checked_mul(o.d / g1))
+    }
+    pub fn try_div(self, o: Rat) -> Option<Rat> {
+        if o.n == 0 {
+            return None;
+        }
+        self.try_mul(Rat { n: o.d, d: o.n })
+    }
+}
+
 impl Add for Rat {
     type Output = Rat;
     fn add(self, o: Rat) -> Rat {
@@ -89,6 +128,7 @@ impl Mul for Rat {
         Rat::new((self.n / g1) * (o.n / g2), (self.d / g2) * (o.d / g1))
     }
 }
+#[allow(clippy::suspicious_arithmetic_impl)] // dividing is multiplying by the reciprocal
 impl Div for Rat {
     type Output = Rat;
     fn div(self, o: Rat) -> Rat {

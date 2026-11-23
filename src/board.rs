@@ -22,7 +22,12 @@ pub enum Ev {
     /// `times` of another column's figure taken from the one at `pos`
     /// (negative `times` is an addition). `empty` when the position taken
     /// from was empty (無入). `known` as for `Mul`.
-    Take { pos: usize, times: Num, empty: bool, known: bool },
+    Take {
+        pos: usize,
+        times: Num,
+        empty: bool,
+        known: bool,
+    },
     /// The figure at `pos` divided by `by`.
     Div { pos: usize, by: Num },
 }
@@ -47,11 +52,30 @@ pub struct Board {
 #[derive(Clone, Debug, PartialEq)]
 pub enum Trouble {
     NoColumn(usize),
-    Empty { col: usize, pos: usize },
-    Inexact { col: usize, pos: usize, figure: Num, by: Num },
-    Odd { col: usize },
+    Empty {
+        col: usize,
+        pos: usize,
+    },
+    Inexact {
+        col: usize,
+        pos: usize,
+        figure: Num,
+        by: Num,
+    },
+    Odd {
+        col: usize,
+    },
     TooLarge,
-    Length { col: usize, want: usize, got: usize },
+    Length {
+        col: usize,
+        want: usize,
+        got: usize,
+    },
+    /// A column left over after every thing is found, not empty: the
+    /// conditions contradict one another.
+    Inconsistent {
+        col: usize,
+    },
 }
 
 fn gcd(mut a: Num, mut b: Num) -> Num {
@@ -93,7 +117,10 @@ pub fn col_name_zh(i: usize, n: usize) -> String {
 }
 
 fn zh_digit(n: usize) -> &'static str {
-    ["〇", "一", "二", "三", "四", "五", "六", "七", "八", "九"].get(n).copied().unwrap_or("?")
+    ["〇", "一", "二", "三", "四", "五", "六", "七", "八", "九"]
+        .get(n)
+        .copied()
+        .unwrap_or("?")
 }
 
 pub fn ordinal(n: usize) -> String {
@@ -108,7 +135,10 @@ pub fn ordinal(n: usize) -> String {
 
 impl Board {
     pub fn new(things: Vec<String>, n: usize) -> Board {
-        Board { things, cols: vec![None; n] }
+        Board {
+            things,
+            cols: vec![None; n],
+        }
     }
     pub fn n(&self) -> usize {
         self.cols.len()
@@ -133,19 +163,33 @@ impl Board {
 
     pub fn set(&mut self, i: usize, figures: Vec<Num>) -> Result<Op, Trouble> {
         if figures.len() != self.height() {
-            return Err(Trouble::Length { col: i, want: self.height(), got: figures.len() });
+            return Err(Trouble::Length {
+                col: i,
+                want: self.height(),
+                got: figures.len(),
+            });
         }
         if i >= self.n() {
             self.cols.resize(i + 1, None);
         }
         self.cols[i] = Some(figures);
-        Ok(Op { target: i, actor: None, what: format!("set {}", self.name(i)), events: vec![] })
+        Ok(Op {
+            target: i,
+            actor: None,
+            what: format!("set {}", self.name(i)),
+            events: vec![],
+        })
     }
 
     pub fn drop_col(&mut self, i: usize) -> Result<Op, Trouble> {
         self.col(i)?;
         self.cols[i] = None;
-        Ok(Op { target: i, actor: None, what: format!("drop {}", self.name(i)), events: vec![] })
+        Ok(Op {
+            target: i,
+            actor: None,
+            what: format!("drop {}", self.name(i)),
+            events: vec![],
+        })
     }
 
     /// 徧乘: multiply the whole of a column.
@@ -159,7 +203,12 @@ impl Board {
             }
         }
         self.cols[t] = Some(c);
-        Ok(Op { target: t, actor: None, what: format!("multiply {} by {}", self.name(t), by), events })
+        Ok(Op {
+            target: t,
+            actor: None,
+            what: format!("multiply {} by {}", self.name(t), by),
+            events,
+        })
     }
 
     /// Take `times` of column `a` from column `t` (減, or 直除 when repeated).
@@ -175,7 +224,12 @@ impl Board {
             let empty = c[pos] == 0;
             let d = ac[pos].checked_mul(times).ok_or(Trouble::TooLarge)?;
             c[pos] = c[pos].checked_sub(d).ok_or(Trouble::TooLarge)?;
-            events.push(Ev::Take { pos, times, empty, known: known == Some(pos) });
+            events.push(Ev::Take {
+                pos,
+                times,
+                empty,
+                known: known == Some(pos),
+            });
         }
         self.cols[t] = Some(c);
         let what = match times {
@@ -184,7 +238,12 @@ impl Board {
             k if k < 0 => format!("add {} to {}, {} times", self.name(a), self.name(t), -k),
             k => format!("take {} from {}, {} times", self.name(a), self.name(t), k),
         };
-        Ok(Op { target: t, actor: Some(a), what, events })
+        Ok(Op {
+            target: t,
+            actor: Some(a),
+            what,
+            events,
+        })
     }
 
     /// 直除: take column `a` from `t` as many times as clears position `pos`.
@@ -195,7 +254,12 @@ impl Board {
             return Err(Trouble::Empty { col: a, pos });
         }
         if tp % ap != 0 {
-            return Err(Trouble::Inexact { col: t, pos, figure: tp, by: ap });
+            return Err(Trouble::Inexact {
+                col: t,
+                pos,
+                figure: tp,
+                by: ap,
+            });
         }
         self.take(a, t, tp / ap, Some(pos))
     }
@@ -257,7 +321,12 @@ impl Board {
             }
             if ac[i] != 0 && q != 0 {
                 events.push(Ev::Mul { pos: i, by: q, known });
-                events.push(Ev::Take { pos: i, times: 1, empty: c[i] == 0, known });
+                events.push(Ev::Take {
+                    pos: i,
+                    times: 1,
+                    empty: c[i] == 0,
+                    known,
+                });
             }
             c[i] = c[i]
                 .checked_mul(p)
@@ -279,14 +348,24 @@ impl Board {
         for (pos, x) in c.iter_mut().enumerate() {
             if *x != 0 {
                 if *x % by != 0 {
-                    return Err(Trouble::Inexact { col: t, pos, figure: *x, by });
+                    return Err(Trouble::Inexact {
+                        col: t,
+                        pos,
+                        figure: *x,
+                        by,
+                    });
                 }
                 *x /= by;
                 events.push(Ev::Div { pos, by });
             }
         }
         self.cols[t] = Some(c);
-        Ok(Op { target: t, actor: None, what: format!("divide {} by {}", self.name(t), by), events })
+        Ok(Op {
+            target: t,
+            actor: None,
+            what: format!("divide {} by {}", self.name(t), by),
+            events,
+        })
     }
 
     /// 半: halve a column.
@@ -303,7 +382,12 @@ impl Board {
     pub fn reduce(&mut self, t: usize) -> Result<Op, Trouble> {
         let g = gcd_all(self.col(t)?);
         if g <= 1 {
-            return Ok(Op { target: t, actor: None, what: format!("reduce {}: nothing in common", self.name(t)), events: vec![] });
+            return Ok(Op {
+                target: t,
+                actor: None,
+                what: format!("reduce {}: nothing in common", self.name(t)),
+                events: vec![],
+            });
         }
         let mut op = self.divide(t, g)?;
         op.what = format!("reduce {} by {}", self.name(t), g);
@@ -327,7 +411,13 @@ impl Board {
     }
     /// The most digits of any figure on the board: how many places a row needs.
     pub fn widest(&self) -> usize {
-        self.cols.iter().flatten().flatten().map(|x| x.unsigned_abs().to_string().len()).max().unwrap_or(1)
+        self.cols
+            .iter()
+            .flatten()
+            .flatten()
+            .map(|x| x.unsigned_abs().to_string().len())
+            .max()
+            .unwrap_or(1)
     }
 }
 
@@ -335,7 +425,11 @@ pub fn trouble_text(b: &Board, t: &Trouble) -> String {
     let n = b.n();
     match t {
         Trouble::NoColumn(i) => format!("there is no {} on the board", col_name(*i, n)),
-        Trouble::Empty { col, pos } => format!("the {} of {} is empty: nothing to take with", b.thing(*pos), col_name(*col, n)),
+        Trouble::Empty { col, pos } => format!(
+            "the {} of {} is empty: nothing to take with",
+            b.thing(*pos),
+            col_name(*col, n)
+        ),
         Trouble::Inexact { col, pos, figure, by } => format!(
             "{} at the {} of {} does not go by {} exactly",
             figure,
@@ -345,6 +439,10 @@ pub fn trouble_text(b: &Board, t: &Trouble) -> String {
         ),
         Trouble::Odd { col } => format!("{} cannot be halved: a figure in it is odd", col_name(*col, n)),
         Trouble::TooLarge => "a figure grows past what this program holds (about 10^38)".into(),
+        Trouble::Inconsistent { col } => format!(
+            "{} still holds figures after every thing is found: the conditions contradict one another",
+            col_name(*col, n)
+        ),
         Trouble::Length { col, want, got } => format!(
             "{} has {} figures; the board has {} positions ({})",
             col_name(*col, n),
@@ -393,7 +491,11 @@ impl fmt::Display for Board {
             .iter()
             .map(|&i| {
                 let c = self.cols[i].as_ref().unwrap();
-                c.iter().map(|x| x.to_string().len()).max().unwrap_or(1).max(width(&col_name(i, n)))
+                c.iter()
+                    .map(|x| x.to_string().len())
+                    .max()
+                    .unwrap_or(1)
+                    .max(width(&col_name(i, n)))
             })
             .collect();
         let mut head = " ".repeat(label);

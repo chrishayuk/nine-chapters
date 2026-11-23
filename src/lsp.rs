@@ -13,7 +13,16 @@ use crate::page::{Kind, Stmt, Tok};
 use std::collections::HashMap;
 use std::io::{BufRead, Write};
 
-pub const TOKEN_TYPES: &[&str] = &["comment", "string", "keyword", "number", "operator", "namespace", "variable", "macro"];
+pub const TOKEN_TYPES: &[&str] = &[
+    "comment",
+    "string",
+    "keyword",
+    "number",
+    "operator",
+    "namespace",
+    "variable",
+    "macro",
+];
 
 fn tok_type(t: Tok) -> usize {
     match t {
@@ -98,7 +107,10 @@ fn diagnostics(uri: &str, text: &str) -> Json {
     obj([
         ("jsonrpc", "2.0".into()),
         ("method", "textDocument/publishDiagnostics".into()),
-        ("params", obj([("uri", uri.into()), ("diagnostics", diagnostic_list(&run).into())])),
+        (
+            "params",
+            obj([("uri", uri.into()), ("diagnostics", diagnostic_list(&run).into())]),
+        ),
     ])
 }
 
@@ -116,7 +128,10 @@ fn capabilities() -> Json {
                         (
                             "legend",
                             obj([
-                                ("tokenTypes", TOKEN_TYPES.iter().map(|t| Json::from(*t)).collect::<Vec<_>>().into()),
+                                (
+                                    "tokenTypes",
+                                    TOKEN_TYPES.iter().map(|t| Json::from(*t)).collect::<Vec<_>>().into(),
+                                ),
                                 ("tokenModifiers", Vec::new().into()),
                             ]),
                         ),
@@ -126,7 +141,13 @@ fn capabilities() -> Json {
                 ("completionProvider", obj([("resolveProvider", false.into())])),
             ]),
         ),
-        ("serverInfo", obj([("name", "jiuzhang".into()), ("version", env!("CARGO_PKG_VERSION").into())])),
+        (
+            "serverInfo",
+            obj([
+                ("name", "jiuzhang".into()),
+                ("version", env!("CARGO_PKG_VERSION").into()),
+            ]),
+        ),
     ])
 }
 
@@ -209,7 +230,13 @@ pub fn hover(text: &str, line: usize, col16: usize) -> Option<String> {
     if let Kind::Stmt(v) = &l.line.kind {
         let s = &v[l.choice];
         // on the keyword: what it means
-        if let Some((start, len, Tok::Keyword)) = l.line.toks.iter().find(|t| t.2 == Tok::Keyword && col >= t.0 && col < t.0 + t.1).copied() {
+        if let Some((start, len, Tok::Keyword)) = l
+            .line
+            .toks
+            .iter()
+            .find(|t| t.2 == Tok::Keyword && col >= t.0 && col < t.0 + t.1)
+            .copied()
+        {
             let _ = (start, len);
             if let Some((_, h)) = KEYWORD_HELP.iter().find(|k| k.0 == s.keyword()) {
                 out.push_str(h);
@@ -217,9 +244,15 @@ pub fn hover(text: &str, line: usize, col16: usize) -> Option<String> {
             }
         }
         if v.len() > 1 {
-            out.push_str(&format!("Read in {} ways; this run takes the first. `jiuzhang readings` runs them all.\n\n", v.len()));
+            out.push_str(&format!(
+                "Read in {} ways; this run takes the first. `jiuzhang readings` runs them all.\n\n",
+                v.len()
+            ));
         }
-        let mut prev: Option<Board> = run.lines[..line].iter().rev().find_map(|x| x.steps.last().map(|s| s.board.clone()));
+        let mut prev: Option<Board> = run.lines[..line]
+            .iter()
+            .rev()
+            .find_map(|x| x.steps.last().map(|s| s.board.clone()));
         for st in &l.steps {
             let n = st.board.n();
             out.push_str(&format!("**{}**", st.op.what));
@@ -243,14 +276,20 @@ pub fn hover(text: &str, line: usize, col16: usize) -> Option<String> {
                     }
                 }
             }
-            let tally: Vec<String> = RULES.iter().map(|r| format!("{} {}", r.name(), count::count(*r, &[st.op.clone()]))).collect();
+            let tally: Vec<String> = RULES
+                .iter()
+                .map(|r| format!("{} {}", r.name(), count::count(*r, std::slice::from_ref(&st.op))))
+                .collect();
             out.push_str(&format!("\n算: {}\n\n```\n{}```\n", tally.join(", "), st.board));
             prev = Some(st.board.clone());
         }
         if matches!(s, Stmt::Solve(_)) {
             if let Some(sol) = &l.solution {
                 let ops = sol.ops();
-                let tally: Vec<String> = RULES.iter().map(|r| format!("{} {}", r.name(), count::count(*r, &ops))).collect();
+                let tally: Vec<String> = RULES
+                    .iter()
+                    .map(|r| format!("{} {}", r.name(), count::count(*r, &ops)))
+                    .collect();
                 out = format!(
                     "**{}**: {}\n\n{} steps; 算: {}\n\n",
                     sol.method.name(),
@@ -284,10 +323,21 @@ fn completion() -> Json {
         .iter()
         .map(|(k, d)| obj([("label", (*k).into()), ("kind", 14.into()), ("detail", (*d).into())]))
         .collect();
-    for c in ["right", "middle", "left", "2nd", "3rd", "4th", "5th", "右行", "中行", "左行"] {
-        items.push(obj([("label", c.into()), ("kind", 6.into()), ("detail", "a column".into())]));
+    for c in [
+        "right", "middle", "left", "2nd", "3rd", "4th", "5th", "右行", "中行", "左行",
+    ] {
+        items.push(obj([
+            ("label", c.into()),
+            ("kind", 6.into()),
+            ("detail", "a column".into()),
+        ]));
     }
-    for w in ["until the head is gone", "as far as it goes", "crosswise", "by the head of"] {
+    for w in [
+        "until the head is gone",
+        "as far as it goes",
+        "crosswise",
+        "by the head of",
+    ] {
         items.push(obj([("label", w.into()), ("kind", 15.into())]));
     }
     items.into()
@@ -308,12 +358,18 @@ fn symbols(text: &str) -> Json {
         .iter()
         .enumerate()
         .map(|(k, (i, h))| {
-            let last = heads.get(k + 1).map(|x| x.0.saturating_sub(1)).unwrap_or(run.lines.len().saturating_sub(1));
+            let last = heads
+                .get(k + 1)
+                .map(|x| x.0.saturating_sub(1))
+                .unwrap_or(run.lines.len().saturating_sub(1));
             let w = |n: usize| run.lines[n].line.text.encode_utf16().count();
             obj([
                 ("name", format!("No. {}", h).into()),
                 ("kind", 12.into()),
-                ("range", obj([("start", position(*i, 0)), ("end", position(last, w(last)))])),
+                (
+                    "range",
+                    obj([("start", position(*i, 0)), ("end", position(last, w(last)))]),
+                ),
                 ("selectionRange", range(*i, 0, w(*i))),
             ])
         })
@@ -349,14 +405,25 @@ pub fn serve(input: &mut impl BufRead, output: &mut impl Write) -> Result<(), St
         let id = message.get("id").clone();
         let uri = params.get("textDocument").get("uri").str().unwrap_or("").to_string();
         match method.as_str() {
-            "exit" => return if shutting_down { Ok(()) } else { Err("exit without shutdown".into()) },
+            "exit" => {
+                return if shutting_down {
+                    Ok(())
+                } else {
+                    Err("exit without shutdown".into())
+                }
+            }
             "textDocument/didOpen" => {
                 let text = params.get("textDocument").get("text").str().unwrap_or("").to_string();
                 send(output, diagnostics(&uri, &text));
                 docs.insert(uri, text);
             }
             "textDocument/didChange" => {
-                if let Some(text) = params.get("contentChanges").items().last().and_then(|c| c.get("text").str()) {
+                if let Some(text) = params
+                    .get("contentChanges")
+                    .items()
+                    .last()
+                    .and_then(|c| c.get("text").str())
+                {
                     send(output, diagnostics(&uri, text));
                     docs.insert(uri, text.to_string());
                 }
@@ -375,7 +442,10 @@ pub fn serve(input: &mut impl BufRead, output: &mut impl Write) -> Result<(), St
                         ("id", id),
                         (
                             "error",
-                            obj([("code", Json::Num(-32601.0)), ("message", format!("method not found: {}", method).into())]),
+                            obj([
+                                ("code", Json::Num(-32601.0)),
+                                ("message", format!("method not found: {}", method).into()),
+                            ]),
                         ),
                     ]),
                 };
@@ -389,7 +459,14 @@ pub fn serve(input: &mut impl BufRead, output: &mut impl Write) -> Result<(), St
 fn board_json(b: &Board) -> Json {
     let n = b.n();
     obj([
-        ("things", b.things.iter().map(|t| Json::from(t.as_str())).collect::<Vec<_>>().into()),
+        (
+            "things",
+            b.things
+                .iter()
+                .map(|t| Json::from(t.as_str()))
+                .collect::<Vec<_>>()
+                .into(),
+        ),
         (
             "cols",
             b.cols
@@ -401,7 +478,10 @@ fn board_json(b: &Board) -> Json {
                 .collect::<Vec<_>>()
                 .into(),
         ),
-        ("names", (0..n).map(|i| Json::from(col_name(i, n))).collect::<Vec<_>>().into()),
+        (
+            "names",
+            (0..n).map(|i| Json::from(col_name(i, n))).collect::<Vec<_>>().into(),
+        ),
         ("rods", (b.rod_count() as usize).into()),
     ])
 }
@@ -442,8 +522,14 @@ pub fn run_json(text: &str) -> String {
                         (
                             "count",
                             obj([
-                                ("plain", (count::count(count::Rule::Plain, &[s.op.clone()]) as usize).into()),
-                                ("worked", (count::count(count::Rule::Worked, &[s.op.clone()]) as usize).into()),
+                                (
+                                    "plain",
+                                    (count::count(count::Rule::Plain, std::slice::from_ref(&s.op)) as usize).into(),
+                                ),
+                                (
+                                    "worked",
+                                    (count::count(count::Rule::Worked, std::slice::from_ref(&s.op)) as usize).into(),
+                                ),
                             ]),
                         ),
                         ("board", board_json(&s.board)),
@@ -479,8 +565,20 @@ pub fn run_json(text: &str) -> String {
             ])
         })
         .collect();
-    let peak = run.lines.iter().flat_map(|l| l.steps.iter()).map(|s| s.board.rod_count()).max().unwrap_or(0);
-    let widest = run.lines.iter().flat_map(|l| l.steps.iter()).map(|s| s.board.widest()).max().unwrap_or(0);
+    let peak = run
+        .lines
+        .iter()
+        .flat_map(|l| l.steps.iter())
+        .map(|s| s.board.rod_count())
+        .max()
+        .unwrap_or(0);
+    let widest = run
+        .lines
+        .iter()
+        .flat_map(|l| l.steps.iter())
+        .map(|s| s.board.widest())
+        .max()
+        .unwrap_or(0);
     let mut out = String::new();
     obj([
         ("title", run.title().unwrap_or_default().into()),

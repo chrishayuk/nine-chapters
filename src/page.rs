@@ -68,7 +68,12 @@ pub struct Mixed {
 impl Mixed {
     pub fn value(&self) -> crate::rat::Rat {
         use crate::rat::Rat;
-        let v = Rat::int(self.whole) + if self.den == 0 { Rat::ZERO } else { Rat::new(self.num, self.den) };
+        let v = Rat::int(self.whole)
+            + if self.den == 0 {
+                Rat::ZERO
+            } else {
+                Rat::new(self.num, self.den)
+            };
         if self.neg {
             -v
         } else {
@@ -100,8 +105,15 @@ pub enum Stmt {
     Things(Vec<String>),
     Set(ColRef, Vec<Num>),
     Multiply(ColRef, Factor),
-    Take { a: ColRef, t: ColRef, how: How },
-    Add { a: ColRef, t: ColRef },
+    Take {
+        a: ColRef,
+        t: ColRef,
+        how: How,
+    },
+    Add {
+        a: ColRef,
+        t: ColRef,
+    },
     Halve(ColRef),
     Reduce(ColRef),
     Divide(ColRef, Num),
@@ -152,8 +164,8 @@ impl Stmt {
 }
 
 pub const KEYWORDS: &[&str] = &[
-    "Things", "Set", "Multiply", "Take", "Add", "Halve", "Reduce", "Divide", "Drop", "Gives", "Solve", "Answer", "Rates",
-    "Count", "Nothing",
+    "Things", "Set", "Multiply", "Take", "Add", "Halve", "Reduce", "Divide", "Drop", "Gives", "Solve", "Answer",
+    "Rates", "Count", "Nothing",
 ];
 
 /// The kind of a token, for colouring.
@@ -300,7 +312,10 @@ impl<'a> P<'a> {
         }
     }
     fn col(&mut self) -> Result<ColRef, String> {
-        let w = self.peek().ok_or("expected a column: right, middle, left, 2nd, 3rd …")?.to_string();
+        let w = self
+            .peek()
+            .ok_or("expected a column: right, middle, left, 2nd, 3rd …")?
+            .to_string();
         let c = parse_col(&w).ok_or(format!("`{}` is not a column: right, middle, left, 2nd, 3rd …", w))?;
         self.next(Tok::Column);
         Ok(c)
@@ -361,21 +376,41 @@ fn mixed(s: &str) -> Option<Mixed> {
     let m = match parts.as_slice() {
         [w] if w.contains('/') => {
             let (n, d) = frac(w)?;
-            Mixed { neg, whole: 0, num: n, den: d }
+            Mixed {
+                neg,
+                whole: 0,
+                num: n,
+                den: d,
+            }
         }
-        [w] => Mixed { neg, whole: w.parse().ok()?, num: 0, den: 0 },
+        [w] => Mixed {
+            neg,
+            whole: w.parse().ok()?,
+            num: 0,
+            den: 0,
+        },
         [w, f] => {
             let (n, d) = frac(f)?;
-            Mixed { neg, whole: w.parse().ok()?, num: n, den: d }
+            Mixed {
+                neg,
+                whole: w.parse().ok()?,
+                num: n,
+                den: d,
+            }
         }
         _ => return None,
     };
     Some(m)
 }
 
+#[allow(clippy::type_complexity)]
 fn stmt(text: &str, base: usize) -> (Result<Stmt, String>, Vec<(usize, usize, Tok)>) {
     let w = words(text, base);
-    let mut p = P { w: &w, i: 0, toks: vec![] };
+    let mut p = P {
+        w: &w,
+        i: 0,
+        toks: vec![],
+    };
     let r = (|| {
         let kw = p.peek().ok_or("empty")?.to_string();
         if !KEYWORDS.contains(&kw.as_str()) {
@@ -476,7 +511,9 @@ fn stmt(text: &str, base: usize) -> (Result<Stmt, String>, Vec<(usize, usize, To
             "Drop" => Stmt::Drop(p.col()?),
             "Solve" => {
                 let m = if p.eat("by") {
-                    let w = p.next(Tok::Word).ok_or("expected a method: text, reducing, cross, one")?;
+                    let w = p
+                        .next(Tok::Word)
+                        .ok_or("expected a method: text, reducing, cross, one")?;
                     Method::parse(&w).ok_or(format!("`{}` is not a method: text, reducing, cross, one", w))?
                 } else {
                     Method::Text
@@ -494,7 +531,10 @@ fn stmt(text: &str, base: usize) -> (Result<Stmt, String>, Vec<(usize, usize, To
             }
             "Answer" => {
                 // the rest of the line, split on commas
-                let start = p.w[p.i..].first().map(|(a, _)| *a - base).unwrap_or(text.chars().count());
+                let start = p.w[p.i..]
+                    .first()
+                    .map(|(a, _)| *a - base)
+                    .unwrap_or(text.chars().count());
                 let rest: String = text.chars().skip(start).collect();
                 let rest = rest.trim_end().trim_end_matches('.');
                 let mut v = vec![];
@@ -539,15 +579,33 @@ pub fn parse_line(text: &str) -> Line {
     let lead = text.chars().take_while(|c| c.is_whitespace()).count();
     let len = text.chars().count();
     if trimmed.is_empty() {
-        return Line { text: text.into(), kind: Kind::Blank, toks, quote: None, note: None };
+        return Line {
+            text: text.into(),
+            kind: Kind::Blank,
+            toks,
+            quote: None,
+            note: None,
+        };
     }
     if trimmed.starts_with('%') {
         toks.push((lead, len - lead, Tok::Note));
-        return Line { text: text.into(), kind: Kind::Note, toks, quote: None, note: Some(lead) };
+        return Line {
+            text: text.into(),
+            kind: Kind::Note,
+            toks,
+            quote: None,
+            note: Some(lead),
+        };
     }
     if let Some(h) = trimmed.strip_prefix("No.") {
         toks.push((lead, trimmed.chars().count(), Tok::Heading));
-        return Line { text: text.into(), kind: Kind::Heading(h.trim().into()), toks, quote: None, note: None };
+        return Line {
+            text: text.into(),
+            kind: Kind::Heading(h.trim().into()),
+            toks,
+            quote: None,
+            note: None,
+        };
     }
     // a trailing note
     let (body, note) = match text.find(" %") {
@@ -561,7 +619,13 @@ pub fn parse_line(text: &str) -> Line {
     if bt.starts_with('"') || bt.starts_with('“') || bt.starts_with('「') {
         toks.push((lead, bt.chars().count(), Tok::Quote));
         let inner = bt.trim_matches(|c| c == '"' || c == '“' || c == '”' || c == '「' || c == '」');
-        return Line { text: text.into(), kind: Kind::Words(inner.into()), toks, quote: None, note };
+        return Line {
+            text: text.into(),
+            kind: Kind::Words(inner.into()),
+            toks,
+            quote: None,
+            note,
+        };
     }
     let (body, quote) = split_quote(body);
     if let Some((at, q)) = &quote {
@@ -590,7 +654,13 @@ pub fn parse_line(text: &str) -> Line {
         Some(e) => Kind::Bad(e),
         None => Kind::Stmt(alts),
     };
-    Line { text: text.into(), kind, toks, quote: quote.map(|q| q.1), note }
+    Line {
+        text: text.into(),
+        kind,
+        toks,
+        quote: quote.map(|q| q.1),
+        note,
+    }
 }
 
 pub fn parse(text: &str) -> Vec<Line> {
@@ -615,22 +685,48 @@ mod tests {
         );
         assert_eq!(
             one("Take right from middle until the head is gone."),
-            Stmt::Take { a: ColRef::Right, t: ColRef::Middle, how: How::Until(Pos::Head) }
+            Stmt::Take {
+                a: ColRef::Right,
+                t: ColRef::Middle,
+                how: How::Until(Pos::Head)
+            }
         );
         assert_eq!(
             one("Take 3rd from 4th as far as it goes"),
-            Stmt::Take { a: ColRef::Nth(3), t: ColRef::Nth(4), how: How::AsFar(Pos::Head) }
+            Stmt::Take {
+                a: ColRef::Nth(3),
+                t: ColRef::Nth(4),
+                how: How::AsFar(Pos::Head)
+            }
         );
-        assert_eq!(one("Take 第三行 from 左行"), Stmt::Take { a: ColRef::Nth(3), t: ColRef::Left, how: How::Once });
+        assert_eq!(
+            one("Take 第三行 from 左行"),
+            Stmt::Take {
+                a: ColRef::Nth(3),
+                t: ColRef::Left,
+                how: How::Once
+            }
+        );
         assert_eq!(one("Solve by cross."), Stmt::Solve(Method::Cross));
-        assert_eq!(one("Gives right 0 33 -45 3000"), Stmt::Gives(ColRef::Right, vec![0, 33, -45, 3000]));
+        assert_eq!(
+            one("Gives right 0 33 -45 3000"),
+            Stmt::Gives(ColRef::Right, vec![0, 33, -45, 3000])
+        );
     }
     #[test]
     fn answers() {
         match one("Answer 9 1/4, 4 1/4, 2 3/4") {
             Stmt::Answer(v) => {
                 assert_eq!(v.len(), 3);
-                assert_eq!(v[0], Mixed { neg: false, whole: 9, num: 1, den: 4 });
+                assert_eq!(
+                    v[0],
+                    Mixed {
+                        neg: false,
+                        whole: 9,
+                        num: 1,
+                        den: 4
+                    }
+                );
             }
             s => panic!("{:?}", s),
         }

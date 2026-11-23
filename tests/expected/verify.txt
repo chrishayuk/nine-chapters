@@ -1,7 +1,7 @@
 dai-zhen-08        8.8                                          4 right, 0 wrong
 dai-zhen-09        8.9                                          2 right, 0 wrong
 dai-zhen-13        8.13 (Dai Zhen, 訂訛)                          2 right, 0 wrong
-dai-zhen-18        8.18 (Dai Zhen, 訂訛: 145 and 99)              3 right, 0 wrong
+dai-zhen-18        8.18 (Dai Zhen, 訂訛: 145 and 99)              4 right, 0 wrong
 liu-hui-09         8.9                                          2 right, 0 wrong
 liu-hui-18-new     8.18 (Liu Hui: the new method, 124 算)        0 right, 0 wrong, stops at line 25, 29 lines read in the alternative
     line 25: 95 at the 實 of left does not go by -91 exactly
@@ -28,4 +28,4 @@ no-16              8.16                                         1 right, 0 wrong
 no-17              8.17                                         1 right, 0 wrong
 no-18              8.18                                         1 right, 0 wrong
 
-26 pages; 38 figures checked, 37 right, 1 wrong.
+26 pages; 39 figures checked, 38 right, 1 wrong.

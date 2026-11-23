@@ -6,7 +6,10 @@
 use std::process::Command;
 
 fn jiuzhang(args: &[&str]) -> String {
-    let out = Command::new(env!("CARGO_BIN_EXE_jiuzhang")).args(args).output().expect("jiuzhang runs");
+    let out = Command::new(env!("CARGO_BIN_EXE_jiuzhang"))
+        .args(args)
+        .output()
+        .expect("jiuzhang runs");
     String::from_utf8(out.stdout).unwrap()
 }
 
@@ -33,8 +36,11 @@ fn expect(name: &str, got: &str) {
 fn every_page_is_in_the_notation() {
     for (id, text) in jiuzhang::corpus::CORPUS {
         let run = jiuzhang::check::run(text);
-        let bad: Vec<_> =
-            run.findings.iter().filter(|f| f.severity == jiuzhang::check::Severity::Notation).collect();
+        let bad: Vec<_> = run
+            .findings
+            .iter()
+            .filter(|f| f.severity == jiuzhang::check::Severity::Notation)
+            .collect();
         assert!(bad.is_empty(), "{}: {:?}", id, bad);
     }
 }

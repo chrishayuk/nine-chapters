@@ -100,5 +100,7 @@ the figure the text states. It does not say that this reading is the one the
 author meant.
 
 The mathematics is well known, and nothing here is claimed as new. What the
-program adds is that every figure is checked by doing the work again, step
-by step, on a board.
+program adds is that the figures the notation can hold are checked by doing
+the work again, step by step, on a board. Some the sources give, it cannot
+hold (rates read crosswise, arithmetic in fractions off the board); those are
+kept as quoted words and are not checked.

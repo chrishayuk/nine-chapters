@@ -104,7 +104,10 @@ pub fn solve(board: &Board, method: Method) -> Result<Solution, (Trouble, Vec<St
     let mut order = vec![];
     let r: Result<(), Trouble> = (|| {
         for k in 0..m {
-            let a = pivot(&b, method, &left, k).ok_or(Trouble::Empty { col: *left.first().unwrap_or(&0), pos: k })?;
+            let a = pivot(&b, method, &left, k).ok_or(Trouble::Empty {
+                col: *left.first().unwrap_or(&0),
+                pos: k,
+            })?;
             left.retain(|&i| i != a);
             order.push(a);
             for &t in &left.clone() {
@@ -131,7 +134,11 @@ pub fn solve(board: &Board, method: Method) -> Result<Solution, (Trouble, Vec<St
                         push(&mut steps, &b, op);
                     }
                     Method::One => {
-                        let op = if ak.abs() == tk.abs() || ak.abs() == 1 { b.clear(a, t, k)? } else { b.cross(a, t, k)? };
+                        let op = if ak.abs() == tk.abs() || ak.abs() == 1 {
+                            b.clear(a, t, k)?
+                        } else {
+                            b.cross(a, t, k)?
+                        };
                         push(&mut steps, &b, op);
                     }
                 }
@@ -142,6 +149,14 @@ pub fn solve(board: &Board, method: Method) -> Result<Solution, (Trouble, Vec<St
     if let Err(e) = r {
         return Err((e, steps));
     }
+    // a column not used to clear any position must be empty, or the
+    // conditions contradict one another
+    for &i in &left {
+        if b.col(i).map(|c| c.iter().any(|&x| x != 0)).unwrap_or(false) {
+            return Err((Trouble::Inconsistent { col: i }, steps));
+        }
+    }
+    let big = |steps: &Vec<Step>| (Trouble::TooLarge, steps.clone());
     let col = |i: usize| b.col(i).unwrap().clone();
     match method {
         Method::Text | Method::Reducing => {
@@ -153,25 +168,75 @@ pub fn solve(board: &Board, method: Method) -> Result<Solution, (Trouble, Vec<St
                 let c = col(order[k]);
                 let mut events = vec![];
                 if c[m] != 0 {
-                    events.push(Ev::Mul { pos: m, by: fa, known: false });
+                    events.push(Ev::Mul {
+                        pos: m,
+                        by: fa,
+                        known: false,
+                    });
                 }
-                let mut s = Rat::int(fa) * Rat::int(c[m]);
+                let mut s = Rat::int(fa).try_mul(Rat::int(c[m])).ok_or_else(|| big(&steps))?;
                 for j in k + 1..m {
                     if c[j] != 0 {
-                        events.push(Ev::Mul { pos: j, by: c[j], known: false });
-                        events.push(Ev::Take { pos: m, times: 1, empty: false, known: false });
-                        s = s - Rat::int(c[j]) * shi[j];
+                        events.push(Ev::Mul {
+                            pos: j,
+                            by: c[j],
+                            known: false,
+                        });
+                        events.push(Ev::Take {
+                            pos: m,
+                            times: 1,
+                            empty: false,
+                            known: false,
+                        });
+                        s = Rat::int(c[j])
+                            .try_mul(shi[j])
+                            .and_then(|p| s.try_sub(p))
+                            .ok_or_else(|| big(&steps))?;
                     }
                 }
                 events.push(Ev::Div { pos: m, by: c[k] });
-                shi[k] = s / Rat::int(c[k]);
-                let what = format!("find the {}: 法 times the 實 of {}, less the 實s found, by its {}", b.thing(k), b.name(order[k]), c[k]);
-                push(&mut steps, &b, Op { target: order[k], actor: None, what, events });
+                shi[k] = s.try_div(Rat::int(c[k])).ok_or_else(|| big(&steps))?;
+                let what = format!(
+                    "find the {}: 法 times the 實 of {}, less the 實s found, by its {}",
+                    b.thing(k),
+                    b.name(order[k]),
+                    c[k]
+                );
+                push(
+                    &mut steps,
+                    &b,
+                    Op {
+                        target: order[k],
+                        actor: None,
+                        what,
+                        events,
+                    },
+                );
             }
             let events = (0..m).map(|_| Ev::Div { pos: m, by: fa }).collect();
-            push(&mut steps, &b, Op { target: order[m - 1], actor: None, what: format!("every 實 by the 法, {}", fa), events });
-            let values = shi.iter().map(|&s| s / Rat::int(fa)).collect();
-            Ok(Solution { method, order, fa: Some(fa), shi, values, steps })
+            push(
+                &mut steps,
+                &b,
+                Op {
+                    target: order[m - 1],
+                    actor: None,
+                    what: format!("every 實 by the 法, {}", fa),
+                    events,
+                },
+            );
+            let values = shi
+                .iter()
+                .map(|&s| s.try_div(Rat::int(fa)))
+                .collect::<Option<Vec<_>>>()
+                .ok_or_else(|| big(&steps))?;
+            Ok(Solution {
+                method,
+                order,
+                fa: Some(fa),
+                shi,
+                values,
+                steps,
+            })
         }
         Method::Cross | Method::One => {
             let mut values = vec![Rat::ZERO; m];
@@ -181,17 +246,45 @@ pub fn solve(board: &Board, method: Method) -> Result<Solution, (Trouble, Vec<St
                 let mut s = Rat::int(c[m]);
                 for j in k + 1..m {
                     if c[j] != 0 {
-                        events.push(Ev::Mul { pos: j, by: c[j], known: false });
-                        events.push(Ev::Take { pos: m, times: 1, empty: false, known: false });
-                        s = s - Rat::int(c[j]) * values[j];
+                        events.push(Ev::Mul {
+                            pos: j,
+                            by: c[j],
+                            known: false,
+                        });
+                        events.push(Ev::Take {
+                            pos: m,
+                            times: 1,
+                            empty: false,
+                            known: false,
+                        });
+                        s = Rat::int(c[j])
+                            .try_mul(values[j])
+                            .and_then(|p| s.try_sub(p))
+                            .ok_or_else(|| big(&steps))?;
                     }
                 }
                 events.push(Ev::Div { pos: m, by: c[k] });
-                values[k] = s / Rat::int(c[k]);
+                values[k] = s.try_div(Rat::int(c[k])).ok_or_else(|| big(&steps))?;
                 let what = format!("find the {} from {}", b.thing(k), b.name(order[k]));
-                push(&mut steps, &b, Op { target: order[k], actor: None, what, events });
+                push(
+                    &mut steps,
+                    &b,
+                    Op {
+                        target: order[k],
+                        actor: None,
+                        what,
+                        events,
+                    },
+                );
             }
-            Ok(Solution { method, order, fa: None, shi: values.clone(), values, steps })
+            Ok(Solution {
+                method,
+                order,
+                fa: None,
+                shi: values.clone(),
+                values,
+                steps,
+            })
         }
     }
 }
@@ -211,7 +304,10 @@ mod tests {
 
     #[test]
     fn problem_one_by_the_text() {
-        let b = board(&[&[3, 2, 1, 39], &[2, 3, 1, 34], &[1, 2, 3, 26]], &["上", "中", "下", "實"]);
+        let b = board(
+            &[&[3, 2, 1, 39], &[2, 3, 1, 34], &[1, 2, 3, 26]],
+            &["上", "中", "下", "實"],
+        );
         let s = solve(&b, Method::Text).unwrap();
         assert_eq!(s.fa, Some(36));
         assert_eq!(s.shi, vec![Rat::int(333), Rat::int(153), Rat::int(99)]);

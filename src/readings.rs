@@ -22,7 +22,8 @@ pub struct Outcome {
 }
 
 impl Outcome {
-    /// What each `Count` line comes to, rule by rule.
+    /// What each `Count` line comes to, rule by rule: (line, stated, [(rule, count)]).
+    #[allow(clippy::type_complexity)]
     pub fn counts(&self) -> Vec<(usize, u64, Vec<(&'static str, u64)>)> {
         let mut out = vec![];
         let mut since = 0;
@@ -44,6 +45,12 @@ impl Outcome {
 pub struct Census {
     pub total: u128,
     pub run: u64,
+    /// Combinations known to be done to the end: those run that were, and
+    /// none of those counted with them unrun.
+    pub executable: u128,
+    /// Combinations counted with one that disagreed and was not run: whether
+    /// they can be done to the end is not known.
+    pub unknown: u128,
     /// (line, why, how many combinations), for those that stop.
     pub stops: Vec<(usize, String, u128)>,
     /// (line, what, how many), for those that run past a figure the board does not give.
@@ -73,13 +80,24 @@ pub fn all(text: &str) -> Result<Census, String> {
     let alts = base.alternatives();
     let sizes: Vec<u128> = alts.iter().map(|a| a.1 as u128).collect();
     let total: u128 = sizes.iter().product();
-    let mut c = Census { total, run: 0, stops: vec![], disagree: vec![], agree: vec![] };
+    let mut c = Census {
+        total,
+        run: 0,
+        executable: 0,
+        unknown: 0,
+        stops: vec![],
+        disagree: vec![],
+        agree: vec![],
+    };
     let mut idx = vec![0usize; alts.len()];
     // combinations sharing positions ..=k: the product of the sizes after k
     let after = |k: usize| -> u128 { sizes[k + 1..].iter().product() };
     loop {
         if c.run >= LIMIT {
-            return Err(format!("more than {} combinations would have to be run; give fewer readings", LIMIT));
+            return Err(format!(
+                "more than {} combinations would have to be run; give fewer readings",
+                LIMIT
+            ));
         }
         let choice: Vec<(usize, usize)> = alts.iter().zip(&idx).map(|(a, &k)| (a.0, k)).collect();
         let run = check::run_lines(parsed.clone(), &choice);
@@ -102,6 +120,14 @@ pub fn all(text: &str) -> Result<Census, String> {
                 if sev == Severity::Fails {
                     tally(&mut c.stops, line, why, n);
                 } else {
+                    // this one was run; the rest that read the same up to
+                    // the line are not, and may or may not go to the end
+                    if run.stopped.is_none() {
+                        c.executable += 1;
+                        c.unknown += n - 1;
+                    } else {
+                        c.unknown += n;
+                    }
                     tally(&mut c.disagree, line, why, n);
                 }
                 match pos {
@@ -109,7 +135,10 @@ pub fn all(text: &str) -> Result<Census, String> {
                     None => return Ok(c),
                 }
             }
-            None => c.agree.push(Outcome { choice, run }),
+            None => {
+                c.executable += 1;
+                c.agree.push(Outcome { choice, run })
+            }
         }
         if idx.is_empty() {
             return Ok(c);
@@ -118,8 +147,8 @@ pub fn all(text: &str) -> Result<Census, String> {
             k = idx.len() - 1;
         }
         // advance the odometer at k
-        for j in k + 1..idx.len() {
-            idx[j] = 0;
+        for x in idx.iter_mut().skip(k + 1) {
+            *x = 0;
         }
         loop {
             idx[k] += 1;
@@ -164,9 +193,15 @@ pub fn report(text: &str) -> i32 {
     );
     println!(
         "  {} can be done to the end; {} of them agree with every figure the source states.",
-        c.total - c.stopped(),
+        c.executable,
         c.agree.len()
     );
+    if c.unknown > 0 {
+        println!(
+            "  {} were counted with one that disagreed and were not run: whether they go to the end is not known.",
+            c.unknown
+        );
+    }
     let mut stops = c.stops.clone();
     stops.sort_by(|a, b| a.0.cmp(&b.0).then(b.2.cmp(&a.2)));
     let mut shown_lines = std::collections::BTreeMap::<usize, (u128, Vec<(String, u128)>)>::new();
@@ -178,7 +213,7 @@ pub fn report(text: &str) -> i32 {
     for (line, (n, whys)) in &shown_lines {
         println!("  {} stop at line {}", n, line + 1);
         let mut whys = whys.clone();
-        whys.sort_by(|a, b| b.1.cmp(&a.1));
+        whys.sort_by_key(|w| std::cmp::Reverse(w.1));
         for (w, k) in whys.iter().take(3) {
             println!("      {}: {}", k, w);
         }

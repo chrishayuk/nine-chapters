@@ -99,11 +99,11 @@ fn position(b: &Board, t: usize, p: &Pos) -> Result<usize, String> {
             .head(t)
             .map_err(|e| board::trouble_text(b, &e))?
             .ok_or(format!("{} has nothing left above its 實", b.name(t))),
-        Pos::Thing(name) => b
-            .things
-            .iter()
-            .position(|x| x == name)
-            .ok_or(format!("`{}` is not a position of this board: {}", name, b.things.join(" "))),
+        Pos::Thing(name) => b.things.iter().position(|x| x == name).ok_or(format!(
+            "`{}` is not a position of this board: {}",
+            name,
+            b.things.join(" ")
+        )),
     }
 }
 
@@ -135,15 +135,27 @@ pub struct Forms {
 pub fn forms(s: &Solution) -> Forms {
     let fa = match s.fa {
         Some(f) => f,
-        None => return Forms { board: None, common: None },
+        None => {
+            return Forms {
+                board: None,
+                common: None,
+            }
+        }
     };
-    let ints: Option<Vec<Num>> = s.shi.iter().map(|r| if r.is_int() { Some(r.numer()) } else { None }).collect();
+    let ints: Option<Vec<Num>> = s
+        .shi
+        .iter()
+        .map(|r| if r.is_int() { Some(r.numer()) } else { None })
+        .collect();
     let common = ints.map(|v| {
         let mut all = v.clone();
         all.push(fa);
         fa.abs() / gcd_all(&all).max(1)
     });
-    Forms { board: Some(fa.abs()), common }
+    Forms {
+        board: Some(fa.abs()),
+        common,
+    }
 }
 
 /// How `v` is written over `den`, as a mixed number: `None` if it cannot be.
@@ -176,7 +188,9 @@ fn written_den(a: &[Mixed]) -> Option<Num> {
 fn check_answer(sol: &Solution, a: &[Mixed], marks: &mut Vec<Mark>) -> Result<(), String> {
     let m = sol.values.len();
     if a.len() != m {
-        return Err(format!("the answer has {} figures; the board finds {}", a.len(), m));
+        let msg = format!("the answer has {} figures; the board finds {}", a.len(), m);
+        marks.push(Mark::Wrong(msg.clone()));
+        return Err(msg);
     }
     let wrong: Vec<String> = a
         .iter()
@@ -196,7 +210,9 @@ fn check_answer(sol: &Solution, a: &[Mixed], marks: &mut Vec<Mark>) -> Result<()
         return Ok(());
     }
     let f = forms(sol);
-    let lowest = a.iter().all(|x| !x.has_fraction() || x.value().fract().denom() == x.den);
+    let lowest = a
+        .iter()
+        .all(|x| !x.has_fraction() || x.value().fract().denom() == x.den);
     let mut fits = vec![];
     if let Some(d) = written_den(a) {
         if f.board == Some(d) {
@@ -213,8 +229,15 @@ fn check_answer(sol: &Solution, a: &[Mixed], marks: &mut Vec<Mark>) -> Result<()
         Some(d) => format!("over {}", d),
         None => "over several".into(),
     };
+    if fits.is_empty() {
+        marks.push(Mark::Wrong(format!(
+            "the value is right, but written {}: neither the 法 as the board leaves it, nor reduced with the 實s, nor lowest terms writes it so",
+            written
+        )));
+        return Ok(());
+    }
     let mut note = if fits.is_empty() {
-        format!("written {}: no reading here writes it so", written)
+        unreachable!()
     } else {
         format!("written {}: {}", written, fits.join("; or "))
     };
@@ -261,8 +284,10 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
                     Stmt::Things(t) if things.is_none() => things = Some(t.clone()),
                     Stmt::Set(c, f) => {
                         first_len.get_or_insert(f.len());
-                        if !setcols.contains(c) {
-                            setcols.push(c.clone())
+                        // `right` is the 1st column: one column, two names
+                        let c = if *c == ColRef::Right { ColRef::Nth(1) } else { c.clone() };
+                        if !setcols.contains(&c) {
+                            setcols.push(c)
                         }
                     }
                     _ => {}
@@ -281,23 +306,52 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
         .max(setcols.len());
     let things = things.unwrap_or_else(|| {
         let m = first_len.unwrap_or(1);
-        (1..m).map(|i| format!("#{}", i)).chain(std::iter::once("實".to_string())).collect()
+        (1..m)
+            .map(|i| format!("#{}", i))
+            .chain(std::iter::once("實".to_string()))
+            .collect()
     });
     let mut b = Board::new(things, n);
-    let mut run = Run { lines: vec![], findings: vec![], board: None, checked: (0, 0), ops: vec![], stopped: None };
+    let mut run = Run {
+        lines: vec![],
+        findings: vec![],
+        board: None,
+        checked: (0, 0),
+        ops: vec![],
+        stopped: None,
+    };
     let mut since_count = 0usize;
     let mut sol: Option<Solution> = None;
     for (i, line) in lines.into_iter().enumerate() {
         let width = line.text.chars().count();
-        let mut lr = LineRun { line, choice: 0, marks: vec![], steps: vec![], solution: None };
-        let span = (lr.line.text.chars().take_while(|c| c.is_whitespace()).count(), lr.line.note.unwrap_or(width));
+        let mut lr = LineRun {
+            line,
+            choice: 0,
+            marks: vec![],
+            steps: vec![],
+            solution: None,
+        };
+        let span = (
+            lr.line.text.chars().take_while(|c| c.is_whitespace()).count(),
+            lr.line.note.unwrap_or(width),
+        );
         let find = |sev: Severity, msg: String, run: &mut Run| {
-            run.findings.push(Finding { line: i, span, severity: sev, message: msg });
+            run.findings.push(Finding {
+                line: i,
+                span,
+                severity: sev,
+                message: msg,
+            });
         };
         match &lr.line.kind {
             Kind::Bad(e) => find(Severity::Notation, e.clone(), &mut run),
             Kind::Stmt(alts) => {
-                let choice = choices.iter().find(|c| c.0 == i).map(|c| c.1).unwrap_or(0).min(alts.len() - 1);
+                let choice = choices
+                    .iter()
+                    .find(|c| c.0 == i)
+                    .map(|c| c.1)
+                    .unwrap_or(0)
+                    .min(alts.len() - 1);
                 lr.choice = choice;
                 let s = alts[choice].clone();
                 if run.stopped.is_some() {
@@ -400,10 +454,13 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
                                         fa,
                                         s.shi.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" ")
                                     ),
-                                    None => format!(
-                                        "{}",
-                                        s.values.iter().map(|x| show_mixed(*x)).collect::<Vec<_>>().join(", ")
-                                    ),
+                                    None => s
+                                        .values
+                                        .iter()
+                                        .map(|x| show_mixed(*x))
+                                        .collect::<Vec<_>>()
+                                        .join(", ")
+                                        .to_string(),
                                 };
                                 info.push_str(&format!("; {} steps", s.steps.len()));
                                 lr.marks.push(Mark::Info(info));
@@ -430,37 +487,61 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
                             Some(s) => {
                                 let _ = check_answer(s, a, &mut lr.marks);
                             }
-                            None => lr.marks.push(Mark::Info("nothing solved yet to compare it with".into())),
-                        },
-                        Stmt::Rates(r) => match sol.as_ref().and_then(|s| s.fa.map(|fa| (fa, s))) {
-                            Some((fa, s)) => {
-                                let ints: Option<Vec<Num>> =
-                                    s.shi.iter().map(|x| if x.is_int() { Some(x.numer()) } else { None }).collect();
-                                let mut all = vec![fa];
-                                all.extend(ints.unwrap_or_default());
-                                let g = gcd_all(&all).max(1) * fa.signum();
-                                let have: Vec<Num> = all.iter().map(|x| x / g).collect();
-                                if &have == r {
-                                    lr.marks.push(Mark::Right);
-                                    if g.abs() != 1 {
-                                        lr.marks.push(Mark::Info(format!("the board's 法 {} and 實s divided by {}", fa, g.abs())));
-                                    } else {
-                                        lr.marks.push(Mark::Info(format!("the 法 {} and the 實s as the board leaves them", fa)));
-                                    }
-                                } else {
-                                    lr.marks.push(Mark::Wrong(format!(
-                                        "the board's rates are {}",
-                                        have.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" ")
-                                    )));
-                                }
+                            None => {
+                                return Err(
+                                    "nothing has been solved on the board as it now stands: `Solve` first".into()
+                                )
                             }
-                            None => lr.marks.push(Mark::Info("nothing solved through a 法 to compare it with".into())),
                         },
+                        Stmt::Rates(r) => {
+                            match sol.as_ref().and_then(|s| s.fa.map(|fa| (fa, s))) {
+                                Some((fa, s)) => {
+                                    let ints: Option<Vec<Num>> = s
+                                        .shi
+                                        .iter()
+                                        .map(|x| if x.is_int() { Some(x.numer()) } else { None })
+                                        .collect();
+                                    let mut all = vec![fa];
+                                    all.extend(ints.unwrap_or_default());
+                                    let g = gcd_all(&all).max(1) * fa.signum();
+                                    let have: Vec<Num> = all.iter().map(|x| x / g).collect();
+                                    if &have == r {
+                                        lr.marks.push(Mark::Right);
+                                        if g.abs() != 1 {
+                                            lr.marks.push(Mark::Info(format!(
+                                                "the board's 法 {} and 實s divided by {}",
+                                                fa,
+                                                g.abs()
+                                            )));
+                                        } else {
+                                            lr.marks.push(Mark::Info(format!(
+                                                "the 法 {} and the 實s as the board leaves them",
+                                                fa
+                                            )));
+                                        }
+                                    } else {
+                                        lr.marks.push(Mark::Wrong(format!(
+                                            "the board's rates are {}",
+                                            have.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" ")
+                                        )));
+                                    }
+                                }
+                                None => return Err(
+                                    "nothing has been solved through a 法 on the board as it now stands: `Solve` first"
+                                        .into(),
+                                ),
+                            }
+                        }
                         Stmt::Count(c) => {
                             let ops = &run.ops[since_count..];
-                            let got: Vec<(&str, u64)> = RULES.iter().map(|r| (r.name(), count::count(*r, ops))).collect();
+                            let got: Vec<(&str, u64)> =
+                                RULES.iter().map(|r| (r.name(), count::count(*r, ops))).collect();
                             let hit: Vec<&str> = got.iter().filter(|g| g.1 == *c).map(|g| g.0).collect();
-                            let all = got.iter().map(|(n, v)| format!("{} {}", n, v)).collect::<Vec<_>>().join(", ");
+                            let all = got
+                                .iter()
+                                .map(|(n, v)| format!("{} {}", n, v))
+                                .collect::<Vec<_>>()
+                                .join(", ");
                             if hit.is_empty() {
                                 lr.marks.push(Mark::Info(format!("no rule counts {}: {}", c, all)));
                             } else {
@@ -474,6 +555,10 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
                 })();
                 for s in &lr.steps {
                     run.ops.push(s.op.clone());
+                }
+                // a solution is of the board it was found on
+                if s.works() {
+                    sol = None;
                 }
                 if let Some(last) = lr.steps.last() {
                     b = last.board.clone();
@@ -535,7 +620,11 @@ pub fn render(run: &Run, boards: bool) -> String {
         if marks.is_empty() {
             out.push_str(text);
         } else {
-            let pad = if board::width(text) < w { w - board::width(text) } else { 2 };
+            let pad = if board::width(text) < w {
+                w - board::width(text)
+            } else {
+                2
+            };
             out.push_str(&format!("{}{}{}", text, " ".repeat(pad), marks.join("  ")));
         }
         out.push('\n');
@@ -553,7 +642,10 @@ pub fn render(run: &Run, boards: bool) -> String {
         }
         let is_solve = matches!(&l.line.kind, Kind::Stmt(v) if matches!(v[l.choice], Stmt::Solve(_)));
         let shown: Vec<&Step> = if is_solve {
-            l.steps.iter().filter(|s| s.op.actor.is_some() || s.op.what.starts_with("reduce")).collect()
+            l.steps
+                .iter()
+                .filter(|s| s.op.actor.is_some() || s.op.what.starts_with("reduce"))
+                .collect()
         } else {
             l.steps.iter().collect()
         };
@@ -567,9 +659,18 @@ pub fn render(run: &Run, boards: bool) -> String {
         }
     }
     let (r, wr) = run.checked;
-    let unreached = run.lines.iter().filter(|l| l.marks.iter().any(|m| *m == Mark::Info("not reached".into()))).count();
+    let unreached = run
+        .lines
+        .iter()
+        .filter(|l| l.marks.iter().any(|m| *m == Mark::Info("not reached".into())))
+        .count();
     if r + wr + unreached > 0 {
-        out.push_str(&format!("\n{} checked, {} right, {} wrong.", plural(r + wr, "figure"), r, wr));
+        out.push_str(&format!(
+            "\n{} checked, {} right, {} wrong.",
+            plural(r + wr, "figure"),
+            r,
+            wr
+        ));
         if unreached > 0 {
             out.push_str(&format!(" {} not reached.", unreached));
         }

@@ -1,21 +1,23 @@
 dai-zhen-18  8.18 (Dai Zhen, 訂訛: 145 and 99)
   Count 145  plain     145   ✓
   Count 145  worked    140
+  Count 145  readoff   145   ✓
   Count 145  every     175
   Count 145  repeated  140
   Count 145  columns   15
   Count 99   plain     101
   Count 99   worked    98
+  Count 99   readoff   99   ✓
   Count 99   every     81
   Count 99   repeated  295
   Count 99   columns   15
 
 Problem 18 by each method, counted under each rule, and the board it needs:
-               plain   worked    every repeated  columns    rods  places
-  text           158      158      133   180403       25     160      11
-  reducing       188      179      163      504       33     138       4
-  cross          145      140      175      140       15     149      11
-  one            101       98       81      295       15     122       4
+               plain   worked  readoff    every repeated  columns    rods  places
+  text           158      158      158      133   180403       25     160      11
+  reducing       188      179      183      163      504       33     138       4
+  cross          145      140      145      175      140       15     149      11
+  one            101       98       99       81      295       15     122       4
   rods: the most rods on the board at once; places: the most digits in any figure.
 
 liu-hui-18-old: Liu Hui says 77 算. Of 100000000 readings of his working, 229906 can be done to the end and 0 agree with the figures he states, so there is nothing to count.

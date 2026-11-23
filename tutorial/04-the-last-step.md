@@ -97,7 +97,7 @@ Solve by text.       法 36; 實 333 153 99; 9 steps
     #3    36       1      1
     實    99      24     39
 
-plain 37, worked 35, every 35, repeated 39, columns 9
+plain 37, worked 35, readoff 37, every 35, repeated 39, columns 9
 ```
 
 It shows each taking with the board after it. The multiplying a taking
@@ -134,7 +134,12 @@ reduce each answer on its own. What fits both problems is 約 (*yue*): divide
 the 法 and all the 實s together by what they have in common. In Problem 1
 they share 9, and 36 becomes 4. In Problem 2, 52, 70 and 41 share nothing,
 and 52 stays. That is why `Answer` checks how a fraction is written, not
-only its value: `1 9/26` would be the same number, and would hide this.
+only its value: `1 9/26` would be the same number, and would hide this. An
+answer written in a form none of the readings gives is marked ✗ even when its
+value is right. And 約 gives the same denominators as reducing each answer
+and then writing them all over the least of their common denominators: what
+this shows is how the answers are written, not where in the working a
+reduction was made.
 
 `jiuzhang answers` tries three readings of the last step on every answer
 with a fraction:

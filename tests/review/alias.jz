@@ -1,0 +1,6 @@
+Things x y 實
+Set right 1 0 1
+Set 1st 1 0 1
+Set left 0 1 2
+Solve.
+Answer 1, 2

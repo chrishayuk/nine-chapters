@@ -14,6 +14,7 @@ several rules:
 $ jiuzhang rules
 plain     each multiplication, taking or division of one figure, except a head known to cancel; a taking several times over is a multiplication and a taking
 worked    each multiplication, taking or division of one figure that has to be worked (not by one, not a head known to cancel); a taking several times over is a multiplication and a taking
+readoff   as plain, but a division by one is read off, not worked (proposed by the review, after the counts were known)
 every     each multiplication, taking or division of one figure, by one or not
 repeated  as worked, but a taking several times over is that many takings, one at a time
 columns   each operation on a whole column
@@ -67,7 +68,7 @@ Set 4th   2 5 3 9 4 112
 Set left  1 3 2 8 5  95
 Solve by cross.                                              7, 4, 3, 5, 6; 15 steps
 Answer 7, 4, 3, 5, 6                                         ✓
-Count 145                                    "兼乘減除言之則一百四十五算"  ✓  plain: plain 145, worked 140, every 175, repeated 140, columns 15
+Count 145                                    "兼乘減除言之則一百四十五算"  ✓  plain, readoff: plain 145, worked 140, readoff 145, every 175, repeated 140, columns 15
 Set right 9 7 3 2 5 140
 Set 2nd   7 6 4 5 3 128
 Set 3rd   3 5 7 6 4 116
@@ -75,26 +76,32 @@ Set 4th   2 5 3 9 4 112
 Set left  1 3 2 8 5  95
 Solve by one.                                                7, 4, 3, 5, 6; 15 steps
 Answer 7, 4, 3, 5, 6                                         ✓
-Count 99                                     "凡用九十九算"  no rule counts 99: plain 101, worked 98, every 81, repeated 295, columns 15
+Count 99                                     "凡用九十九算"  ✓  readoff: plain 101, worked 98, readoff 99, every 81, repeated 295, columns 15
 
-3 figures checked, 3 right, 0 wrong.
+4 figures checked, 4 right, 0 wrong.
 ```
 
 One rule, `plain`, gives 145 for the plain method exactly: every
 multiplication, taking and division of one figure, leaving out only the
-heads that cross-multiplying makes equal, as Dai Zhen says they may be. `worked` leaves out multiplications by one as
+heads that cross-multiplying makes equal, as Dai Zhen says they may be.
+(He says the heads need not be *multiplied*; leaving out their takings too is
+this program's convention.) `worked` leaves out multiplications by one as
 well, and the left column's head is 1, so it gives 140.
 
-No rule gives 99 for the shorter way. `worked` gives 98, `plain` 101. Three
-operations in it are by one: in finding the 麥, a multiplication by -1 and a
-division by -1; in finding the 麻, a division by 1. `plain` counts all three,
-`worked` none of them. Dai Zhen's 99 is between. A rule that counted just one
-of the three would give 99, but it would be written to fit the figure, and
-there is no reason in the text to count one and not the others. So the count
-is reported as it comes out, 98 under `worked` and 101 under `plain`; the
-line has no ✓, and is not among the figures checked.
-His arrangement is not given in full either: he does not say, for one thing,
-whether the 黍 is found before the 荅.
+For the shorter way, `plain` gives 101 and `worked` 98. Three operations in it
+are by one: in finding the 麥, a multiplication by -1 and a division by -1; in
+finding the 麻, a division by 1. `plain` counts all three, `worked` none.
+Dai Zhen's economies are about multiplying; he says nothing about dividing by
+one. `readoff` is `plain` with a division by one read off rather than worked:
+it gives 145 and 99, both of his figures. It was proposed by the independent
+review after the figures were known, so it is a rule fitted after the fact,
+and a candidate, not Dai Zhen's rule. Which convention he used, the text does
+not say.
+
+His arrangement is not given in full either. He says 依術得荅價, "by the
+procedure find the price of 荅", where `Solve by one` finds the 黍 first; the
+review found that finding them the other way round does not change the
+counts.
 
 ## The cost of the literal reading
 
@@ -107,31 +114,36 @@ $ jiuzhang counts
 dai-zhen-18  8.18 (Dai Zhen, 訂訛: 145 and 99)
   Count 145  plain     145   ✓
   Count 145  worked    140
+  Count 145  readoff   145   ✓
   Count 145  every     175
   Count 145  repeated  140
   Count 145  columns   15
   Count 99   plain     101
   Count 99   worked    98
+  Count 99   readoff   99   ✓
   Count 99   every     81
   Count 99   repeated  295
   Count 99   columns   15
 
 Problem 18 by each method, counted under each rule, and the board it needs:
-               plain   worked    every repeated  columns    rods  places
-  text           158      158      133   180403       25     160      11
-  reducing       188      179      163      504       33     138       4
-  cross          145      140      175      140       15     149      11
-  one            101       98       81      295       15     122       4
+               plain   worked  readoff    every repeated  columns    rods  places
+  text           158      158      158      133   180403       25     160      11
+  reducing       188      179      183      163      504       33     138       4
+  cross          145      140      145      175      140       15     149      11
+  one            101       98       99       81      295       15     122       4
   rods: the most rods on the board at once; places: the most digits in any figure.
 
 liu-hui-18-old: Liu Hui says 77 算. Of 100000000 readings of his working, 229906 can be done to the end and 0 agree with the figures he states, so there is nothing to count.
 liu-hui-18-new: Liu Hui says 124 算. Of 6115295232 readings of his working, 0 can be done to the end and 0 agree with the figures he states, so there is nothing to count.
 ```
 
-The text's own procedure, multiplying the whole column and then taking
-until the head is gone, needs figures of 11 places. Counted with 直除 as
-taking one column away again and again, a taking at a time (the `repeated`
-rule), it comes to 180403. With each worked column reduced (約) as it goes
+On the board as it stands after each step, the text's own procedure,
+multiplying the whole column and then taking until the head is gone, holds
+figures of 11 places. The working of the last step, which is not on the
+board, goes further: finding the 荅 forms a product of 16 places. Counted
+under the `repeated` rule, where a taking done several times over is that
+many takings of single figures, it comes to 180403 operations (180330 of them
+takings), or 89773 takings of a whole column. With each worked column reduced (約) as it goes
 (`reducing`), the largest figure has 4 places, and `repeated` counts 504.
 The text does not say to reduce. Done literally, its words are a great deal
 of work.

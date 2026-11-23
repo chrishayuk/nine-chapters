@@ -1,10 +1,12 @@
 # jiuzhang
 
 Chapter 8 of the *Nine Chapters on the Mathematical Art* (九章算術, 方程),
-run on a counting board. Every problem of the chapter, and every board its
-commentators describe, set out as the text sets it and worked a step at a
-time as the text says; every figure the text and its commentators state is
-compared, exactly, with what the board gives.
+run on a counting board. Every problem of the chapter, and the boards its
+commentators work, set out as the text sets it and worked a step at a time as
+the text says; the figures the text and its commentators state, where the
+notation can hold them, are compared exactly with what the board gives. Some
+it cannot hold (rates read crosswise, arithmetic in fractions off the board)
+and those are kept as quoted words, unchecked.
 
 ```
 $ jiuzhang no 2
@@ -106,9 +108,11 @@ as new: the literature on chapter 8 is large (below), and this project has not
 read it.
 
 `jiuzhang verify` runs 26 pages: the 18 problems and 8 pages of commentary.
-Of 38 figures the text and its commentators state that the board reaches, 37
-agree and 1 does not. Five more are not reached: they come after a step that
-cannot be done.
+They make 39 checked statements (a column a commentator gives, an answer, a
+set of rates, a count): 38 agree with the board and 1 does not. Five more are
+not reached: they come after a step that cannot be done. A statement can hold
+several figures, and some figures the sources give are quoted and not
+checked, so this is not a census of every number in the text.
 
 ### How the answers are written
 
@@ -123,10 +127,13 @@ so?
 | each answer in its lowest terms | 9 of 11 |
 | the 法 and all the 實s divided by what they share (約) | 11 of 11 |
 
-So the answers are what the board gives with one common factor taken out:
+So the answers are written over one denominator for each problem, and it is
 not the board's 法 as it stands (Problem 1's board leaves 36, the text writes
-quarters; Problem 16's 976, the text 122), and not each fraction reduced on
-its own (52 and 111 survive). Problem 13's answer is the extreme case: the
+quarters; Problem 16's 976, the text 122), and not each fraction in its own
+lowest terms (52 and 111 survive). The 約 reading gives the same denominators
+as reducing each answer and then writing them all over the least of their
+common denominators: the table shows how the answers are written, not where
+in the working a reduction was made. Problem 13's answer is the extreme case: the
 depth of the well, 721, is the 法 itself, given as a rate (舉率以言之), and
 Liu Hui's 法得七百二十一實七十六 is the board's left column, checked.
 
@@ -142,24 +149,37 @@ places, and with 負 the board gives the answer. The scan was read twice.
 In his collation notes (訂訛, 1770s), Dai Zhen says that Problem 18 by the
 plain method — cross-multiplying each pair of columns (互乘), then finding the
 prices from the bottom up — takes "145 算, counting multiplications, takings
-and divisions together", and that a shorter way, working from a column whose
-head is one, takes 99. One rule of counting gives 145 exactly: every
-multiplication, taking and division of one figure, leaving out the heads that
-cross-multiplying makes equal, which he says need not be multiplied. The same
-rule gives 101 for his shorter way; leaving out also everything multiplied or
-divided by one, which he says can be saved, gives 98. Three operations by ±1
-separate the two, and no rule here counts two of them and not the third. No
-rule was written to give 99.
+and divisions together" (兼乘減除言之), and that a shorter way, working from a
+column whose head is one, takes 99. He does not say what one 算 is beyond
+that, so `jiuzhang rules` tries several conventions and prefers none:
 
-| Problem 18 by | plain | worked | the most rods on the board | the widest figure |
-|---|---|---|---|---|
-| the text's 徧乘 and 直除 | 158 | 158 | 160 | 11 places |
-| the same, with 約 after each step | 188 | 179 | 138 | 4 places |
-| Dai Zhen's 互乘 | **145** | 140 | 149 | 11 places |
-| Dai Zhen's shorter way | 101 | 98 | 122 | 4 places |
+| rule | the plain method | the shorter way |
+|---|---|---|
+| plain: each multiplication, taking and division of one figure, less the heads that cross-multiplying makes equal (上一位互乘其數必同可省乘) | **145** | 101 |
+| worked: also saving everything multiplied or divided by one | 140 | 98 |
+| readoff: as plain, but a division by one is read off, not worked | **145** | **99** |
 
-Read literally, as taking one column from another one time after another,
-the text's 直除 on Problem 18 is 180,403 takings.
+Plain is the nearest to his words, but leaving out the heads' takings as well
+as their multiplications is this project's convention, not his. Worked
+extends his economies (上一位遇一則省其與對行徧乘, which are about
+multiplying) to dividing, which he does not mention. Readoff was proposed by
+the independent review after both numbers were known: it gives both, and is
+reported as a rule fitted after the fact, not as Dai Zhen's.
+
+| Problem 18 by | plain | worked | readoff | the most rods on the recorded boards | the widest figure on them |
+|---|---|---|---|---|---|
+| the text's 徧乘 and 直除 | 158 | 158 | 158 | 160 | 11 places |
+| the same, with 約 after each step | 188 | 179 | 183 | 138 | 4 places |
+| Dai Zhen's 互乘 | **145** | 140 | **145** | 149 | 11 places |
+| Dai Zhen's shorter way | 101 | 98 | **99** | 122 | 4 places |
+
+The rods and places are those of the board as recorded after each step. The
+working of the last step is not on it: finding the 荅 by the text's method
+forms a product of 16 places, and cross-multiplying forms products the board
+never shows, so these are not the workspace a reckoner needed. Under the
+`repeated` rule, which counts a taking done several times over as that many
+takings of single figures, the text's method on Problem 18 comes to 180,403
+operations (180,330 of them takings), or 89,773 takings of a whole column.
 
 ### Liu Hui's 77
 
@@ -167,13 +187,20 @@ In his commentary to Problem 18, Liu Hui works it "by the old method, made
 short" (以舊術爲之…今欲要約), clause by clause, and says it takes 77 算. Dai
 Zhen calls the passage corrupt (訛舛不可通). `corpus/liu-hui-18-old.jz` gives
 each clause in every reading this project could find: the columns as written,
-and, for the clause that takes the 3rd column from itself, other columns or
-nothing; and each 減 or 去 done once, until the head is gone, as far as it goes,
+and, for the clause 及減第三行, which as written takes the 3rd column from
+itself, other columns or nothing; and each 減 or 去 done once, until the head is gone, as far as it goes,
 in turn (taking each column from the other, without multiplying), or
-crosswise. That is 100,000,000 readings. 229,906 of them can be done to the
-end. None leaves the 4th column giving the price of 黍, as the passage says it
-should. So none of these readings of the passage works; that does not show
-that no reading does, and Liu Hui's 77 is not tested.
+crosswise. That is 100,000,000 combinations of a small menu of operations,
+not 100,000,000 interpretations. 229,906 of them can be done to the end. None
+leaves the 4th column giving the price of 黍, as the passage says it should.
+So none of these readings of the passage works; that does not show that no
+reading does, and Liu Hui's 77 is not tested. Among what the menu leaves out
+(the review lists more): 頭位 as anything but the first figure of the column
+worked on; the columns set one at a time, as 先置第三行 … 次置第二行 …
+次置右行 says, with copies kept; other repairs of 及減第三行; mutual
+subtraction ending in either column. The independent review tried a wider
+search of its own (heads of either column, other orders) and found no
+working reading either.
 
 His new method (124 算) was given the same treatment and stops, under every
 reading offered, by the passage's fourth clause. Its last part, where the
@@ -221,6 +248,20 @@ node web/build.mjs                  # builds web/jiuzhang.wasm and web/corpus.js
 node web/test.mjs                   # every page through the wasm build, compared with the native one
 python3 -m http.server -d web 8000  # then open http://localhost:8000
 ```
+
+## Independent review
+
+A second model, OpenAI's Codex, reviewed commit 8532977 independently: it
+checked every answer, the Problem 6 signs, the commentary figures, the 77
+passage and the four counts against the scans, and found no mistranscription;
+it reproduced the answers table, the counts and the censuses with programs of
+its own; and it wrote probe pages that made the checker give a false ✓ (a
+contradictory board, an answer checked against a board since changed, an
+answer written in a form no reading gives) and false or missing marks. Every
+finding was checked here and acted on; what was done about each is in
+[`docs/independent-review.md`](docs/independent-review.md), and its report is
+[`docs/independent-review-report.md`](docs/independent-review-report.md).
+The numbers in this README are after those changes.
 
 ## Tutorial
 
