@@ -1,0 +1,75 @@
+{
+  "Problem": {
+    "prefix": "no",
+    "body": [
+      "No. ${1:8.1}",
+      "\"${2:今有……問……各幾何}\"",
+      "% ${3:the problem, in translation}",
+      "Things ${4:上禾 中禾 下禾} 實",
+      "Set right   ${5:3 2 1 39}",
+      "Set middle  ${6:2 3 1 34}",
+      "Set left    ${7:1 2 3 26}",
+      "$0",
+      "Solve.",
+      "Answer ${8:9 1/4, 4 1/4, 2 3/4}"
+    ],
+    "description": "A problem page: heading, the text's words, the things, the board, Solve and the answer"
+  },
+  "Things": {
+    "prefix": "things",
+    "body": [
+      "Things ${1:上禾 中禾 下禾} 實",
+      "$0"
+    ],
+    "description": "Things A B C 實: the positions of a column, top to bottom, last the 實"
+  },
+  "Set": {
+    "prefix": "set",
+    "body": [
+      "Set ${1|right,middle,left,2nd,3rd,4th|} ${2:3 2 1 39}",
+      "$0"
+    ],
+    "description": "Set a column (置), every position top to bottom"
+  },
+  "Multiply by the head": {
+    "prefix": "multiply",
+    "body": [
+      "Multiply ${1:middle} by the head of ${2:right}.   \"${3:以右行上禾徧乘中行}\"",
+      "$0"
+    ],
+    "description": "Multiply the whole of a column by the head of another (徧乘)"
+  },
+  "Take until the head is gone": {
+    "prefix": "take",
+    "body": [
+      "Take ${1:right} from ${2:middle} ${3|until the head is gone,as far as it goes,in turn,crosswise|}.   \"${4:而以直除}\"",
+      "$0"
+    ],
+    "description": "Take one column from another (直除, 不足減乃止, 相減, 互乘)"
+  },
+  "Gives": {
+    "prefix": "gives",
+    "body": [
+      "Gives ${1:middle} ${2:0 5 1 24}",
+      "$0"
+    ],
+    "description": "Gives: the column as the source says the board now holds it. Checked."
+  },
+  "Readings": {
+    "prefix": "readings",
+    "body": [
+      "Take ${1:3rd} from ${2:4th} | Take ${2:4th} from ${1:3rd} | Take ${1:3rd} from ${2:4th} until the head is gone",
+      "$0"
+    ],
+    "description": "A clause read more than one way: the page runs with the first, `jiuzhang readings` with every one"
+  },
+  "Solve and answer": {
+    "prefix": "solve",
+    "body": [
+      "Solve.",
+      "Answer ${1:9 1/4, 4 1/4, 2 3/4}",
+      "$0"
+    ],
+    "description": "Solve (方程術; or Solve by reducing, by cross, by one) and the answer as the text writes it"
+  }
+}

@@ -182,7 +182,7 @@ fn check_answer(sol: &Solution, a: &[Mixed], marks: &mut Vec<Mark>) -> Result<()
         .iter()
         .zip(&sol.values)
         .filter(|(x, v)| x.value() != **v)
-        .map(|(x, v)| format!("{} for {}", show_mixed(*v), show_mixed(x.value())))
+        .map(|(x, v)| format!("{} for {}", show_mixed(*v), x.written()))
         .collect();
     if !wrong.is_empty() {
         let msg = format!("the board gives {}", wrong.join(", "));
@@ -300,7 +300,11 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
                 let choice = choices.iter().find(|c| c.0 == i).map(|c| c.1).unwrap_or(0).min(alts.len() - 1);
                 lr.choice = choice;
                 let s = alts[choice].clone();
-                if run.stopped.is_some() && (s.works() || matches!(s, Stmt::Solve(_))) {
+                if run.stopped.is_some() {
+                    // nothing after a step that could not be done is run or checked
+                    if !matches!(s, Stmt::Things(_) | Stmt::Nothing) && !s.works() && !matches!(s, Stmt::Solve(_)) {
+                        lr.marks.push(Mark::Info("not reached".into()));
+                    }
                     run.lines.push(lr);
                     continue;
                 }
@@ -524,6 +528,10 @@ pub fn render(run: &Run, boards: bool) -> String {
                 Mark::Info(s) => s.clone(),
             })
             .collect();
+        let mut marks = marks;
+        if let Kind::Bad(e) = &l.line.kind {
+            marks.push(format!("✗ not in the notation: {}", e));
+        }
         if marks.is_empty() {
             out.push_str(text);
         } else {

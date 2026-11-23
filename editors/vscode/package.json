@@ -1,0 +1,172 @@
+{
+  "name": "jiuzhang-language",
+  "displayName": "Nine Chapters: Fangcheng on a Counting Board",
+  "description": "Syntax highlighting, a language server and a run button for pages of chapter 8 of the Nine Chapters on the Mathematical Art (九章算術, 方程): every procedure worked again on a counting board and every figure the text and its commentaries state compared.",
+  "version": "0.1.0",
+  "publisher": "chrishayuk",
+  "license": "Apache-2.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chrishayuk/nine-chapters"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "keywords": [
+    "jiuzhang",
+    "nine chapters",
+    "九章算術",
+    "fangcheng",
+    "counting rods",
+    "language server"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "languages": [
+      {
+        "id": "jiuzhang",
+        "aliases": [
+          "Nine Chapters (jiuzhang)",
+          "jiuzhang",
+          "jz"
+        ],
+        "extensions": [
+          ".jz"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "jiuzhang",
+        "scopeName": "source.jz",
+        "path": "./syntaxes/jiuzhang.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "jiuzhang",
+        "path": "./snippets/jiuzhang.code-snippets"
+      }
+    ],
+    "commands": [
+      {
+        "command": "jiuzhang.run",
+        "title": "Run This Page",
+        "category": "Jiuzhang",
+        "icon": "$(play)"
+      },
+      {
+        "command": "jiuzhang.plain",
+        "title": "Run This Page Without the Boards",
+        "category": "Jiuzhang"
+      },
+      {
+        "command": "jiuzhang.check",
+        "title": "Check This Page (a line for each problem)",
+        "category": "Jiuzhang"
+      },
+      {
+        "command": "jiuzhang.readings",
+        "title": "Run Every Reading of This Page",
+        "category": "Jiuzhang"
+      },
+      {
+        "command": "jiuzhang.restartServer",
+        "title": "Restart Language Server",
+        "category": "Jiuzhang"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "jiuzhang.run",
+          "when": "resourceLangId == jiuzhang"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "jiuzhang.run",
+          "when": "editorLangId == jiuzhang"
+        },
+        {
+          "command": "jiuzhang.plain",
+          "when": "editorLangId == jiuzhang"
+        },
+        {
+          "command": "jiuzhang.check",
+          "when": "editorLangId == jiuzhang"
+        },
+        {
+          "command": "jiuzhang.readings",
+          "when": "editorLangId == jiuzhang"
+        },
+        {
+          "command": "jiuzhang.restartServer",
+          "when": "editorLangId == jiuzhang"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "jiuzhang.run",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "editorTextFocus && editorLangId == jiuzhang"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "jiuzhang"
+      }
+    ],
+    "configuration": {
+      "title": "Nine Chapters (jiuzhang)",
+      "properties": {
+        "jiuzhang.path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to a jiuzhang program to use as the language server (jiuzhang lsp) and to run pages with. Leave empty to use the one built into the extension."
+        },
+        "jiuzhang.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Log the messages exchanged with the language server."
+        }
+      }
+    },
+    "configurationDefaults": {
+      "[jiuzhang]": {
+        "editor.semanticHighlighting.enabled": true,
+        "editor.wordBasedSuggestions": "off"
+      }
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:vscode": "node test/vscode/run.mjs",
+    "package": "node build.mjs && vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.0",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.1.0"
+  }
+}

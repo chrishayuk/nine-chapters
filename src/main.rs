@@ -121,7 +121,7 @@ fn main() {
                 1
             }
         },
-        [f] if !f.starts_with('-') => show(&read(f), true),
+        [f] if *f == "-" || !f.starts_with('-') => show(&read(f), true),
         _ => {
             eprint!("{}", USAGE);
             2

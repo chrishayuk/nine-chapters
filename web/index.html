@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Nine Chapters, chapter 8, on a counting board</title>
+<meta name="description" content="Chapter 8 of the Nine Chapters on the Mathematical Art (九章算術, 方程), run on a counting board in the page: every procedure and every figure of the text and its commentators worked again and checked.">
+<style>
+  :root {
+    --bg: #f3efe6; --card: #fbf8f2; --ink: #1d1a16; --soft: #6b6255; --rule: #d9cfbc;
+    --red: #b3261e; --black: #1d1a17; --right: #2f6b3a; --felt: #2f4a3a; --accent: #8a5a1c;
+    --wrong-bg: rgba(179, 38, 30, .09); --now: rgba(217, 164, 90, .22);
+    --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15130f; --card: #1f1b16; --ink: #efe6d4; --soft: #a99d88; --rule: #3a3226;
+      --red: #ef7a6c; --black: #d8d0c2; --right: #8cc79a; --accent: #d9a45a;
+      --wrong-bg: rgba(239, 122, 108, .12); --now: rgba(217, 164, 90, .18);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(--serif); }
+  header, main, footer { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+  header { padding-top: 26px; }
+  .kicker { font: 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: clamp(26px, 4vw, 38px); margin: 8px 0 6px; font-weight: 600; }
+  .dek { color: var(--soft); max-width: 70ch; margin: 0 0 14px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 12px; }
+  select, button { font: 14px var(--mono); color: var(--ink); background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 10px; }
+  select { max-width: min(520px, 100%); }
+  button { cursor: pointer; min-width: 38px; }
+  button:hover, select:hover { border-color: var(--accent); }
+  button[aria-pressed="true"] { background: var(--accent); color: var(--card); }
+  .stage { position: relative; height: min(62vh, 560px); border-radius: 8px; overflow: hidden; border: 1px solid var(--rule);
+    background: radial-gradient(ellipse at 50% 30%, #4a3c2e 0%, #2a2119 70%); }
+  .stage canvas { display: block; width: 100%; height: 100%; }
+  .stage pre.fallback { margin: 0; padding: 18px; color: #efe6d4; font: 14px/1.5 var(--mono); overflow: auto; height: 100%; }
+  .caption { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline;
+    background: rgba(20, 16, 12, .78); color: #efe6d4; border-radius: 6px; padding: 8px 12px; font: 14px/1.4 var(--mono); pointer-events: none; }
+  .caption .what { font-weight: 600; }
+  .caption .zh { font-family: var(--serif); color: #d9c69b; }
+  .caption .marks { color: #8cc79a; }
+  .caption .marks.wrong { color: #ef7a6c; }
+  .tally { position: absolute; right: 12px; top: 12px; background: rgba(20, 16, 12, .72); color: #efe6d4; border-radius: 6px;
+    padding: 8px 12px; font: 12px/1.6 var(--mono); text-align: right; pointer-events: none; }
+  .tally b { color: #fff; }
+  .legend { position: absolute; left: 12px; top: 12px; color: #d9c69b; font: 12px/1.5 var(--mono); pointer-events: none; }
+  .legend i { display: inline-block; width: 22px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+  .stat { font: 13px var(--mono); color: var(--soft); margin-left: auto; }
+  .stat b { color: var(--ink); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; align-items: start; margin-top: 16px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .panel h2 { font: 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin: 0 0 8px; font-weight: 500; }
+  .page { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 0; max-height: 560px; overflow: auto; }
+  .line { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 0 10px; padding: 0 12px 0 0; font: 13px/1.7 var(--mono); }
+  .line .no { color: var(--soft); opacity: .55; text-align: right; font-size: 11px; }
+  .line .txt { white-space: pre-wrap; word-break: break-word; }
+  .line .mk { display: block; font-size: 12px; color: var(--soft); white-space: pre-wrap; }
+  .line.op { cursor: pointer; }
+  .line.op:hover { background: rgba(127, 127, 127, .06); }
+  .line.words .txt { font-family: var(--serif); color: var(--accent); }
+  .line.note .txt { color: var(--soft); }
+  .line.heading .txt { font-weight: 700; }
+  .line.right .mk { color: var(--right); }
+  .line.wrong { background: var(--wrong-bg); }
+  .line.wrong .mk { color: var(--red); font-weight: 600; }
+  .line.now { background: var(--now); }
+  textarea, .rh-editor { width: 100%; min-height: 520px; font: 13px/1.6 var(--mono); background: var(--card); color: var(--ink); border: 1px solid var(--rule); border-radius: 6px; padding: 10px; }
+  .rh-editor { padding: 0; }
+  .cm-editor { height: 520px; }
+  .cm-tooltip { background: var(--card) !important; color: var(--ink); border: 1px solid var(--rule) !important; max-width: 52ch; font: 13px/1.45 var(--serif); }
+  .rh-hover { padding: 6px 10px; } .rh-hover pre { font: 12px/1.4 var(--mono); }
+  .tok-keyword { color: var(--accent); font-weight: 600; } .tok-comment { color: var(--soft); font-style: italic; }
+  .tok-string { color: #7d5a9e; } .tok-number { color: var(--red); } .tok-namespace { color: #2d6a8a; }
+  .tok-variable { color: #5d7a2a; } .tok-macro { font-weight: 700; } .tok-operator { color: var(--soft); }
+  .about { color: var(--soft); max-width: 80ch; font-size: 15px; }
+  .about code { font: 13px var(--mono); }
+  footer { color: var(--soft); font-size: 13px; padding: 24px 16px 40px; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">九章算術 · 卷第八 · 方程</div>
+  <h1>The Nine Chapters, chapter 8, on a counting board</h1>
+  <p class="dek">Every problem of the chapter on <i>fangcheng</i>, and every board its commentators describe, set out in rods and worked
+    a step at a time, as the text says. Each figure the text states is checked against what the board gives. <code>jiuzhang</code>,
+    compiled to WebAssembly, runs in this page; the rods are drawn with three.js and the ones taken off fall under Rapier.</p>
+  <div class="bar">
+    <select id="pick" aria-label="Page"></select>
+    <button id="first" title="The board as first set (Home)">|◀</button>
+    <button id="back" title="Back a step (←)">◀</button>
+    <button id="play" title="Play (space)" aria-pressed="false">▶ play</button>
+    <button id="fwd" title="Forward a step (→)">▶</button>
+    <button id="last" title="The last step (End)">▶|</button>
+    <button id="sweep" title="Clear the rods off the floor">sweep</button>
+    <span class="stat" id="stat"></span>
+  </div>
+</header>
+<main>
+  <div class="stage" id="stage">
+    <div class="legend"><i style="background:#b3261e"></i>正 positive &nbsp; <i style="background:#1d1a17;outline:1px solid #777"></i>負 negative &nbsp;
+      <i style="background:#d9a45a"></i>taken &nbsp; <i style="background:#ef7a6c"></i>taken from</div>
+    <div class="tally" id="tally"></div>
+    <div class="caption" id="caption"></div>
+  </div>
+  <div class="grid">
+    <section class="panel">
+      <h2>The page, checked</h2>
+      <div class="page" id="page"></div>
+    </section>
+    <section class="panel">
+      <h2>The transcription (edit it: it runs as you type)</h2>
+      <textarea id="src" spellcheck="false"></textarea>
+    </section>
+  </div>
+  <section class="about">
+    <h2 style="font:12px var(--mono);letter-spacing:.08em;text-transform:uppercase;font-weight:500">What it found</h2>
+    <p>The answers are written over the board's divisor (法) after the divisor and every dividend (實) are reduced together (約):
+      that reading writes all 11 fractional answers as the text does; the 法 as the board leaves it writes 7, and lowest terms 9.
+      The text writes <code>1 18/52</code>, not <code>1 9/26</code>, and <code>33/111</code>, not <code>11/37</code>.</p>
+    <p>In this edition, Problem 6 sets its 實 as 正 where the answer needs 負; run as printed, the board gives −8 and −3.</p>
+    <p>Dai Zhen's 145 算 for the plain method is reproduced exactly by one rule of counting (every multiplication, taking and
+      division of one figure, the cancelling heads left out); his 99 comes out 98 or 101. Liu Hui's working "made short",
+      which he says takes 77 算, was run in 100,000,000 readings: none reaches the price of 黍.</p>
+  </section>
+</main>
+<footer>The text is the Sibu congkan reprint of the Weiboxie edition, read from the scans. Nothing here is claimed as new.
+  Source: <a href="https://github.com/chrishayuk/nine-chapters">nine-chapters</a>.</footer>
+
+<script type="module">
+import { mount, widthsOf } from "./board3d.js";
+
+const wasmUrl = new URL("jiuzhang.wasm", import.meta.url).href;
+let worker, nextId = 0;
+const waiting = new Map();
+function jiuzhang(args, text = "") {
+  worker ??= new Worker(new URL("worker.js", import.meta.url), { type: "module" });
+  worker.onmessage = ({ data }) => { waiting.get(data.id)?.(data); waiting.delete(data.id); };
+  const id = nextId++;
+  return new Promise((resolve) => { waiting.set(id, resolve); worker.postMessage({ id, wasmUrl, args, text }); });
+}
+
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+let pages = [], current = 0, editor = null;
+let run = null, steps = [], at = 0, widths = [], board3d = null, timer = null;
+
+function textBoard(b) {
+  const shown = b.cols.map((c, i) => [c, i]).filter(([c]) => c).reverse();
+  const w = shown.map(([c, i]) => Math.max(b.names[i].length, ...c.map((x) => String(x).length)));
+  const lw = Math.max(...b.things.map((t) => [...t].length * 2));
+  const pad = (s, n) => " ".repeat(Math.max(0, n - s.length)) + s;
+  let out = " ".repeat(lw) + shown.map(([, i], k) => "  " + pad(b.names[i], w[k])).join("") + "\n";
+  b.things.forEach((t, p) => {
+    out += t + " ".repeat(Math.max(0, lw - [...t].length * 2)) + shown.map(([c], k) => "  " + pad(c[p] ? String(c[p]) : "·", w[k])).join("") + "\n";
+  });
+  return out;
+}
+
+function showStep(i, instant = false) {
+  if (!steps.length) return;
+  at = Math.max(0, Math.min(steps.length - 1, i));
+  const s = steps[at];
+  if (board3d) board3d.show(s.board, { widths, actor: s.actor, target: s.target, instant });
+  else $("stage").querySelector("pre.fallback").textContent = textBoard(s.board);
+  // the line
+  $("page").querySelectorAll(".now").forEach((x) => x.classList.remove("now"));
+  const row = $("page").children[s.line];
+  if (row) { row.classList.add("now"); row.scrollIntoView({ block: "nearest" }); }
+  const line = run.lines[s.line];
+  const cap = $("caption");
+  cap.replaceChildren(el("span", "what", `${at + 1}/${steps.length}  ${s.what}`));
+  if (line.quote) cap.appendChild(el("span", "zh", "「" + line.quote + "」"));
+  const after = run.lines.slice(s.line + 1).find((l) => l.kind === "op" && l.steps.length === 0 && l.marks.length);
+  const lastOfLine = !steps[at + 1] || steps[at + 1].line !== s.line;
+  if (after && lastOfLine) {
+    const m = after.marks[0];
+    cap.appendChild(el("span", "marks" + (m.kind === "wrong" ? " wrong" : ""), `${after.text.split('"')[0].trim()}  ${m.text}`));
+  }
+  let plain = 0, worked = 0, most = 0;
+  for (let k = 0; k <= at; k++) { plain += steps[k].count.plain; worked += steps[k].count.worked; }
+  for (const st of steps) most = Math.max(most, st.board.rods);
+  const places = Math.max(...widths);
+  $("tally").innerHTML = `算 so far: <b>${plain}</b> plain · <b>${worked}</b> worked<br>rods on the board: <b>${s.board.rods}</b> (most ${most})<br>widest figure: <b>${places}</b> places`;
+}
+
+function draw(r) {
+  run = r;
+  const page = $("page");
+  page.replaceChildren();
+  steps = [];
+  r.lines.forEach((l, i) => {
+    const marks = l.marks.map((m) => (m.kind === "right" ? "✓" : m.kind === "wrong" ? "✗ " + m.text : m.text)).join("  ");
+    const cls = l.marks.some((m) => m.kind === "wrong") ? "wrong" : l.marks.some((m) => m.kind === "right") ? "right" : "";
+    const row = el("div", `line ${l.kind} ${cls}`);
+    const txt = el("span", "txt", l.text || " ");
+    if (marks) txt.appendChild(el("span", "mk", marks));
+    row.append(el("span", "no", String(i + 1)), txt);
+    page.appendChild(row);
+    const first = steps.length;
+    for (const s of l.steps) steps.push({ ...s, line: i });
+    if (l.steps.length) row.onclick = () => (stop(), showStep(first));
+  });
+  widths = widthsOf(steps.map((s) => s.board));
+  $("stat").innerHTML = `<b>${r.right + r.wrong}</b> figures checked · <b>${r.right}</b> right · <b>${r.wrong}</b> wrong` + (r.stopped != null ? ` · stops at line ${r.stopped + 1}` : "");
+  // start with the board as first set
+  let start = 0;
+  while (start + 1 < steps.length && steps[start + 1].what.startsWith("set ")) start++;
+  board3d?.clearFloor();
+  showStep(start, true);
+}
+
+async function check(text) {
+  const result = await jiuzhang(["json", "-"], text);
+  if (result.error || !result.out) { $("page").textContent = result.error || result.err; return; }
+  draw(JSON.parse(result.out));
+}
+
+function stop() { clearInterval(timer); timer = null; $("play").setAttribute("aria-pressed", "false"); $("play").textContent = "▶ play"; }
+function play() {
+  if (timer) return stop();
+  if (at >= steps.length - 1) showStep(0, true);
+  $("play").setAttribute("aria-pressed", "true"); $("play").textContent = "❚❚ pause";
+  timer = setInterval(() => { if (at >= steps.length - 1) return stop(); showStep(at + 1); }, 1100);
+}
+
+function pickPage(i) {
+  stop();
+  current = (i + pages.length) % pages.length;
+  $("pick").value = String(current);
+  const text = pages[current].text;
+  if (editor) editor.set(text); else $("src").value = text;
+  check(text);
+  const url = new URL(location.href);
+  url.searchParams.set("page", pages[current].name);
+  history.replaceState(null, "", url);
+}
+
+let edit;
+function edited(text) { clearTimeout(edit); edit = setTimeout(() => check(text), 250); }
+
+(async () => {
+  pages = await (await fetch(new URL("corpus.json", import.meta.url))).json();
+  pages.forEach((p, i) => $("pick").appendChild(el("option", "", `${p.title}${p.words ? " · " + p.words.slice(0, 30) + (p.words.length > 30 ? "…" : "") : ""}`)).setAttribute("value", String(i)));
+  $("pick").onchange = () => pickPage(Number($("pick").value));
+  $("first").onclick = () => (stop(), showStep(0, true));
+  $("back").onclick = () => (stop(), showStep(at - 1, true));
+  $("fwd").onclick = () => (stop(), showStep(at + 1));
+  $("last").onclick = () => (stop(), showStep(steps.length - 1, true));
+  $("play").onclick = play;
+  $("sweep").onclick = () => board3d?.clearFloor();
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest?.(".cm-editor, textarea, select")) return;
+    if (e.key === "ArrowRight") (stop(), showStep(at + 1));
+    else if (e.key === "ArrowLeft") (stop(), showStep(at - 1, true));
+    else if (e.key === " ") (e.preventDefault(), play());
+    else if (e.key === "Home") (stop(), showStep(0, true));
+    else if (e.key === "End") (stop(), showStep(steps.length - 1, true));
+  });
+  $("src").addEventListener("input", (e) => edited(e.target.value));
+  board3d = await mount($("stage"), { onError: (e) => console.warn("3D board unavailable:", e) });
+  if (!board3d) $("stage").appendChild(el("pre", "fallback", ""));
+  const want = new URL(location.href).searchParams.get("page");
+  const start = pages.findIndex((p) => p.name === want);
+  pickPage(start >= 0 ? start : pages.findIndex((p) => p.name === "no-01"));
+  import("./editor.js").then(({ upgrade }) =>
+    upgrade($("src"), { onRun: () => check($("src").value) }).then((ed) => {
+      if (!ed) return;
+      editor = ed;
+    })
+  ).catch(() => {});
+})();
+</script>
+</body>
+</html>

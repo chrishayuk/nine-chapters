@@ -3,15 +3,10 @@ dai-zhen-09        8.9                                          2 right, 0 wrong
 dai-zhen-13        8.13 (Dai Zhen, 訂訛)                          2 right, 0 wrong
 dai-zhen-18        8.18 (Dai Zhen, 訂訛: 145 and 99)              3 right, 0 wrong
 liu-hui-09         8.9                                          2 right, 0 wrong
-liu-hui-18-new     8.18 (Liu Hui: the new method, 124 算)        0 right, 4 wrong, stops at line 25, 29 lines read in the alternative
+liu-hui-18-new     8.18 (Liu Hui: the new method, 124 算)        0 right, 0 wrong, stops at line 25, 29 lines read in the alternative
     line 25: 95 at the 實 of left does not go by -91 exactly
-    line 43: the board has -26 7 -137 107 5 0
-    line 53: the board has -26 7 -137 107 5 0
-    line 61: the board has -25 6 -124 101 3 0
-    line 64: the board has -25 6 -124 101 3 0
-liu-hui-18-old     8.18 (Liu Hui: the old method made short, 77 算) 0 right, 1 wrong, stops at line 32, 10 lines read in the alternative
+liu-hui-18-old     8.18 (Liu Hui: the old method made short, 77 算) 0 right, 0 wrong, stops at line 32, 10 lines read in the alternative
     line 32: 2nd cannot be halved: a figure in it is odd
-    line 38: the board has -3 -3 -10 -2 -5 -103
 liu-hui-18-rates   8.18 (Liu Hui: the new method, the last part) 1 right, 0 wrong
 no-01              8.1                                          1 right, 0 wrong
 no-02              8.2                                          3 right, 0 wrong
@@ -33,4 +28,4 @@ no-16              8.16                                         1 right, 0 wrong
 no-17              8.17                                         1 right, 0 wrong
 no-18              8.18                                         1 right, 0 wrong
 
-26 pages; 43 figures checked, 37 right, 6 wrong.
+26 pages; 38 figures checked, 37 right, 1 wrong.

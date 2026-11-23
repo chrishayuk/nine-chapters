@@ -75,6 +75,21 @@ impl Mixed {
             v
         }
     }
+    /// As written: `1 18/52`.
+    pub fn written(&self) -> String {
+        let s = if !self.has_fraction() {
+            self.whole.to_string()
+        } else if self.whole == 0 {
+            format!("{}/{}", self.num, self.den)
+        } else {
+            format!("{} {}/{}", self.whole, self.num, self.den)
+        };
+        if self.neg {
+            format!("-{}", s)
+        } else {
+            s
+        }
+    }
     pub fn has_fraction(&self) -> bool {
         self.den != 0 && self.num != 0
     }
