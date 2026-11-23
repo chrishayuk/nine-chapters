@@ -567,13 +567,13 @@ pub fn render(run: &Run, boards: bool) -> String {
         }
     }
     let (r, wr) = run.checked;
-    if r + wr > 0 {
-        out.push_str(&format!(
-            "\n{} checked, {} right, {} wrong.\n",
-            plural(r + wr, "figure"),
-            r,
-            wr
-        ));
+    let unreached = run.lines.iter().filter(|l| l.marks.iter().any(|m| *m == Mark::Info("not reached".into()))).count();
+    if r + wr + unreached > 0 {
+        out.push_str(&format!("\n{} checked, {} right, {} wrong.", plural(r + wr, "figure"), r, wr));
+        if unreached > 0 {
+            out.push_str(&format!(" {} not reached.", unreached));
+        }
+        out.push('\n');
     }
     if let Some(i) = run.stopped {
         out.push_str(&format!("stopped at line {}: nothing after it was run.\n", i + 1));
