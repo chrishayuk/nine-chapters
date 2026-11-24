@@ -35,6 +35,40 @@ and `jiuzhang readings` runs every combination.
 This is not a solver for linear equations. It is a reading of one chapter:
 what the text says to do, what doing it gives, and where they part.
 
+**Try it:** the [playground](https://chrishayuk.com/demos/nine-chapters) runs
+every page on a three-dimensional counting board in the browser, and the
+[notebook entry](https://chrishayuk.com/notebook/the-nine-chapters-writes-18-52-as-the-board-leaves-it)
+tells the story.
+
+## What it found, in brief
+
+Each line links to its section below, which says what the result rests on.
+Who had it first is in [Earlier work](#earlier-work); nothing here is claimed
+as new.
+
+- **38 of 39** statements of the text and its commentators that the board
+  reaches agree with it. The one that does not is [Problem 6](#problem-6),
+  whose signs in this edition give −8 and −3 for 8 and 3 (Li Huang corrected
+  them).
+- [**The answers are written as the board leaves them**](#how-the-answers-are-written),
+  over one denominator each and not always in lowest terms: 1 18/52, not
+  1 9/26. Dividing the 法 and the 實s by what they share (約) writes all 11
+  fractional answers as the text does; the board's 法 as it stands writes 7;
+  lowest terms writes 9.
+- [**Dai Zhen's 145**](#dai-zhens-counts) is what his plain method comes to
+  if each multiplication, taking and division of a single figure is one 算.
+  His 99 is reached only by a rule proposed after both numbers were known.
+- [**Liu Hui's 77, as printed, does not run**](#liu-huis-77): none of
+  100,000,000 combinations of the readings offered reaches the price of 黍,
+  as Dai Zhen said (訛舛不可通).
+- [**Both published reconstructions of the 77 run**](#two-published-readings-of-the-77).
+  Guo Shuchun's emended text (算 as operations) reaches the prices, and his own
+  rule accounts for 67 of the 77, leaving 10 for placing rods. Every one of
+  Hart's fifteen rod counts (算 as rods) agrees with the board. But his
+  77-rod bound holds only if each step is worked a position at a time from the
+  bottom; worked from the top it needs 78. Each reading gives 77 only on its
+  own path, so the number cannot choose between them.
+
 ## Install
 
 You need [Rust](https://rustup.rs):
@@ -72,6 +106,7 @@ jiuzhang verify            run every page and compare with the source
 jiuzhang answers           how each answer is written, and which reading of the last step writes it so
 jiuzhang counts            the counts of 算 the commentators give, under every rule
 jiuzhang readings FILE     every combination of the readings a page gives in the alternative
+jiuzhang rods FILE         the most rods on the board, by how each step is worked
 jiuzhang solve 3 2 1 39 / 2 3 1 34 / 1 2 3 26 [by text|reducing|cross|one]
 jiuzhang methods           the procedures `Solve` can follow
 jiuzhang rules             the rules for counting 算
@@ -108,12 +143,14 @@ as new. A literature search by a second model (below, and
 [`docs/literature-check.md`](docs/literature-check.md)) found that several of
 these results are already in the literature, and says which.
 
-`jiuzhang verify` runs 26 pages: the 18 problems and 8 pages of commentary.
-They make 39 checked statements (a column a commentator gives, an answer, a
-set of rates, a count): 38 agree with the board and 1 does not. Five more are
-not reached: they come after a step that cannot be done. A statement can hold
-several figures, and some figures the sources give are quoted and not
-checked, so this is not a census of every number in the text.
+`jiuzhang verify` runs 28 pages. The 18 problems and 8 pages of commentary
+make 39 checked statements (a column a commentator gives, an answer, a set
+of rates, a count): 38 agree with the board and 1 does not. Five more are not
+reached: they come after a step that cannot be done. The other two pages are
+modern reconstructions of Liu Hui's 77 (below), whose 18 statements all
+agree; with them `verify` reports 57, 56 right. A statement can hold several
+figures, and some figures the sources give are quoted and not checked, so
+this is not a census of every number in the text.
 
 ### How the answers are written
 
@@ -210,9 +247,9 @@ other changes) and restore 六 for 空 (crediting Dai Dunyuan); Guo Shuchun
 77, counting each placing of rods, each operation on a whole column and each
 division of a 實 by a 法 as one 算. Wei Xuegang and Guo Shirong (2016) and
 Zhu Yiwen (2025) read 算 as counting rods. The census here ran the text as
-printed, not these emendations: it says only that the unemended passage does
-not work under the readings offered, which is what Dai Zhen said. Running the
-published emendations is the next thing to do. Among what the menu leaves out
+printed: it says only that the unemended passage does not work under the
+readings offered, which is what Dai Zhen said. The published reconstructions
+are run in the next section. Among what the menu leaves out
 (the review lists more): 頭位 as anything but the first figure of the column
 worked on; the columns set one at a time, as 先置第三行 … 次置第二行 …
 次置右行 says, with copies kept; other repairs of 及減第三行; mutual
@@ -326,8 +363,8 @@ The numbers in this README are after those changes.
 
 [`tutorial/`](tutorial/01-introduction.md) has ten chapters: the board,
 multiplying and taking, the last step, negative numbers, rates, the
-commentators' boards, counting 算, reading a corrupt passage, and a
-reference. Every page and command in it is run by `cargo test` and compared
+commentators' boards, counting 算, reading a corrupt passage (and running
+the two published readings of it), and a reference. Every page and command in it is run by `cargo test` and compared
 with what the chapter says it prints.
 
 ## Tests
@@ -349,7 +386,11 @@ Chapter 8 and its commentaries have been edited, translated and studied at
 length: Qian Baocong's and Guo Shuchun's critical editions; Shen Kangshen,
 J. N. Crossley and A. W.-C. Lun, *The Nine Chapters on the Mathematical Art:
 Companion and Commentary* (1999); K. Chemla and Guo Shuchun, *Les neuf
-chapitres* (2004); R. Hart, *The Chinese Roots of Linear Algebra* (2011);
+chapitres* (2004); R. Hart, *The Chinese Roots of Linear Algebra* (2011), and
+"Tracing Practices Purloined by the 'Three Pillars'" (*Korean Journal for
+the History of Science* 34, 2012, pp. 287-357, with Liu Hui's 77 on
+pp. 322-329); Guo Shuchun, *九章筭術譯注*
+(revised 2020);
 and on the rods and the cost of the procedures, Zhu Yiwen, "數：筭與術" (漢學研究
 28, 2010) and "The interplay between textual procedures and material
 operations" (*Science in Context*, 2025).
@@ -364,7 +405,8 @@ Chemla and Guo, Guo 2020, Zhu, and Li Huang); its report, with sources, is
 | Problem 6's 正 should be 負 | known: Li Huang; Chemla and Guo 2004 |
 | the answers' denominators and the board | partly: Hart 2011 (33/111, the determinant); not the count of eleven |
 | Dai Zhen's 145 as a count of single-figure operations | not found (Shen et al. and Guo's 彙校 could not be read) |
-| Liu Hui's 77 and 124 passages | partly: emended and worked by Chemla and Guo, and Guo 2020, who tallies 77; 算 read as rods by Wei and Guo 2016 and Zhu 2025 |
+| Liu Hui's 77 and 124 passages | known: emended and worked by Chemla and Guo, and Guo 2020, who tallies 77 as operations; 算 read as rods by Hart 2012, who keeps to 77 rods, and by Wei and Guo 2016 and Zhu 2025 |
+| Guo's and Hart's reconstructions, run: Guo's rule gives 67 + 10 placings; Hart's 15 rod counts agree; his bound needs bottom-up working (78 top down) | not found (Guo's figure 8-7 was not readable) |
 | the cost of the literal reading | partly: Zhu 2010 on rods against steps; not these figures |
 | Liu Hui's rates 7:4:3:5:6 | known: Guo 2020; Chemla and Guo 2004 |
 
