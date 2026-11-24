@@ -140,9 +140,30 @@ Chemla & Guo's notes to 8.18 refer to the 1993 book around **pp. 440, 455, 458**
 
 ### 12. Other checked material and citation leads
 
-- **Zhu 2010**, “數：筭與術——以九數之方程為例,” *漢學研究* 28(4): 73–105: read the [National Central Library PDF text](https://ccsndb.ncl.edu.tw/nclccs/pdf/01_028_004_01_03.pdf), particularly pp. 78–82 and 91–95. It discusses rod economy, extra placement, and signs; it quotes the general discussion accompanying 8.18. **P. 82 actually reports 110 rods just to lay out the last problem**, unlike the supplied convention's 116, and gives an average of 2.9 rods per digit. I have not established the reason for that discrepancy. **No 124-board peak found in those passages.** Its worked comparison is mutual multiplication, not the supplied new-method reconstruction. Footnote 19, p. 80, also supplies a useful unread lead: Li's 1998 *导读与译注*, **pp. 676–682**.
+- **Zhu 2010**, “數：筭與術——以九數之方程為例,” *漢學研究* 28(4): 73–105: read the [National Central Library PDF text](https://ccsndb.ncl.edu.tw/nclccs/pdf/01_028_004_01_03.pdf), particularly pp. 78–82 and 91–95. It discusses rod economy, extra placement, and signs; it quotes the general discussion accompanying 8.18. **P. 82 reports 110 rods just to lay out the last problem** (筆者經過計算，光擺放方程就要用去一百十根筭籌), where this repository counts 116. See "Zhu's 110" below: the digit rule is the same, and 110 is most likely 38 non-zero digits × his average of 2.9 rods. **No 124-board peak found in those passages.** Its worked comparison is mutual multiplication, not the supplied new-method reconstruction. Footnote 19, p. 80, also supplies a useful unread lead: Li's 1998 *导读与译注*, **pp. 676–682**.
 - **Sun Yuh-Sien 孫郁興**, “《九章算數》方程章直解”: read the 8.18 discussion on **pp. 146–148** in the [conference PDF](https://mx.nthu.edu.tw/~chmau/doc/11th_conference.pdf). It reproduces the traditional 124 sentence and gives a modern algebraic elimination. **No 124-rod board identification or rod-counting rule found there.** I did not independently verify the proceedings' publication date.
 - **Mo Shaokui 莫绍揆 2000**, “有关《九章算术》的一些讨论,” *自然科学史研究* 19: 97–113, and **Guo Shuchun 1985**, “《九章算术》方程章刘徽注新探,” 4(1): 1–5: citation leads only; bodies not read. The former is cited by Hart 2012, p. 315 note 31; the latter appears in the [2020 CAHST article's bibliography](https://www.sciengine.com/parse/pdf/2096-4226/AFC55AA8F2D241F3BBEA7BC7F0919C4E.pdf). **Unknown**, not negative findings.
+
+## Zhu's 110
+
+Zhu (2010, p. 82): "筆者經過計算，光擺放方程就要用去一百十根筭籌" (by my calculation, setting out the array alone uses 110 rods), followed at once by "平均而言，一位數字需要用2.9根筭籌" (on average a digit needs 2.9 rods), with note 29: "1 用一根，2、6 用兩根，3、7用三根，4、8用四根，5、9用五根，0不用筭籌" (1 takes one rod; 2 and 6 two; 3 and 7 three; 4 and 8 four; 5 and 9 five; 0 none). The 2.9 is the mean over the ten digits, (1+4+6+8+10)/10.
+
+That is this repository's rule. Under it the opening board of 8.18 is 116 rods, column by column from the right 23, 24, 21, 23, 25 (coefficients 86, 實 30), and the count does not depend on how signs or empty places are shown, because none are present at the start.
+
+What could make 110 (checked by script):
+
+| Hypothesis | Count |
+|---|---|
+| Zhu's rule, counted digit by digit | 116 |
+| 38 non-zero digits × 2.9 | **110.2** |
+| all 39 digits, the 0 of 140 included, × 2.9 | 113.1 |
+| 6–9 as d−5 rods | 105 |
+| 5 as one rod | 92 |
+| 0 as one rod | 117 |
+| coefficients only, no 實 | 86 |
+| one coefficient misread | cannot lose 6 rods |
+
+The only single-figure changes that give 110 alter a 實 (128 to 1, 10 or 100; 95 to 4, 8 or 13…), none of them a plausible reading. The estimate is the one explanation that gives 110 exactly, it is the figure Zhu states in the next sentence, and he uses the same estimate for his example in note 30, six two-digit numbers (2.9 × 12 = 34.8, "近三十五根"). It remains an inference: Zhu does not show the count. It does not bear on the 124, which is counted digit by digit under the same rule, and the rule itself is confirmed by his note.
 
 ## Wei & Guo full-text access audit
 

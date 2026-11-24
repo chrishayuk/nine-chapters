@@ -356,8 +356,13 @@ not be opened, so they may well have counted this peak. Hudeček (2008, p. 206)
 prints this board's figures (without the 實), and his note 71 records failed attempts to reach 124 by
 counting operations. Chemla and Guo (2004) and Guo (2020) read 124 as steps.
 The explicit peak, on Guo's path and under a stated rule of rods, was not
-found in what could be read. One discrepancy is open: Zhu (2010, p. 82)
-counts 110 rods for setting out the problem, where this rule counts 116.
+found in what could be read. Zhu (2010, p. 82) gives 110 rods for setting
+out the problem, where this rule counts 116, but his digit rule (n. 29) is
+this one, and under it the board is 116. His 110 is most likely an
+estimate: he states "on average a digit needs 2.9 rods" in the next
+sentence, and the board has 38 non-zero digits; 38 × 2.9 = 110.2. No other
+digit rule gives 110, and no single misread coefficient does
+(`docs/literature-124.md`).
 
 The same question asked of the old method: Guo's emended working, with each
 column set only when an operation first uses it
