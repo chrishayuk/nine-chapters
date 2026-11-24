@@ -406,6 +406,7 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
                                     let pos = position(&b, t, p)?;
                                     b.cross(a, t, pos)
                                 }
+                                How::Times(n) => b.take(a, t, *n, None),
                                 How::InTurn(p) => {
                                     let pos = position(&b, t, p)?;
                                     let ops = b.mutual(a, t, pos).map_err(|e| tr(&b, e))?;
@@ -420,9 +421,9 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
                             };
                             did(&b, op, &mut lr)?;
                         }
-                        Stmt::Add { a, t } => {
+                        Stmt::Add { a, t, times } => {
                             let (a, t) = (col(a)?, col(t)?);
-                            let op = b.take(a, t, -1, None);
+                            let op = b.take(a, t, -*times, None);
                             did(&b, op, &mut lr)?;
                         }
                         Stmt::Halve(c) => {
@@ -530,6 +531,14 @@ pub fn run_lines(lines: Vec<Line>, choices: &[(usize, usize)]) -> Run {
                                     "nothing has been solved through a 法 on the board as it now stands: `Solve` first"
                                         .into(),
                                 ),
+                            }
+                        }
+                        Stmt::Rods(r) => {
+                            let have = b.rod_count() as u64;
+                            if have == *r {
+                                lr.marks.push(Mark::Right);
+                            } else {
+                                lr.marks.push(Mark::Wrong(format!("the board holds {} rods", have)));
                             }
                         }
                         Stmt::Count(c) => {

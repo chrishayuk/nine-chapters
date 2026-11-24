@@ -15,6 +15,7 @@ const USAGE: &str = "jiuzhang: chapter 8 of the Nine Chapters (九章算術, 方
   jiuzhang answers           how each answer is written, and which reading of the last step writes it so
   jiuzhang counts            the counts of 算 the commentators give, under every rule
   jiuzhang readings FILE     every combination of the readings a page gives in the alternative
+  jiuzhang rods FILE         the most rods the board needs, by how each step is worked
   jiuzhang solve 3 2 1 39 / 2 3 1 34 / 1 2 3 26 [by text|reducing|cross|one]
   jiuzhang methods           the procedures `Solve` can follow
   jiuzhang rules             the rules for counting 算
@@ -92,6 +93,8 @@ fn main() {
         ["answers"] => report::answers(),
         ["counts"] => report::counts(),
         ["readings", f] => readings::report(&read(f)),
+        ["rods", f] => report::rods(&read(f)),
+        ["rods", "no", k] => report::rods(page(k)),
         ["readings", "no", k] => readings::report(page(k)),
         ["methods"] => {
             for m in METHODS {

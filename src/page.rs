@@ -55,6 +55,8 @@ pub enum How {
     Crosswise(Pos),
     /// 相減: each taken from the other in turn until the position is gone.
     InTurn(Pos),
+    /// A stated number of times (`2 times`).
+    Times(Num),
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -113,6 +115,7 @@ pub enum Stmt {
     Add {
         a: ColRef,
         t: ColRef,
+        times: Num,
     },
     Halve(ColRef),
     Reduce(ColRef),
@@ -123,6 +126,8 @@ pub enum Stmt {
     Answer(Vec<Mixed>),
     Rates(Vec<Num>),
     Count(u64),
+    /// The source says the board now holds so many rods.
+    Rods(u64),
     /// The reading that does nothing: a clause taken as corrupt or idle.
     Nothing,
 }
@@ -144,6 +149,7 @@ impl Stmt {
             Stmt::Answer(_) => "Answer",
             Stmt::Rates(_) => "Rates",
             Stmt::Count(_) => "Count",
+            Stmt::Rods(_) => "Rods",
             Stmt::Nothing => "Nothing",
         }
     }
@@ -165,7 +171,7 @@ impl Stmt {
 
 pub const KEYWORDS: &[&str] = &[
     "Things", "Set", "Multiply", "Take", "Add", "Halve", "Reduce", "Divide", "Drop", "Gives", "Solve", "Answer",
-    "Rates", "Count", "Nothing",
+    "Rates", "Count", "Rods", "Nothing",
 ];
 
 /// The kind of a token, for colouring.
@@ -454,6 +460,14 @@ fn stmt(text: &str, base: usize) -> (Result<Stmt, String>, Vec<(usize, usize, To
                 let t = p.col()?;
                 let how = match p.peek() {
                     None => How::Once,
+                    Some(w) if parse_num(w).is_some() => {
+                        let n = p.num()?;
+                        p.word("times")?;
+                        if n < 1 {
+                            return Err("a number of times is one or more".into());
+                        }
+                        How::Times(n)
+                    }
                     Some("until") => {
                         p.next(Tok::Word);
                         let pos = p.pos()?;
@@ -499,7 +513,18 @@ fn stmt(text: &str, base: usize) -> (Result<Stmt, String>, Vec<(usize, usize, To
             "Add" => {
                 let a = p.col()?;
                 p.word("to")?;
-                Stmt::Add { a, t: p.col()? }
+                let t = p.col()?;
+                let times = if p.peek().is_some() {
+                    let n = p.num()?;
+                    p.word("times")?;
+                    if n < 1 {
+                        return Err("a number of times is one or more".into());
+                    }
+                    n
+                } else {
+                    1
+                };
+                Stmt::Add { a, t, times }
             }
             "Halve" => Stmt::Halve(p.col()?),
             "Reduce" => Stmt::Reduce(p.col()?),
@@ -522,6 +547,13 @@ fn stmt(text: &str, base: usize) -> (Result<Stmt, String>, Vec<(usize, usize, To
             }
             "Rates" => Stmt::Rates(p.nums()?),
             "Nothing" => Stmt::Nothing,
+            "Rods" => {
+                let n = p.num()?;
+                if n < 0 {
+                    return Err("a number of rods is not negative".into());
+                }
+                Stmt::Rods(n as u64)
+            }
             "Count" => {
                 let n = p.num()?;
                 if n < 0 {
@@ -708,6 +740,23 @@ mod tests {
             }
         );
         assert_eq!(one("Solve by cross."), Stmt::Solve(Method::Cross));
+        assert_eq!(
+            one("Take right from 2nd 20 times."),
+            Stmt::Take {
+                a: ColRef::Right,
+                t: ColRef::Nth(2),
+                how: How::Times(20)
+            }
+        );
+        assert_eq!(
+            one("Add left to right 2 times"),
+            Stmt::Add {
+                a: ColRef::Left,
+                t: ColRef::Right,
+                times: 2
+            }
+        );
+        assert_eq!(one("Rods 77"), Stmt::Rods(77));
         assert_eq!(
             one("Gives right 0 33 -45 3000"),
             Stmt::Gives(ColRef::Right, vec![0, 33, -45, 3000])

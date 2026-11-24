@@ -318,6 +318,46 @@ pub fn counts() -> i32 {
             Err(e) => println!("{}: {}", id, e),
         }
     }
+    // the two published readings of the 77
+    let guo = crate::corpus::find("guo-18-old");
+    let hart = crate::corpus::find("hart-18-old");
+    if let (Some((_, g)), Some((_, h))) = (guo, hart) {
+        let ops = |text: &str| -> (u64, usize, bool) {
+            let run = check::run(text);
+            let placings = run
+                .lines
+                .iter()
+                .filter(|l| matches!(&l.line.kind, Kind::Stmt(v) if matches!(v[l.choice], Stmt::Set(..))))
+                .count();
+            let ok = run.stopped.is_none() && !run.findings.iter().any(|f| f.severity <= Severity::Fails);
+            (crate::count::count(crate::count::Rule::Guo, &run.ops), placings, ok)
+        };
+        let (go, gp, gok) = ops(g);
+        let (ho, hp, hok) = ops(h);
+        let (gr, hr) = (rods_at(g), rods_at(h));
+        println!("\nTwo published readings of Liu Hui's 77 (see docs/guo-77.md):");
+        println!(
+            "  Guo Shuchun (2020), 算 as operations, on his emended text: {}; under his rule {} operations, \
+leaving {} of the 77 for placing rods, which are not modelled ({} columns are set on this page); the board holds {} rods at most",
+            if gok { "runs to the prices" } else { "does NOT run to the prices" },
+            go,
+            77i64 - go as i64,
+            gp,
+            gr.ends
+        );
+        println!(
+            "  Hart (2012), 算 as rods, on his path: {}; at the end of each step {} rods at most; worked a column at a time {}, \
+a position at a time top down {}, bottom up {}, in the best order {}; under Guo's rule {} operations and {} placings",
+            if hok { "runs to the price of 黍, and every count of rods he reports agrees" } else { "does NOT agree with his counts" },
+            hr.ends,
+            hr.whole,
+            hr.top_down,
+            hr.bottom_up,
+            hr.best,
+            ho,
+            hp
+        );
+    }
     let _ = Method::Text;
     let _ = Mark::Right;
     0
@@ -341,4 +381,166 @@ pub fn board_before_solve(text: &str) -> Option<crate::board::Board> {
         }
     }
     b
+}
+
+/// How many rods a page's board needs, under ways of working a step.
+///
+/// The board after each step is what the page records. Within a step, the
+/// column being worked passes through other figures: multiplied first and
+/// then taken from, it stands for a moment as the product; set position by
+/// position straight to its new figures, it is part old and part new. The
+/// most rods it needs depends on which. For each way, the most rods on the
+/// board at any moment.
+pub struct RodsAt {
+    pub ends: u32,
+    pub whole: u32,
+    pub top_down: u32,
+    pub bottom_up: u32,
+    pub best: u32,
+    /// (line, what, best) for the steps whose best order needs more than the ends do.
+    pub over: Vec<(usize, String, u32)>,
+}
+
+fn positions_peak(before: &crate::board::Board, after: &crate::board::Board, t: usize, order: &[usize]) -> u32 {
+    let mut b = before.clone();
+    let mut peak = b.rod_count();
+    let new = after.cols[t].clone().unwrap_or_default();
+    for &i in order {
+        if let Some(Some(c)) = b.cols.get_mut(t) {
+            if i < c.len() {
+                c[i] = new[i];
+            }
+        }
+        peak = peak.max(b.rod_count());
+    }
+    peak.max(after.rod_count())
+}
+
+fn permutations(n: usize) -> Vec<Vec<usize>> {
+    if n == 0 {
+        return vec![vec![]];
+    }
+    let mut out = vec![];
+    for p in permutations(n - 1) {
+        for k in 0..=p.len() {
+            let mut q = p.clone();
+            q.insert(k, n - 1);
+            out.push(q);
+        }
+    }
+    out
+}
+
+/// A step of the source: a run of operation lines on one column, ended by
+/// anything else (an assertion, a note, a blank line) or by another column.
+struct Group {
+    target: usize,
+    line: usize,
+    what: String,
+    before: crate::board::Board,
+    after: crate::board::Board,
+}
+
+pub fn rods_at(text: &str) -> RodsAt {
+    let run = check::run(text);
+    let mut r = RodsAt {
+        ends: 0,
+        whole: 0,
+        top_down: 0,
+        bottom_up: 0,
+        best: 0,
+        over: vec![],
+    };
+    let mut groups: Vec<Group> = vec![];
+    let mut open: Option<Group> = None;
+    let mut board: Option<crate::board::Board> = None;
+    for (li, l) in run.lines.iter().enumerate() {
+        let op = match &l.line.kind {
+            Kind::Stmt(v) => v[l.choice].works() && !matches!(v[l.choice], Stmt::Set(..) | Stmt::Drop(_)),
+            _ => false,
+        };
+        // every board the page records, worked a column at a time
+        for st in &l.steps {
+            r.whole = r.whole.max(st.board.rod_count());
+        }
+        let Some(last) = l.steps.last() else {
+            if !op {
+                groups.extend(open.take());
+            }
+            continue;
+        };
+        if !op {
+            // placing a column, or solving: a step of its own
+            groups.extend(open.take());
+            r.ends = r.ends.max(last.board.rod_count());
+            r.top_down = r.top_down.max(last.board.rod_count());
+            r.bottom_up = r.bottom_up.max(last.board.rod_count());
+            r.best = r.best.max(last.board.rod_count());
+            board = Some(last.board.clone());
+            continue;
+        }
+        let t = last.op.target;
+        let before = board.clone().unwrap_or_else(|| last.board.clone());
+        match &mut open {
+            Some(g) if g.target == t => g.after = last.board.clone(),
+            _ => {
+                groups.extend(open.take());
+                let what = l.line.text.split('"').next().unwrap_or("").trim().to_string();
+                open = Some(Group {
+                    target: t,
+                    line: li,
+                    what,
+                    before,
+                    after: last.board.clone(),
+                });
+            }
+        }
+        board = Some(last.board.clone());
+    }
+    groups.extend(open.take());
+    for g in &groups {
+        let h = g.after.height();
+        let down: Vec<usize> = (0..h).collect();
+        let up: Vec<usize> = (0..h).rev().collect();
+        let ends = g.after.rod_count().max(g.before.rod_count());
+        r.ends = r.ends.max(g.after.rod_count());
+        r.top_down = r.top_down.max(positions_peak(&g.before, &g.after, g.target, &down));
+        r.bottom_up = r.bottom_up.max(positions_peak(&g.before, &g.after, g.target, &up));
+        let best = permutations(h)
+            .iter()
+            .map(|o| positions_peak(&g.before, &g.after, g.target, o))
+            .min()
+            .unwrap_or(0);
+        r.best = r.best.max(best);
+        if best > ends {
+            r.over.push((g.line, g.what.clone(), best));
+        }
+    }
+    r
+}
+
+pub fn rods(text: &str) -> i32 {
+    let r = rods_at(text);
+    println!("The most rods on the board at any moment, by how a step is worked:");
+    println!(
+        "  {:>5}  at the end of each step (a run of lines on one column, up to an assertion or a note)",
+        r.ends
+    );
+    println!(
+        "  {:>5}  each line worked on the whole column at once (a product set down, then taken from)",
+        r.whole
+    );
+    println!(
+        "  {:>5}  each step worked a position at a time, straight to its new figure, top down",
+        r.top_down
+    );
+    println!("  {:>5}  the same, bottom up", r.bottom_up);
+    println!(
+        "  {:>5}  each step worked a position at a time, in the best order for it",
+        r.best
+    );
+    for (line, what, n) in &r.over {
+        println!("    line {}: {} needs {} at best", line + 1, what, n);
+    }
+    0
 }

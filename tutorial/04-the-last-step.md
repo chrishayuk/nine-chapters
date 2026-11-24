@@ -97,7 +97,7 @@ Solve by text.       法 36; 實 333 153 99; 9 steps
     #3    36       1      1
     實    99      24     39
 
-plain 37, worked 35, readoff 37, every 35, repeated 39, columns 9
+guo 23, plain 37, worked 35, readoff 37, every 35, repeated 39, columns 9
 ```
 
 It shows each taking with the board after it. The multiplying a taking

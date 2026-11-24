@@ -68,4 +68,26 @@ fn the_findings() {
     assert!(counts.contains("Count 145  plain     145   ✓"));
     assert!(counts.contains("liu-hui-18-old: Liu Hui says 77 算. Of 100000000 readings"));
     assert!(counts.contains("and 0 agree"));
+    // the two published readings of Liu Hui's 77
+    assert!(
+        counts.contains("on his emended text: runs to the prices; under his rule 67 operations, leaving 10 of the 77")
+    );
+    assert!(counts.contains("every count of rods he reports agrees; at the end of each step 77 rods at most"));
+    assert!(counts.contains("a position at a time top down 78, bottom up 77, in the best order 77"));
+}
+
+#[test]
+fn hart_rods_and_guo_steps() {
+    let hart = jiuzhang::corpus::find("hart-18-old").unwrap().1;
+    let r = jiuzhang::check::run(hart);
+    assert_eq!(r.checked, (16, 0), "fifteen of Hart's counts of rods and the 黍");
+    let rods = jiuzhang::report::rods_at(hart);
+    assert_eq!(
+        (rods.ends, rods.whole, rods.top_down, rods.bottom_up, rods.best),
+        (77, 86, 78, 77, 77)
+    );
+    let guo = jiuzhang::corpus::find("guo-18-old").unwrap().1;
+    let r = jiuzhang::check::run(guo);
+    assert!(r.stopped.is_none());
+    assert_eq!(jiuzhang::count::count(jiuzhang::count::Rule::Guo, &r.ops), 67);
 }

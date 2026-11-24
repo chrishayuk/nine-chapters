@@ -200,7 +200,7 @@ pub const KEYWORD_HELP: &[(&str, &str)] = &[
     ("Things", "`Things A B C 實` names the positions of a column, top to bottom; the last is the 實."),
     ("Set", "`Set right 3 2 1 39` sets a column (置). Columns are counted from the right: right, middle, left; or right, 2nd, 3rd, …, left."),
     ("Multiply", "`Multiply middle by the head of right` multiplies the whole of a column (徧乘)."),
-    ("Take", "`Take right from middle` takes one column from another once (減); `… until the head is gone` as many times as empties the head (直除); `… as far as it goes` while it goes (不足減乃止); `… crosswise` after cross-multiplying (互乘)."),
+    ("Take", "`Take right from middle` takes one column from another once (減); `… until the head is gone` as many times as empties the head (直除); `… as far as it goes` while it goes (不足減乃止); `… crosswise` after cross-multiplying (互乘); `… 3 times` a stated number of times."),
     ("Add", "`Add right to middle` adds one column to another (益, 并)."),
     ("Halve", "`Halve middle` halves a column (半)."),
     ("Reduce", "`Reduce middle` divides a column by what its figures share (約)."),
@@ -210,6 +210,7 @@ pub const KEYWORD_HELP: &[(&str, &str)] = &[
     ("Solve", "`Solve` does the rest of the procedure (方程術); `Solve by reducing|cross|one` by another reading."),
     ("Answer", "`Answer 9 1/4, 4 1/4, 2 3/4`: the answer as the text writes it. Checked, and how it is written compared with each reading of the last step."),
     ("Rates", "`Rates 721 265 …`: an answer given as rates (率): the 法, then the 實s, reduced together. Checked."),
+    ("Rods", "`Rods 77`: the source says the board now holds 77 rods (a digit to five is that many rods, six to nine one for five and the rest). Checked."),
     ("Count", "`Count 77`: the source says the operations since the last count take so many 算. Compared under every rule."),
 ];
 

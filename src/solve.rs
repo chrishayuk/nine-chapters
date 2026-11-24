@@ -206,6 +206,7 @@ pub fn solve(board: &Board, method: Method) -> Result<Solution, (Trouble, Vec<St
                     &mut steps,
                     &b,
                     Op {
+                        scalar: true,
                         target: order[k],
                         actor: None,
                         what,
@@ -218,6 +219,7 @@ pub fn solve(board: &Board, method: Method) -> Result<Solution, (Trouble, Vec<St
                 &mut steps,
                 &b,
                 Op {
+                    scalar: true,
                     target: order[m - 1],
                     actor: None,
                     what: format!("every 實 by the 法, {}", fa),
@@ -270,6 +272,7 @@ pub fn solve(board: &Board, method: Method) -> Result<Solution, (Trouble, Vec<St
                     &mut steps,
                     &b,
                     Op {
+                        scalar: true,
                         target: order[k],
                         actor: None,
                         what,

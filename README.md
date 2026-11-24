@@ -220,6 +220,46 @@ subtraction ending in either column. The independent review tried a wider
 search of its own (heads of either column, other orders) and found no
 working reading either.
 
+### Two published readings of the 77
+
+Two published reconstructions read 算 differently, and both are run here, from
+a second model's extraction of the sources ([`docs/guo-77.md`](docs/guo-77.md),
+which marks what it read and what it reconstructed). The pages assert only
+what the sources state.
+
+**Guo Shuchun (2020): 算 as operations.** Guo emends the passage (with
+Chemla and Guo 2004) and works it block by block; his note 40 counts as one
+算 each placing of rods, each multiplication or division of a whole column,
+each taking of one column from another, and each division of a 實 by a 法.
+`corpus/guo-18-old.jz` follows his emended text: it runs to the end, both
+halvings (餘可半) go exactly, the 黍 comes out six and the prices check. Under
+his rule, without the placings, it is 67 operations; his 77 leaves 10 for
+placing rods, which this page does not model, and how his figure 8-7 assigns
+them was not readable.
+
+**Roger Hart (2012): 算 as rods.** Hart reconstructs the old method on a
+board where columns are placed as they are needed, and counts the rods on it
+after each step: never more than 77. `corpus/hart-18-old.jz` follows his
+steps, and every one of the fifteen counts he reports agrees with the board,
+counted with jiuzhang's rule of rods (a digit to five is that many rods, six
+to nine one for five and the rest), which was written before his paper was
+read. His path ends with the 黍 at six.
+
+`jiuzhang rods` asks how many rods a step needs while it is worked, not only
+after. Hart's 77 holds if each column is worked a position at a time,
+straight to its new figures, from the bottom (or in the best order for each
+step). Worked from the top, his twelfth step briefly needs 78; worked a
+column at a time, setting down a product and then taking from it, 86. So his
+reconstruction keeps to 77 rods, under an assumption about how a step is
+worked that the text does not state.
+
+Each reading gives 77 only on its own path: Guo's working holds 116 rods at
+most (all five columns are set at the start, as his tally's first placing
+has it), and Hart's is 59 operations under Guo's rule, with 5 placings. The
+number 77 does not choose between them. Wei Xuegang and Guo Shirong (2016)
+and Zhu Yiwen (2025) also read 算 as rods; their reconstructions were not
+readable.
+
 His new method (124 算), which Guo (2020, nn. 41-82) also works through, was
 given the same treatment and stops, under every
 reading offered, by the passage's fourth clause. Its last part, where the

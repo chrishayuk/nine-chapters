@@ -39,6 +39,9 @@ pub struct Op {
     pub actor: Option<usize>,
     pub what: String,
     pub events: Vec<Ev>,
+    /// Worked figure by figure off the board (finding a thing from its
+    /// column), not an operation on a whole column.
+    pub scalar: bool,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -174,6 +177,7 @@ impl Board {
         }
         self.cols[i] = Some(figures);
         Ok(Op {
+            scalar: false,
             target: i,
             actor: None,
             what: format!("set {}", self.name(i)),
@@ -185,6 +189,7 @@ impl Board {
         self.col(i)?;
         self.cols[i] = None;
         Ok(Op {
+            scalar: false,
             target: i,
             actor: None,
             what: format!("drop {}", self.name(i)),
@@ -204,6 +209,7 @@ impl Board {
         }
         self.cols[t] = Some(c);
         Ok(Op {
+            scalar: false,
             target: t,
             actor: None,
             what: format!("multiply {} by {}", self.name(t), by),
@@ -239,6 +245,7 @@ impl Board {
             k => format!("take {} from {}, {} times", self.name(a), self.name(t), k),
         };
         Ok(Op {
+            scalar: false,
             target: t,
             actor: Some(a),
             what,
@@ -335,6 +342,7 @@ impl Board {
         }
         self.cols[t] = Some(c);
         Ok(Op {
+            scalar: false,
             target: t,
             actor: Some(a),
             what: format!("cross-multiply {} and {}, and take", self.name(a), self.name(t)),
@@ -361,6 +369,7 @@ impl Board {
         }
         self.cols[t] = Some(c);
         Ok(Op {
+            scalar: false,
             target: t,
             actor: None,
             what: format!("divide {} by {}", self.name(t), by),
@@ -383,6 +392,7 @@ impl Board {
         let g = gcd_all(self.col(t)?);
         if g <= 1 {
             return Ok(Op {
+                scalar: false,
                 target: t,
                 actor: None,
                 what: format!("reduce {}: nothing in common", self.name(t)),

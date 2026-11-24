@@ -14,6 +14,7 @@ jiuzhang: chapter 8 of the Nine Chapters (九章算術, 方程), run on a counti
   jiuzhang answers           how each answer is written, and which reading of the last step writes it so
   jiuzhang counts            the counts of 算 the commentators give, under every rule
   jiuzhang readings FILE     every combination of the readings a page gives in the alternative
+  jiuzhang rods FILE         the most rods the board needs, by how each step is worked
   jiuzhang solve 3 2 1 39 / 2 3 1 34 / 1 2 3 26 [by text|reducing|cross|one]
   jiuzhang methods           the procedures `Solve` can follow
   jiuzhang rules             the rules for counting 算
@@ -33,6 +34,8 @@ dai-zhen-08        8.8
 dai-zhen-09        8.9
 dai-zhen-13        8.13 (Dai Zhen, 訂訛)
 dai-zhen-18        8.18 (Dai Zhen, 訂訛: 145 and 99)
+guo-18-old         8.18 (Guo Shuchun's reading of Liu Hui's 77)
+hart-18-old        8.18 (Hart's reading of Liu Hui's 77: rods)
 liu-hui-09         8.9
 liu-hui-18-new     8.18 (Liu Hui: the new method, 124 算)
 liu-hui-18-old     8.18 (Liu Hui: the old method made short, 77 算)
@@ -66,6 +69,8 @@ dai-zhen-08        8.8                                          4 right, 0 wrong
 dai-zhen-09        8.9                                          2 right, 0 wrong
 dai-zhen-13        8.13 (Dai Zhen, 訂訛)                          2 right, 0 wrong
 dai-zhen-18        8.18 (Dai Zhen, 訂訛: 145 and 99)              4 right, 0 wrong
+guo-18-old         8.18 (Guo Shuchun's reading of Liu Hui's 77) 2 right, 0 wrong, 1 lines read in the alternative
+hart-18-old        8.18 (Hart's reading of Liu Hui's 77: rods)  16 right, 0 wrong
 liu-hui-09         8.9                                          2 right, 0 wrong
 liu-hui-18-new     8.18 (Liu Hui: the new method, 124 算)        0 right, 0 wrong, stops at line 25, 29 lines read in the alternative
     line 25: 95 at the 實 of left does not go by -91 exactly
@@ -92,7 +97,7 @@ no-16              8.16                                         1 right, 0 wrong
 no-17              8.17                                         1 right, 0 wrong
 no-18              8.18                                         1 right, 0 wrong
 
-26 pages; 39 figures checked, 38 right, 1 wrong.
+28 pages; 57 figures checked, 56 right, 1 wrong.
 ```
 
 `jiuzhang --check FILE` gives only what is wrong, a line each. `jiuzhang
@@ -160,6 +165,7 @@ reducing  the same, each worked column divided by what its figures have in commo
 cross     Dai Zhen's 互乘: the two columns multiplied by each other's head, then taken; found by value from the bottom up
 one       Dai Zhen's shorter way: work from a column whose head is one; equal heads taken directly
 $ jiuzhang rules
+guo       Guo Shuchun's (2020, n. 40): each multiplication or division of a whole column, each taking of one column from another, each step of finding a thing; placing rods not counted here
 plain     each multiplication, taking or division of one figure, except a head known to cancel; a taking several times over is a multiplication and a taking
 worked    each multiplication, taking or division of one figure that has to be worked (not by one, not a head known to cancel); a taking several times over is a multiplication and a taking
 readoff   as plain, but a division by one is read off, not worked (proposed by the review, after the counts were known)

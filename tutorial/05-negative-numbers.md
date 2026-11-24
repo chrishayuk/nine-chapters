@@ -130,7 +130,7 @@ Solve by text.      法 -5; 實 -40 -15; 4 steps
     #2    -5    -10
     實   -15     -6
 
-plain 13, worked 13, readoff 13, every 12, repeated 13, columns 4
+guo 9, plain 13, worked 13, readoff 13, every 12, repeated 13, columns 4
 ```
 
 -40 over -5 is 8, and -15 over -5 is 3.

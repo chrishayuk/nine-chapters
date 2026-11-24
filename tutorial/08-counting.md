@@ -12,6 +12,7 @@ several rules:
 
 ```console
 $ jiuzhang rules
+guo       Guo Shuchun's (2020, n. 40): each multiplication or division of a whole column, each taking of one column from another, each step of finding a thing; placing rods not counted here
 plain     each multiplication, taking or division of one figure, except a head known to cancel; a taking several times over is a multiplication and a taking
 worked    each multiplication, taking or division of one figure that has to be worked (not by one, not a head known to cancel); a taking several times over is a multiplication and a taking
 readoff   as plain, but a division by one is read off, not worked (proposed by the review, after the counts were known)
@@ -68,7 +69,7 @@ Set 4th   2 5 3 9 4 112
 Set left  1 3 2 8 5  95
 Solve by cross.                                              7, 4, 3, 5, 6; 15 steps
 Answer 7, 4, 3, 5, 6                                         ✓
-Count 145                                    "兼乘減除言之則一百四十五算"  ✓  plain, readoff: plain 145, worked 140, readoff 145, every 175, repeated 140, columns 15
+Count 145                                    "兼乘減除言之則一百四十五算"  ✓  plain, readoff: guo 54, plain 145, worked 140, readoff 145, every 175, repeated 140, columns 15
 Set right 9 7 3 2 5 140
 Set 2nd   7 6 4 5 3 128
 Set 3rd   3 5 7 6 4 116
@@ -76,7 +77,7 @@ Set 4th   2 5 3 9 4 112
 Set left  1 3 2 8 5  95
 Solve by one.                                                7, 4, 3, 5, 6; 15 steps
 Answer 7, 4, 3, 5, 6                                         ✓
-Count 99                                     "凡用九十九算"  ✓  readoff: plain 101, worked 98, readoff 99, every 81, repeated 295, columns 15
+Count 99                                     "凡用九十九算"  ✓  readoff: guo 88, plain 101, worked 98, readoff 99, every 81, repeated 295, columns 15
 
 4 figures checked, 4 right, 0 wrong.
 ```
@@ -112,12 +113,14 @@ Liu Hui's figures (chapter 9).
 ```console
 $ jiuzhang counts
 dai-zhen-18  8.18 (Dai Zhen, 訂訛: 145 and 99)
+  Count 145  guo       54
   Count 145  plain     145   ✓
   Count 145  worked    140
   Count 145  readoff   145   ✓
   Count 145  every     175
   Count 145  repeated  140
   Count 145  columns   15
+  Count 99   guo       88
   Count 99   plain     101
   Count 99   worked    98
   Count 99   readoff   99   ✓
@@ -125,16 +128,30 @@ dai-zhen-18  8.18 (Dai Zhen, 訂訛: 145 and 99)
   Count 99   repeated  295
   Count 99   columns   15
 
+guo-18-old  8.18 (Guo Shuchun's reading of Liu Hui's 77)
+  2 readings: 2 can be done to the end, 1 agree with every figure the source states
+  Count 77   guo       67
+  Count 77   plain     124
+  Count 77   worked    122
+  Count 77   readoff   123
+  Count 77   every     99
+  Count 77   repeated  214
+  Count 77   columns   23
+
 Problem 18 by each method, counted under each rule, and the board it needs:
-               plain   worked  readoff    every repeated  columns    rods  places
-  text           158      158      158      133   180403       25     160      11
-  reducing       188      179      183      163      504       33     138       4
-  cross          145      140      145      175      140       15     149      11
-  one            101       98       99       81      295       15     122       4
+                 guo    plain   worked  readoff    every repeated  columns    rods  places
+  text         89816      158      158      158      133   180403       25     160      11
+  reducing       171      188      179      183      163      504       33     138       4
+  cross           54      145      140      145      175      140       15     149      11
+  one             88      101       98       99       81      295       15     122       4
   rods: the most rods on the board at once; places: the most digits in any figure.
 
 liu-hui-18-old: Liu Hui says 77 算. Of 100000000 readings of his working, 229906 can be done to the end and 0 agree with the figures he states, so there is nothing to count.
 liu-hui-18-new: Liu Hui says 124 算. Of 6115295232 readings of his working, 0 can be done to the end and 0 agree with the figures he states, so there is nothing to count.
+
+Two published readings of Liu Hui's 77 (see docs/guo-77.md):
+  Guo Shuchun (2020), 算 as operations, on his emended text: runs to the prices; under his rule 67 operations, leaving 10 of the 77 for placing rods, which are not modelled (5 columns are set on this page); the board holds 116 rods at most
+  Hart (2012), 算 as rods, on his path: runs to the price of 黍, and every count of rods he reports agrees; at the end of each step 77 rods at most; worked a column at a time 86, a position at a time top down 78, bottom up 77, in the best order 77; under Guo's rule 59 operations and 5 placings
 ```
 
 On the board as it stands after each step, the text's own procedure,

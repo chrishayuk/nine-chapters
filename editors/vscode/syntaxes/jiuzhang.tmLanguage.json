@@ -64,7 +64,7 @@
     },
     "operation": {
       "comment": "The word an operation starts with: at the start of the line, or of a reading after |.",
-      "match": "(?:^|(?<=\\|))\\s*\\b(Things|Set|Multiply|Take|Add|Halve|Reduce|Divide|Drop|Gives|Solve|Answer|Rates|Count|Nothing)\\b",
+      "match": "(?:^|(?<=\\|))\\s*\\b(Things|Set|Multiply|Take|Add|Halve|Reduce|Divide|Drop|Gives|Solve|Answer|Rates|Count|Rods|Nothing)\\b",
       "captures": { "1": { "name": "keyword.control.operation.jiuzhang" } }
     },
     "not-an-operation": {
@@ -88,7 +88,7 @@
     "joining": {
       "comment": "The words that join an operation's parts.",
       "name": "keyword.other.jiuzhang",
-      "match": "\\b(?:by|from|to|of|the|head|at|until|is|gone|as|far|it|goes|in|turn)\\b"
+      "match": "\\b(?:by|from|to|of|the|head|at|until|is|gone|as|far|it|goes|in|turn|times)\\b"
     },
     "column": {
       "comment": "A column (行), counted from the right: right, middle, left, 2nd, 3rd …; 右行, 中行, 左行, 第二行 … 第九行.",

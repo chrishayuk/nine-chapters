@@ -54,11 +54,14 @@ what whole-number arithmetic does, and `jiuzhang` uses it without being told.
 | `Take right from middle as far as it goes` | 不足減乃止 | as many times as goes without passing zero at the head |
 | `Take right from middle as far as the 菽 goes` | | the same, at a named position |
 | `Take right from middle crosswise` | 互乘 | each multiplied by the other's head, then taken |
-| `Add right to middle` | 益, 并 | add one column to another |
+| `Take right from middle in turn` | 相減 | each taken from the other in turn, until the head is gone |
+| `Take right from middle 3 times` | | three times over |
+| `Add right to middle` | 益, 并 | add one column to another (`Add right to middle 2 times`) |
 | `Halve middle` | 半 | halve a column (every figure must be even) |
 | `Reduce middle` | 約 | divide a column by what all its figures have in common |
 | `Divide middle by 3` | | divide a column (every figure must go) |
 | `Drop 3rd` | 廢去 | take a column off the board |
+| `Nothing` | | do nothing: the reading that takes a clause as corrupt or idle |
 | `Solve` | 方程術 | the rest of the procedure, done by `jiuzhang` |
 | `Solve by reducing` / `by cross` / `by one` | | the same by another reading (`jiuzhang methods`) |
 
@@ -76,6 +79,7 @@ are checked, and marked ✓ or ✗.
 | `Gives middle 0 5 1 24` | the column as the board now holds it |
 | `Answer 9 1/4, 4 1/4, 2 3/4` | what `Solve` found, thing by thing, top to bottom; and how each fraction is written |
 | `Rates 721 265 191 148 129 76` | the 法 and the 實s, divided by what they share: for an answer given as rates (率) |
+| `Rods 77` | the rods the board now holds: a digit to five is that many rods, six to nine one for five and the rest |
 | `Count 77` | the number of 算 the operations since the last `Count` take, under each rule in `jiuzhang rules` |
 
 An answer is written as the text writes it: a whole number, then the
