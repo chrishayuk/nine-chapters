@@ -255,7 +255,7 @@ Gives 4th 0 0 0 0 -5 -30 | Gives 4th 0 0 0 0 5 30    "實如法而一得六卽�
 % as the text says; the board is already in that order, so `Solve by cross` only works back.
 Solve by cross.                          "以法治第二行得荅價右行得菽價左行得麥價第三行麻價"  7, 4, 3, 5, 6; 5 steps
 Answer 7, 4, 3, 5, 6                                                   ✓
-Count 77                                 "如此凡用七十七算"            no rule counts 77: guo 67, plain 124, worked 122, readoff 123, every 99, repeated 214, columns 23
+Count 77                                 "如此凡用七十七算"            no rule counts 77: plain 124, worked 122, readoff 123, every 99, repeated 214, columns 23, guo 67
 % Guo's tally: 1+3+4+11+3+3+3+3+21+4+2+3+5+7+4 = 77 (n. 40). His 算 includes placing rods (布算),
 % which this page does not model: see `jiuzhang counts`.
 
@@ -366,37 +366,37 @@ side by side:
 ```console
 $ jiuzhang counts
 dai-zhen-18  8.18 (Dai Zhen, 訂訛: 145 and 99)
-  Count 145  guo       54
   Count 145  plain     145   ✓
   Count 145  worked    140
   Count 145  readoff   145   ✓
   Count 145  every     175
   Count 145  repeated  140
   Count 145  columns   15
-  Count 99   guo       88
+  Count 145  guo       54
   Count 99   plain     101
   Count 99   worked    98
   Count 99   readoff   99   ✓
   Count 99   every     81
   Count 99   repeated  295
   Count 99   columns   15
+  Count 99   guo       88
 
 guo-18-old  8.18 (Guo Shuchun's reading of Liu Hui's 77)
   2 readings: 2 can be done to the end, 1 agree with every figure the source states
-  Count 77   guo       67
   Count 77   plain     124
   Count 77   worked    122
   Count 77   readoff   123
   Count 77   every     99
   Count 77   repeated  214
   Count 77   columns   23
+  Count 77   guo       67
 
 Problem 18 by each method, counted under each rule, and the board it needs:
-                 guo    plain   worked  readoff    every repeated  columns    rods  places
-  text         89816      158      158      158      133   180403       25     160      11
-  reducing       171      188      179      183      163      504       33     138       4
-  cross           54      145      140      145      175      140       15     149      11
-  one             88      101       98       99       81      295       15     122       4
+               plain   worked  readoff    every repeated  columns      guo    rods  places
+  text           158      158      158      133   180403       25    89816     160      11
+  reducing       188      179      183      163      504       33      171     138       4
+  cross          145      140      145      175      140       15       54     149      11
+  one            101       98       99       81      295       15       88     122       4
   rods: the most rods on the board at once; places: the most digits in any figure.
 
 liu-hui-18-old: Liu Hui says 77 算. Of 100000000 readings of his working, 229906 can be done to the end and 0 agree with the figures he states, so there is nothing to count.

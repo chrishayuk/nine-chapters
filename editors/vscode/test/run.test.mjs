@@ -79,7 +79,7 @@ test("--check names the file and the line", () => {
   assert.equal(result.status, 1);
   const lines = result.stdout.toString().trimEnd().split("\n");
   assert.equal(lines[0], `${result.file}:8: wrong: the board has 0 5 1 24`);
-  assert.equal(lines[1], `${result.file}:9: notation: \`Frobnicate\` is not an operation: Things, Set, Multiply, Take, Add, Halve, Reduce, Divide, Drop, Gives, Solve, Answer, Rates, Count, Nothing`);
+  assert.equal(lines[1], `${result.file}:9: notation: \`Frobnicate\` is not an operation: Things, Set, Multiply, Take, Add, Halve, Reduce, Divide, Drop, Gives, Solve, Answer, Rates, Count, Rods, Nothing`);
   assert.equal(run(page.replace("25", "24"), ["--check"]).stdout.toString(), "");
 });
 

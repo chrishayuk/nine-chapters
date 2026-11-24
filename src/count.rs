@@ -44,13 +44,13 @@ pub enum Rule {
 }
 
 pub const RULES: &[Rule] = &[
-    Rule::Guo,
     Rule::Plain,
     Rule::Worked,
     Rule::Readoff,
     Rule::Every,
     Rule::Repeated,
     Rule::Columns,
+    Rule::Guo,
 ];
 
 impl Rule {

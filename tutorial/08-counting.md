@@ -12,13 +12,13 @@ several rules:
 
 ```console
 $ jiuzhang rules
-guo       Guo Shuchun's (2020, n. 40): each multiplication or division of a whole column, each taking of one column from another, each step of finding a thing; placing rods not counted here
 plain     each multiplication, taking or division of one figure, except a head known to cancel; a taking several times over is a multiplication and a taking
 worked    each multiplication, taking or division of one figure that has to be worked (not by one, not a head known to cancel); a taking several times over is a multiplication and a taking
 readoff   as plain, but a division by one is read off, not worked (proposed by the review, after the counts were known)
 every     each multiplication, taking or division of one figure, by one or not
 repeated  as worked, but a taking several times over is that many takings, one at a time
 columns   each operation on a whole column
+guo       Guo Shuchun's (2020, n. 40): each multiplication or division of a whole column, each taking of one column from another, each step of finding a thing; placing rods not counted here
 ```
 
 `Count` states a count from the source. It counts the operations since the
@@ -69,7 +69,7 @@ Set 4th   2 5 3 9 4 112
 Set left  1 3 2 8 5  95
 Solve by cross.                                              7, 4, 3, 5, 6; 15 steps
 Answer 7, 4, 3, 5, 6                                         ✓
-Count 145                                    "兼乘減除言之則一百四十五算"  ✓  plain, readoff: guo 54, plain 145, worked 140, readoff 145, every 175, repeated 140, columns 15
+Count 145                                    "兼乘減除言之則一百四十五算"  ✓  plain, readoff: plain 145, worked 140, readoff 145, every 175, repeated 140, columns 15, guo 54
 Set right 9 7 3 2 5 140
 Set 2nd   7 6 4 5 3 128
 Set 3rd   3 5 7 6 4 116
@@ -77,7 +77,7 @@ Set 4th   2 5 3 9 4 112
 Set left  1 3 2 8 5  95
 Solve by one.                                                7, 4, 3, 5, 6; 15 steps
 Answer 7, 4, 3, 5, 6                                         ✓
-Count 99                                     "凡用九十九算"  ✓  readoff: guo 88, plain 101, worked 98, readoff 99, every 81, repeated 295, columns 15
+Count 99                                     "凡用九十九算"  ✓  readoff: plain 101, worked 98, readoff 99, every 81, repeated 295, columns 15, guo 88
 
 4 figures checked, 4 right, 0 wrong.
 ```
@@ -113,37 +113,37 @@ Liu Hui's figures (chapter 9).
 ```console
 $ jiuzhang counts
 dai-zhen-18  8.18 (Dai Zhen, 訂訛: 145 and 99)
-  Count 145  guo       54
   Count 145  plain     145   ✓
   Count 145  worked    140
   Count 145  readoff   145   ✓
   Count 145  every     175
   Count 145  repeated  140
   Count 145  columns   15
-  Count 99   guo       88
+  Count 145  guo       54
   Count 99   plain     101
   Count 99   worked    98
   Count 99   readoff   99   ✓
   Count 99   every     81
   Count 99   repeated  295
   Count 99   columns   15
+  Count 99   guo       88
 
 guo-18-old  8.18 (Guo Shuchun's reading of Liu Hui's 77)
   2 readings: 2 can be done to the end, 1 agree with every figure the source states
-  Count 77   guo       67
   Count 77   plain     124
   Count 77   worked    122
   Count 77   readoff   123
   Count 77   every     99
   Count 77   repeated  214
   Count 77   columns   23
+  Count 77   guo       67
 
 Problem 18 by each method, counted under each rule, and the board it needs:
-                 guo    plain   worked  readoff    every repeated  columns    rods  places
-  text         89816      158      158      158      133   180403       25     160      11
-  reducing       171      188      179      183      163      504       33     138       4
-  cross           54      145      140      145      175      140       15     149      11
-  one             88      101       98       99       81      295       15     122       4
+               plain   worked  readoff    every repeated  columns      guo    rods  places
+  text           158      158      158      133   180403       25    89816     160      11
+  reducing       188      179      183      163      504       33      171     138       4
+  cross          145      140      145      175      140       15       54     149      11
+  one            101       98       99       81      295       15       88     122       4
   rods: the most rods on the board at once; places: the most digits in any figure.
 
 liu-hui-18-old: Liu Hui says 77 算. Of 100000000 readings of his working, 229906 can be done to the end and 0 agree with the figures he states, so there is nothing to count.

@@ -165,13 +165,13 @@ reducing  the same, each worked column divided by what its figures have in commo
 cross     Dai Zhen's 互乘: the two columns multiplied by each other's head, then taken; found by value from the bottom up
 one       Dai Zhen's shorter way: work from a column whose head is one; equal heads taken directly
 $ jiuzhang rules
-guo       Guo Shuchun's (2020, n. 40): each multiplication or division of a whole column, each taking of one column from another, each step of finding a thing; placing rods not counted here
 plain     each multiplication, taking or division of one figure, except a head known to cancel; a taking several times over is a multiplication and a taking
 worked    each multiplication, taking or division of one figure that has to be worked (not by one, not a head known to cancel); a taking several times over is a multiplication and a taking
 readoff   as plain, but a division by one is read off, not worked (proposed by the review, after the counts were known)
 every     each multiplication, taking or division of one figure, by one or not
 repeated  as worked, but a taking several times over is that many takings, one at a time
 columns   each operation on a whole column
+guo       Guo Shuchun's (2020, n. 40): each multiplication or division of a whole column, each taking of one column from another, each step of finding a thing; placing rods not counted here
 ```
 
 ## The decisions
