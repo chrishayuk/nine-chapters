@@ -36,8 +36,11 @@ The choices this reconstruction makes that the text does not fix.
 
 6. Counting 算. What one 算 is, nobody says. `jiuzhang rules` lists the
    candidates; every count is reported under every rule, and none is chosen.
-   A rule is not tuned to make a count come out: where Dai Zhen's 99 comes
-   out 98, it is reported as 98.
+   No rule was written to make a count come out, with one exception, said
+   wherever it appears: `readoff`, proposed by the independent review after
+   Dai Zhen's 145 and 99 were known, gives both. Under the others his 99
+   comes out 98 or 101, and is reported so. `guo` is Guo Shuchun's rule
+   (2020, n. 40), without the placings of rods.
 
 7. Readings in the alternative. Where a clause of the commentary can be read
    more than one way, the page gives the readings, and `jiuzhang readings`
