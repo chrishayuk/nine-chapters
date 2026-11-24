@@ -35,6 +35,7 @@ dai-zhen-09        8.9
 dai-zhen-13        8.13 (Dai Zhen, 訂訛)
 dai-zhen-18        8.18 (Dai Zhen, 訂訛: 145 and 99)
 guo-18-new         8.18 (Guo Shuchun's reading of Liu Hui's 124)
+guo-18-old-placed  8.18 (Guo Shuchun's reading of Liu Hui's 77, each column set when first used)
 guo-18-old         8.18 (Guo Shuchun's reading of Liu Hui's 77)
 hart-18-old        8.18 (Hart's reading of Liu Hui's 77: rods)
 liu-hui-09         8.9
@@ -71,6 +72,7 @@ dai-zhen-09        8.9                                          2 right, 0 wrong
 dai-zhen-13        8.13 (Dai Zhen, 訂訛)                          2 right, 0 wrong
 dai-zhen-18        8.18 (Dai Zhen, 訂訛: 145 and 99)              4 right, 0 wrong
 guo-18-new         8.18 (Guo Shuchun's reading of Liu Hui's 124) 7 right, 0 wrong, 4 lines read in the alternative
+guo-18-old-placed  8.18 (Guo Shuchun's reading of Liu Hui's 77, each column set when first used) 2 right, 0 wrong, 1 lines read in the alternative
 guo-18-old         8.18 (Guo Shuchun's reading of Liu Hui's 77) 2 right, 0 wrong, 1 lines read in the alternative
 hart-18-old        8.18 (Hart's reading of Liu Hui's 77: rods)  16 right, 0 wrong
 liu-hui-09         8.9                                          2 right, 0 wrong
@@ -99,7 +101,7 @@ no-16              8.16                                         1 right, 0 wrong
 no-17              8.17                                         1 right, 0 wrong
 no-18              8.18                                         1 right, 0 wrong
 
-29 pages; 64 figures checked, 63 right, 1 wrong.
+30 pages; 66 figures checked, 65 right, 1 wrong.
 ```
 
 `jiuzhang --check FILE` gives only what is wrong, a line each. `jiuzhang

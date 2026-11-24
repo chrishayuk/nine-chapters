@@ -24,6 +24,16 @@ guo-18-new  8.18 (Guo Shuchun's reading of Liu Hui's 124)
   Count 124  columns   35
   Count 124  guo       228
 
+guo-18-old-placed  8.18 (Guo Shuchun's reading of Liu Hui's 77, each column set when first used)
+  2 readings: 2 can be done to the end, 1 agree with every figure the source states
+  Count 77   plain     124
+  Count 77   worked    122
+  Count 77   readoff   123
+  Count 77   every     99
+  Count 77   repeated  214
+  Count 77   columns   23
+  Count 77   guo       67
+
 guo-18-old  8.18 (Guo Shuchun's reading of Liu Hui's 77)
   2 readings: 2 can be done to the end, 1 agree with every figure the source states
   Count 77   plain     124

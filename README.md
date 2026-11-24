@@ -150,12 +150,12 @@ as new. A literature search by a second model (below, and
 [`docs/literature-check.md`](docs/literature-check.md)) found that several of
 these results are already in the literature, and says which.
 
-`jiuzhang verify` runs 29 pages. The 18 problems and 8 pages of commentary
+`jiuzhang verify` runs 30 pages. The 18 problems and 8 pages of commentary
 make 39 checked statements (a column a commentator gives, an answer, a set
 of rates, a count): 38 agree with the board and 1 does not. Five more are not
-reached: they come after a step that cannot be done. The other three pages
-are modern reconstructions of Liu Hui's 77 and 124 (below), whose 25
-statements all agree; with them `verify` reports 64, 63 right. A statement can hold several
+reached: they come after a step that cannot be done. The other four pages
+are modern reconstructions of Liu Hui's 77 and 124 (below), whose 27
+statements all agree; with them `verify` reports 66, 65 right. A statement can hold several
 figures, and some figures the sources give are quoted and not checked, so
 this is not a census of every number in the text.
 
@@ -358,6 +358,11 @@ counting operations. Chemla and Guo (2004) and Guo (2020) read 124 as steps.
 The explicit peak, on Guo's path and under a stated rule of rods, was not
 found in what could be read. One discrepancy is open: Zhu (2010, p. 82)
 counts 110 rods for setting out the problem, where this rule counts 116.
+
+The same question asked of the old method: Guo's emended working, with each
+column set only when an operation first uses it
+(`corpus/guo-18-old-placed.jz`), peaks at 100 rods, not 77. A rods reading
+of the 77 needs a path like Hart's, not Guo's emended working.
 
 So the second number does what the first could not. The 77 has a reading
 for each meaning of 算; on the one published working of the new method, the
