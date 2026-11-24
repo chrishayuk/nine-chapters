@@ -361,6 +361,38 @@ a position at a time top down {}, bottom up {}, in the best order {}; under Guo'
             hp
         );
     }
+    // Guo's working of the 124, read as operations and as rods
+    if let Some((_, n)) = crate::corpus::find("guo-18-new") {
+        let run = check::run(n);
+        let ok = run.stopped.is_none() && !run.findings.iter().any(|f| f.severity <= Severity::Fails);
+        let by_rule: Vec<String> = crate::count::RULES
+            .iter()
+            .map(|r| format!("{} {}", r.name(), crate::count::count(*r, &run.ops)))
+            .collect();
+        let r = rods_at(n);
+        // the first line at which the board holds the most rods
+        let peak_line = run
+            .lines
+            .iter()
+            .position(|l| l.steps.iter().any(|s| s.board.rod_count() == r.ends))
+            .map(|i| i + 1)
+            .unwrap_or(0);
+        println!("\nLiu Hui's 124, on Guo Shuchun's (2020) working of the new method, to the rates (guo-18-new):");
+        println!(
+            "  {}; as operations, before the last part: {}; no rule gives 124",
+            if ok {
+                "runs, and every figure the text and his notes state agrees"
+            } else {
+                "does NOT run as stated"
+            },
+            by_rule.join(", ")
+        );
+        println!(
+            "  as rods: at the end of each step {} at most, first at line {}, just before 訖廢去第三行; \
+worked a column at a time {}, a position at a time top down {}, bottom up {}, in the best order {}",
+            r.ends, peak_line, r.whole, r.top_down, r.bottom_up, r.best
+        );
+    }
     let _ = Method::Text;
     let _ = Mark::Right;
     0

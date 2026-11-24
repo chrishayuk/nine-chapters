@@ -68,6 +68,13 @@ as new.
   77-rod bound holds only if each step is worked a position at a time from the
   bottom; worked from the top it needs 78. Each reading gives 77 only on its
   own path, so the number cannot choose between them.
+- [**Liu Hui's 124 is a count of rods**](#liu-huis-124-as-guo-works-it), on
+  Guo's own working of the new method: the board, every operation fixed by
+  the text, peaks at exactly 124 rods, just before the text says to drop the
+  3rd column. Counted as operations, the same working cannot be 124 (Guo's
+  rule gives 228 before the last part). That 124 means rods is Hart's and
+  Wei and Guo's reading; the peak itself was not found stated in what could
+  be read.
 
 ## Install
 
@@ -143,12 +150,12 @@ as new. A literature search by a second model (below, and
 [`docs/literature-check.md`](docs/literature-check.md)) found that several of
 these results are already in the literature, and says which.
 
-`jiuzhang verify` runs 28 pages. The 18 problems and 8 pages of commentary
+`jiuzhang verify` runs 29 pages. The 18 problems and 8 pages of commentary
 make 39 checked statements (a column a commentator gives, an answer, a set
 of rates, a count): 38 agree with the board and 1 does not. Five more are not
-reached: they come after a step that cannot be done. The other two pages are
-modern reconstructions of Liu Hui's 77 (below), whose 18 statements all
-agree; with them `verify` reports 57, 56 right. A statement can hold several
+reached: they come after a step that cannot be done. The other three pages
+are modern reconstructions of Liu Hui's 77 and 124 (below), whose 25
+statements all agree; with them `verify` reports 64, 63 right. A statement can hold several
 figures, and some figures the sources give are quoted and not checked, so
 this is not a census of every number in the text.
 
@@ -303,6 +310,59 @@ reading offered, by the passage's fourth clause. Its last part, where the
 columns are set afresh, checks: the 3rd less the 4th leaves 麻 1, 菽 4, 荅 −3,
 實 4, as he says, and as Guo (2020, nn. 63-69) explains.
 
+### Liu Hui's 124, as Guo works it
+
+Liu Hui says his new method takes 124 算. As printed, the passage stops by its
+fourth clause under every reading offered. Guo Shuchun works it through
+(2020, nn. 41-62), and `corpus/guo-18-new.jz` follows his working, from the
+same source extraction ([`docs/guo-77.md`](docs/guo-77.md), section 3): it
+runs, and all seven figures the text and his notes state agree (菽 5 against
+荅 3, 荅 6 against 黍 5, 麥 3 against 菽 4, 麻 4 against 麥 7, and the
+figures before each reduction). Its last board is the extraction's
+reconstruction, column for column.
+
+**As operations it cannot be 124.** Guo gives no tally for the 124 (n. 82
+states the total only). His rule, applied as his tally of the 77 applies it,
+counts a column taken 35 times as 35 takings: the part that finds the rates
+is already 228. Every other rule is over 124 or, for `columns` (35), far
+under; `every` is 123 before the last part, whose first taking alone adds 6.
+
+**As rods it is 124 exactly.** The new method sets all five columns, 116
+rods. Up to the peak the text fixes every operation: 減 once, 去 until the
+實 is gone, 不足減乃止 as far as it goes, with the printed 右行 read as 左行, as
+Guo reads it. After 次以左行減第三行下位 the board holds 124 rods, and after
+次以第三行去左行下位 still 124; then the text says 訖廢去第三行, and the 3rd
+column, 27 rods, goes. The board never holds more; the last part, the
+columns set afresh, needs about half as many. As with Hart's 77, the bound
+holds worked a position at a time from the bottom, in the best order, or a
+whole column at a time, and not from the top (130).
+
+```
+$ jiuzhang rods corpus/guo-18-new.jz
+The most rods on the board at any moment, by how a step is worked:
+    124  at the end of each step (a run of lines on one column, up to an assertion or a note)
+    124  each line worked on the whole column at once (a product set down, then taken from)
+    130  each step worked a position at a time, straight to its new figure, top down
+    124  the same, bottom up
+    124  each step worked a position at a time, in the best order for it
+```
+
+**What is known.** A second model's search
+([`docs/literature-124.md`](docs/literature-124.md)) found the reading
+already published: Hart (2012, n. 34) reads both 77 and 124 as rods, and Wei
+Xuegang and Guo Shirong (2016), cited by Zhu (2025), read them so and say
+they begin from the new method to settle what 算 means. Their full text could
+not be opened, so they may well have counted this peak. Hudeček (2008, p. 206)
+prints this board's figures (without the 實), and his note 71 records failed attempts to reach 124 by
+counting operations. Chemla and Guo (2004) and Guo (2020) read 124 as steps.
+The explicit peak, on Guo's path and under a stated rule of rods, was not
+found in what could be read. One discrepancy is open: Zhu (2010, p. 82)
+counts 110 rods for setting out the problem, where this rule counts 116.
+
+So the second number does what the first could not. The 77 has a reading
+for each meaning of 算; on the one published working of the new method, the
+124 is reached by rods and not by operations.
+
 ## Reading the text
 
 The text read is the **Sibu congkan** photographic reprint of the
@@ -407,6 +467,7 @@ Chemla and Guo, Guo 2020, Zhu, and Li Huang); its report, with sources, is
 | Dai Zhen's 145 as a count of single-figure operations | not found (Shen et al. and Guo's 彙校 could not be read) |
 | Liu Hui's 77 and 124 passages | known: emended and worked by Chemla and Guo, and Guo 2020, who tallies 77 as operations; 算 read as rods by Hart 2012, who keeps to 77 rods, and by Wei and Guo 2016 and Zhu 2025 |
 | Guo's and Hart's reconstructions, run: Guo's rule gives 67 + 10 placings; Hart's 15 rod counts agree; his bound needs bottom-up working (78 top down) | not found (Guo's figure 8-7 was not readable) |
+| the 124 as the most rods on Guo's working of the new method; not reachable as operations | partly: 124 as rods is Hart 2012 and Wei and Guo 2016 (whose full text could not be read); the board is in Hudeček 2008; the peak not found stated |
 | the cost of the literal reading | partly: Zhu 2010 on rods against steps; not these figures |
 | Liu Hui's rates 7:4:3:5:6 | known: Guo 2020; Chemla and Guo 2004 |
 

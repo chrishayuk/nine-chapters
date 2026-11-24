@@ -14,6 +14,16 @@ dai-zhen-18  8.18 (Dai Zhen, 訂訛: 145 and 99)
   Count 99   columns   15
   Count 99   guo       88
 
+guo-18-new  8.18 (Guo Shuchun's reading of Liu Hui's 124)
+  16 readings: 5 can be done to the end, 1 agree with every figure the source states
+  Count 124  plain     199
+  Count 124  worked    199
+  Count 124  readoff   199
+  Count 124  every     123
+  Count 124  repeated  823
+  Count 124  columns   35
+  Count 124  guo       228
+
 guo-18-old  8.18 (Guo Shuchun's reading of Liu Hui's 77)
   2 readings: 2 can be done to the end, 1 agree with every figure the source states
   Count 77   plain     124
@@ -38,3 +48,7 @@ liu-hui-18-new: Liu Hui says 124 算. Of 6115295232 readings of his working, 0 c
 Two published readings of Liu Hui's 77 (see docs/guo-77.md):
   Guo Shuchun (2020), 算 as operations, on his emended text: runs to the prices; under his rule 67 operations, leaving 10 of the 77 for placing rods, which are not modelled (5 columns are set on this page); the board holds 116 rods at most
   Hart (2012), 算 as rods, on his path: runs to the price of 黍, and every count of rods he reports agrees; at the end of each step 77 rods at most; worked a column at a time 86, a position at a time top down 78, bottom up 77, in the best order 77; under Guo's rule 59 operations and 5 placings
+
+Liu Hui's 124, on Guo Shuchun's (2020) working of the new method, to the rates (guo-18-new):
+  runs, and every figure the text and his notes state agrees; as operations, before the last part: plain 199, worked 199, readoff 199, every 123, repeated 823, columns 35, guo 228; no rule gives 124
+  as rods: at the end of each step 124 at most, first at line 27, just before 訖廢去第三行; worked a column at a time 124, a position at a time top down 130, bottom up 124, in the best order 124

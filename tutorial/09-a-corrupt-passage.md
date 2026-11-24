@@ -381,6 +381,16 @@ dai-zhen-18  8.18 (Dai Zhen, 訂訛: 145 and 99)
   Count 99   columns   15
   Count 99   guo       88
 
+guo-18-new  8.18 (Guo Shuchun's reading of Liu Hui's 124)
+  16 readings: 5 can be done to the end, 1 agree with every figure the source states
+  Count 124  plain     199
+  Count 124  worked    199
+  Count 124  readoff   199
+  Count 124  every     123
+  Count 124  repeated  823
+  Count 124  columns   35
+  Count 124  guo       228
+
 guo-18-old  8.18 (Guo Shuchun's reading of Liu Hui's 77)
   2 readings: 2 can be done to the end, 1 agree with every figure the source states
   Count 77   plain     124
@@ -405,4 +415,53 @@ liu-hui-18-new: Liu Hui says 124 算. Of 6115295232 readings of his working, 0 c
 Two published readings of Liu Hui's 77 (see docs/guo-77.md):
   Guo Shuchun (2020), 算 as operations, on his emended text: runs to the prices; under his rule 67 operations, leaving 10 of the 77 for placing rods, which are not modelled (5 columns are set on this page); the board holds 116 rods at most
   Hart (2012), 算 as rods, on his path: runs to the price of 黍, and every count of rods he reports agrees; at the end of each step 77 rods at most; worked a column at a time 86, a position at a time top down 78, bottom up 77, in the best order 77; under Guo's rule 59 operations and 5 placings
+
+Liu Hui's 124, on Guo Shuchun's (2020) working of the new method, to the rates (guo-18-new):
+  runs, and every figure the text and his notes state agrees; as operations, before the last part: plain 199, worked 199, readoff 199, every 123, repeated 823, columns 35, guo 228; no rule gives 124
+  as rods: at the end of each step 124 at most, first at line 27, just before 訖廢去第三行; worked a column at a time 124, a position at a time top down 130, bottom up 124, in the best order 124
 ```
+
+## The 124, as Guo works it
+
+Liu Hui gives a second number: his new method takes 124 算. As printed, the
+passage stops by its fourth clause under every reading offered (above). Guo
+Shuchun works it through (2020, nn. 41-62), and his working is the page
+`guo-18-new`. It runs, and every figure the text and his notes state agrees:
+菽 5 against 荅 3, 荅 6 against 黍 5, 麥 3 against 菽 4, 麻 4 against 麥 7.
+
+Counted as operations, it cannot be 124. The part that finds the rates,
+before the last part, is already 228 under Guo's own rule, which counts a
+column taken 35 times as 35 takings, as his tally of the 77 does. Under every
+rule it is more than 124, or, for `columns`, far fewer: `every` comes to 123,
+and the last part's first taking alone adds 6.
+
+Counted as rods, it is 124:
+
+```console
+$ jiuzhang rods corpus/guo-18-new.jz
+The most rods on the board at any moment, by how a step is worked:
+    124  at the end of each step (a run of lines on one column, up to an assertion or a note)
+    124  each line worked on the whole column at once (a product set down, then taken from)
+    130  each step worked a position at a time, straight to its new figure, top down
+    124  the same, bottom up
+    124  each step worked a position at a time, in the best order for it
+```
+
+The new method sets all five columns, 116 rods, and the text fixes every
+operation up to the peak: 減 once, 去 until the 實 is gone, 不足減乃止 as far
+as it goes, with 右行 read as 左行, as Guo reads it. The board holds 124 rods
+after 次以左行減第三行下位 and 次以第三行去左行下位, and the text then says
+訖廢去第三行: drop the 3rd column. It never holds more; the last part, with
+the columns set afresh, needs about half as many. As with Hart's 77, the
+bound holds if each column is worked a position at a time from the bottom,
+or a whole column at a time, and not from the top (130).
+
+So on Guo's own path the 124 is a count of rods, not of operations, and
+nobody built the path to make it so: up to the peak, it is the text's.
+
+Little of this is new. Hart (2012, n. 34) reads both 77 and 124 as rods;
+Hudeček (2008, p. 206) prints this board's figures; Wei Xuegang and Guo Shirong (2016)
+say they begin from the new method to settle what 算 means, and their full
+text could not be read, so they may well have counted this peak. A second
+model's search ([`docs/literature-124.md`](../docs/literature-124.md)) did
+not find the peak stated in anything it could read.

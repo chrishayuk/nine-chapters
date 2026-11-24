@@ -91,3 +91,29 @@ fn hart_rods_and_guo_steps() {
     assert!(r.stopped.is_none());
     assert_eq!(jiuzhang::count::count(jiuzhang::count::Rule::Guo, &r.ops), 67);
 }
+
+#[test]
+fn guo_124_runs_and_peaks_at_124_rods() {
+    let page = jiuzhang::corpus::find("guo-18-new").unwrap().1;
+    let r = jiuzhang::check::run(page);
+    assert!(r.stopped.is_none());
+    assert_eq!(r.checked, (7, 0), "every figure the text and Guo's notes state");
+    // the last board, as docs/guo-77.md reconstructs state (21), the 2nd with the sign as added
+    let b = r.board.unwrap();
+    let col = |i: usize| {
+        b.cols[i]
+            .clone()
+            .map(|c| c.iter().map(|&x| x as i64).collect::<Vec<_>>())
+    };
+    assert_eq!(col(0), Some(vec![0, 0, -2, 0, 1, 0]));
+    assert_eq!(col(1), Some(vec![-4, 7, 0, 0, 0, 0]));
+    assert_eq!(col(2), None);
+    assert_eq!(col(3), Some(vec![-1, 1, 1, 0, 0, 0]));
+    assert_eq!(col(4), Some(vec![0, 1, -3, 1, 0, 0]));
+    let rods = jiuzhang::report::rods_at(page);
+    assert_eq!(
+        (rods.ends, rods.whole, rods.top_down, rods.bottom_up, rods.best),
+        (124, 124, 130, 124, 124)
+    );
+    assert_eq!(jiuzhang::count::count(jiuzhang::count::Rule::Guo, &r.ops), 228);
+}
