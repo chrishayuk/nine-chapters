@@ -353,12 +353,21 @@ The most rods on the board at any moment, by how a step is worked:
      78  each step worked a position at a time, straight to its new figure, top down
      77  the same, bottom up
      77  each step worked a position at a time, in the best order for it
+     86  each take done singly, one multiple at a time, on the whole column
+     77  each take done singly, the positions in the best interleaving for each step
 ```
 
 Worked a position at a time, straight to the new figures, from the bottom,
 the board never holds more than 77. Worked from the top, it holds 78 for a
 moment; with the whole column multiplied first, 86. Hart's count holds
 under one way of working, and the text does not say which way was used.
+
+The last two lines take a repeated subtraction literally. `Add 4th to 2nd 4
+times` is four additions, each of one 4th column. Done to the whole column
+each time, the board reaches 86. Done a position at a time, each position
+passing through every figure its own additions give it, the positions can
+be interleaved, and `jiuzhang rods` searches every interleaving for the one
+that needs fewest rods. For Hart's working that is still 77.
 
 Neither reading gives 77 on the other's path. `jiuzhang counts` sets them
 side by side:
@@ -455,6 +464,9 @@ The most rods on the board at any moment, by how a step is worked:
     130  each step worked a position at a time, straight to its new figure, top down
     124  the same, bottom up
     124  each step worked a position at a time, in the best order for it
+    133  each take done singly, one multiple at a time, on the whole column
+    125  each take done singly, the positions in the best interleaving for each step
+    line 29: Take 3rd from left 3 times. needs 125 at best, its takes done singly, more than the board holds at any step's end
 ```
 
 The new method sets all five columns, 116 rods, and the text fixes every
@@ -465,6 +477,30 @@ after 次以左行減第三行下位 and 次以第三行去左行下位, and the
 the columns set afresh, needs about half as many. As with Hart's 77, the
 bound holds if each column is worked a position at a time from the bottom,
 or a whole column at a time, and not from the top (130).
+
+It does not hold if every take is done singly. 次以第三行去左行下位 takes
+the 3rd column from the left three times, until the left column's 實 (3)
+is gone. The board holds 124 before it and 124 after; taken one at a time,
+the left column passes through
+
+    -22  3  -90  77   5  3     26 rods
+    -45  6 -184 157  10  2     32
+    -68  9 -278 237  15  1     35
+    -91 12 -372 317  20  0     26
+
+and on the whole column the board reaches 133. A position at a time, in
+the best interleaving there is, it reaches 125: one more than Liu Hui's
+number. No other step goes over 124 with its takes done singly. To
+stay at 124, at least one figure must be taken three times at once: the
+麻 (-22 straight to -91), the 菽 (-90 to -372) or the 荅 (77 to 317), any
+one of them, is enough.
+
+So the 124 needs the reckoner to take a multiple at a time, at one place
+at least, where the text's 去 could be read as one subtraction after
+another. Hart's 77 needs nothing of the kind. Whether a Han reckoner set a
+multiple straight down at a position, or took the column again and again,
+the text does not say; the numbers say only that 124 fits the first, and
+misses the second by one rod.
 
 So on Guo's own path the 124 is a count of rods, not of operations, and
 nobody built the path to make it so: up to the peak, it is the text's.

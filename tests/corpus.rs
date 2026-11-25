@@ -86,6 +86,8 @@ fn hart_rods_and_guo_steps() {
         (rods.ends, rods.whole, rods.top_down, rods.bottom_up, rods.best),
         (77, 86, 78, 77, 77)
     );
+    // each take done singly: the whole column 86, the best interleaving still 77
+    assert_eq!((rods.singly_whole, rods.singly_best), (86, 77));
     let guo = jiuzhang::corpus::find("guo-18-old").unwrap().1;
     let r = jiuzhang::check::run(guo);
     assert!(r.stopped.is_none());
@@ -115,5 +117,39 @@ fn guo_124_runs_and_peaks_at_124_rods() {
         (rods.ends, rods.whole, rods.top_down, rods.bottom_up, rods.best),
         (124, 124, 130, 124, 124)
     );
+    // each take done singly: 133 on the whole column, and no interleaving
+    // of the single takes keeps to 124; the 3-times step needs 125
+    assert_eq!((rods.singly_whole, rods.singly_best), (133, 125));
+    let over: Vec<_> = rods
+        .singly_over
+        .iter()
+        .filter(|o| o.2 > 124)
+        .map(|o| (o.1.as_str(), o.2))
+        .collect();
+    assert_eq!(over.len(), 1);
+    assert!(over[0].0.starts_with("Take 3rd from left 3 times"));
+    assert_eq!(over[0].1, 125);
     assert_eq!(jiuzhang::count::count(jiuzhang::count::Rule::Guo, &r.ops), 228);
+}
+
+#[test]
+fn least_peak_searches_every_interleaving() {
+    // two positions that each dip before they rise: worked one after the
+    // other the board reaches 7; taking both down first, it never passes 5
+    assert_eq!(
+        jiuzhang::report::least_peak(0, &[vec![2, 0, 5, 0], vec![2, 0, 5, 0]]),
+        5
+    );
+    // the 3-times step of guo-18-new, the left column's figures taken singly
+    let fig = |n: i64| jiuzhang::board::Board::rods(n as jiuzhang::board::Num);
+    let left = [-22i64, 3, -90, 77, 5, 3];
+    let third = [23i64, -3, 94, -80, -5, 1];
+    let chains: Vec<Vec<u32>> = (0..6)
+        .map(|p| (0..4).map(|i| fig(left[p] - i * third[p])).collect())
+        .collect();
+    assert_eq!(jiuzhang::report::least_peak(98, &chains), 125);
+    // one figure (麻) taken three times at once is enough for 124
+    let mut one = chains.clone();
+    one[0] = vec![fig(-22), fig(-22 - 3 * 23)];
+    assert_eq!(jiuzhang::report::least_peak(98, &one), 124);
 }

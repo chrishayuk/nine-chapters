@@ -74,7 +74,10 @@ as new.
   3rd column. Counted as operations, the same working cannot be 124 (Guo's
   rule gives 228 before the last part). That 124 means rods is Hart's and
   Wei and Guo's reading; the peak itself was not found stated in what could
-  be read.
+  be read. The bound needs one thing of the reckoner: at the step before the
+  peak, 去 three times, at least one figure must be taken three times at
+  once. With every take done singly, in the best order there is, the board
+  needs 125; Hart's 77 survives that test.
 
 ## Install
 
@@ -345,7 +348,24 @@ The most rods on the board at any moment, by how a step is worked:
     130  each step worked a position at a time, straight to its new figure, top down
     124  the same, bottom up
     124  each step worked a position at a time, in the best order for it
+    133  each take done singly, one multiple at a time, on the whole column
+    125  each take done singly, the positions in the best interleaving for each step
+    line 29: Take 3rd from left 3 times. needs 125 at best, its takes done singly, more than the board holds at any step's end
 ```
+
+**Taken singly, it is 125.** 次以第三行去左行下位 takes the 3rd column from
+the left until the left's 實, 3, is gone: three takes. Done one at a time on
+the whole column, the left column passes through `-68 9 -278 237 15 1`, 35
+rods, and the board reaches 133 (a reader's hand check found this first).
+Done a position at a time, each position passing through every figure its
+own takes give it, `jiuzhang rods` searches every interleaving of the
+positions: the least is 125. To stay at 124 at least one figure must be
+taken three times at once; any one of the 麻, 菽 or 荅 is enough. No other
+step needs more than 124 with its takes done singly, and Hart's working of
+the old method still needs only 77. So the 124 says something about how the
+work was done, if it counts rods: a multiple taken at a time, at one
+position at least, and not the column taken again and again. The text does
+not say which. Tutorial chapter 9 has the figures.
 
 **What is known.** A second model's search
 ([`docs/literature-124.md`](docs/literature-124.md)) found the reading
@@ -371,7 +391,8 @@ of the 77 needs a path like Hart's, not Guo's emended working.
 
 So the second number does what the first could not. The 77 has a reading
 for each meaning of 算; on the one published working of the new method, the
-124 is reached by rods and not by operations.
+124 is reached by rods and not by operations, provided a multiple can be
+taken at once.
 
 ## Reading the text
 
@@ -478,6 +499,7 @@ Chemla and Guo, Guo 2020, Zhu, and Li Huang); its report, with sources, is
 | Liu Hui's 77 and 124 passages | known: emended and worked by Chemla and Guo, and Guo 2020, who tallies 77 as operations; 算 read as rods by Hart 2012, who keeps to 77 rods, and by Wei and Guo 2016 and Zhu 2025 |
 | Guo's and Hart's reconstructions, run: Guo's rule gives 67 + 10 placings; Hart's 15 rod counts agree; his bound needs bottom-up working (78 top down) | not found (Guo's figure 8-7 was not readable) |
 | the 124 as the most rods on Guo's working of the new method; not reachable as operations | partly: 124 as rods is Hart 2012 and Wei and Guo 2016 (whose full text could not be read); the board is in Hudeček 2008; the peak not found stated |
+| with every take done singly the new method needs 125, so the 124 needs a multiple taken at once at one position at least; Hart's 77 does not | not found in what could be read; the 133 for whole-column single takes was a reader's hand check |
 | the cost of the literal reading | partly: Zhu 2010 on rods against steps; not these figures |
 | Liu Hui's rates 7:4:3:5:6 | known: Guo 2020; Chemla and Guo 2004 |
 

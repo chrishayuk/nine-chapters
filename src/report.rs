@@ -432,6 +432,18 @@ pub struct RodsAt {
     pub top_down: u32,
     pub bottom_up: u32,
     pub best: u32,
+    /// Each take or addition done singly, one multiple of the other column
+    /// at a time, on the whole column: `Take 3rd from left 3 times` as three
+    /// subtractions, with the board recorded after each.
+    pub singly_whole: u32,
+    /// Each take done singly, and the single takes at the different
+    /// positions in whatever order needs fewest rods: each position passes
+    /// through every figure its own takes give it, in turn, but the
+    /// positions may be worked in any interleaving.
+    pub singly_best: u32,
+    /// (line, what, peak, figures each position passes through) for the
+    /// steps whose single takes need more than the ends do.
+    pub singly_over: Vec<(usize, String, u32, Vec<Vec<crate::board::Num>>)>,
     /// (line, what, best) for the steps whose best order needs more than the ends do.
     pub over: Vec<(usize, String, u32)>,
 }
@@ -466,6 +478,69 @@ fn permutations(n: usize) -> Vec<Vec<usize>> {
     out
 }
 
+/// The fewest rods a step can need at its fullest, when each position must
+/// pass through its figures in turn (`costs[p]` the rods of each) and the
+/// positions may be advanced in any interleaving; `others` is the rest of
+/// the board. A figure partway along a steady rise or fall in rods never
+/// sets the peak (pass straight through it on a fall; on a rise, wait
+/// before it and go on to the top together), so only the turning points
+/// are kept, and the interleavings of those are searched exhaustively for
+/// the one whose largest board is smallest.
+pub fn least_peak(others: u32, costs: &[Vec<u32>]) -> u32 {
+    let chains: Vec<Vec<u32>> = costs
+        .iter()
+        .map(|c| {
+            let mut k: Vec<u32> = vec![];
+            for &x in c {
+                if k.last() == Some(&x) {
+                    continue;
+                }
+                let n = k.len();
+                if n >= 2 && ((k[n - 2] < k[n - 1] && k[n - 1] < x) || (k[n - 2] > k[n - 1] && k[n - 1] > x)) {
+                    k[n - 1] = x;
+                } else {
+                    k.push(x);
+                }
+            }
+            if k.is_empty() {
+                k.push(0);
+            }
+            k
+        })
+        .collect();
+    let radix: Vec<usize> = chains.iter().map(|c| c.len()).collect();
+    let states: usize = radix.iter().product();
+    let cost = |st: &[usize]| others + st.iter().zip(&chains).map(|(&i, c)| c[i]).sum::<u32>();
+    let mut best = vec![u32::MAX; states];
+    let index = |st: &[usize]| st.iter().zip(&radix).fold(0, |a, (&i, &r)| a * r + i);
+    let start = vec![0; chains.len()];
+    let goal: Vec<usize> = radix.iter().map(|r| r - 1).collect();
+    let mut heap = std::collections::BinaryHeap::new();
+    best[index(&start)] = cost(&start);
+    heap.push(std::cmp::Reverse((cost(&start), start)));
+    while let Some(std::cmp::Reverse((c, st))) = heap.pop() {
+        if st == goal {
+            return c;
+        }
+        if c > best[index(&st)] {
+            continue;
+        }
+        for p in 0..st.len() {
+            if st[p] < goal[p] {
+                let mut n = st.clone();
+                n[p] += 1;
+                let nc = c.max(cost(&n));
+                let i = index(&n);
+                if nc < best[i] {
+                    best[i] = nc;
+                    heap.push(std::cmp::Reverse((nc, n)));
+                }
+            }
+        }
+    }
+    cost(&goal)
+}
+
 /// A step of the source: a run of operation lines on one column, ended by
 /// anything else (an assertion, a note, a blank line) or by another column.
 struct Group {
@@ -474,6 +549,45 @@ struct Group {
     what: String,
     before: crate::board::Board,
     after: crate::board::Board,
+    /// The operations of the step, each with the board after it.
+    ops: Vec<(crate::board::Op, crate::board::Board)>,
+}
+
+/// The figures one operation passes a position through, taken singly: a
+/// take of `n` times passes through each of the `n` multiples in turn; any
+/// other change goes straight to its figure. The first is the figure before.
+fn single_figures(
+    prev: &crate::board::Board,
+    op: &crate::board::Op,
+    after: &crate::board::Board,
+    pos: usize,
+) -> Vec<crate::board::Num> {
+    use crate::board::Ev;
+    let t = op.target;
+    let start = prev.cols[t].as_ref().and_then(|c| c.get(pos).copied()).unwrap_or(0);
+    let end = after.cols[t].as_ref().and_then(|c| c.get(pos).copied()).unwrap_or(0);
+    let mut out = vec![start];
+    let take = op.events.iter().find_map(|e| match *e {
+        Ev::Take { pos: p, times, .. } if p == pos => Some(times),
+        _ => None,
+    });
+    let only_take = op.events.iter().all(|e| matches!(e, Ev::Take { .. }));
+    match (take, op.actor) {
+        (Some(n), Some(a)) if only_take && n != 0 => {
+            let x = after.cols[a].as_ref().and_then(|c| c.get(pos).copied()).unwrap_or(0);
+            for i in 1..=n.abs() {
+                out.push(start - n.signum() * i * x);
+            }
+            if *out.last().unwrap() != end {
+                // not a plain multiple of the other column: straight to the figure
+                out.truncate(1);
+                out.push(end);
+            }
+        }
+        _ if end != start => out.push(end),
+        _ => {}
+    }
+    out
 }
 
 pub fn rods_at(text: &str) -> RodsAt {
@@ -484,6 +598,9 @@ pub fn rods_at(text: &str) -> RodsAt {
         top_down: 0,
         bottom_up: 0,
         best: 0,
+        singly_whole: 0,
+        singly_best: 0,
+        singly_over: vec![],
         over: vec![],
     };
     let mut groups: Vec<Group> = vec![];
@@ -511,13 +628,19 @@ pub fn rods_at(text: &str) -> RodsAt {
             r.top_down = r.top_down.max(last.board.rod_count());
             r.bottom_up = r.bottom_up.max(last.board.rod_count());
             r.best = r.best.max(last.board.rod_count());
+            r.singly_whole = r.singly_whole.max(last.board.rod_count());
+            r.singly_best = r.singly_best.max(last.board.rod_count());
             board = Some(last.board.clone());
             continue;
         }
         let t = last.op.target;
         let before = board.clone().unwrap_or_else(|| last.board.clone());
+        let ops: Vec<_> = l.steps.iter().map(|st| (st.op.clone(), st.board.clone())).collect();
         match &mut open {
-            Some(g) if g.target == t => g.after = last.board.clone(),
+            Some(g) if g.target == t => {
+                g.after = last.board.clone();
+                g.ops.extend(ops);
+            }
             _ => {
                 groups.extend(open.take());
                 let what = l.line.text.split('"').next().unwrap_or("").trim().to_string();
@@ -527,6 +650,7 @@ pub fn rods_at(text: &str) -> RodsAt {
                     what,
                     before,
                     after: last.board.clone(),
+                    ops,
                 });
             }
         }
@@ -547,6 +671,47 @@ pub fn rods_at(text: &str) -> RodsAt {
             .min()
             .unwrap_or(0);
         r.best = r.best.max(best);
+        // single takes: the whole column through each multiple, and each
+        // position through its own figures, a position at a time
+        let mut prev = g.before.clone();
+        let mut chains: Vec<Vec<crate::board::Num>> = (0..h).map(|_| vec![]).collect();
+        for (op, after) in &g.ops {
+            let figs: Vec<_> = (0..h).map(|p| single_figures(&prev, op, after, p)).collect();
+            let k = figs.iter().map(|f| f.len()).max().unwrap_or(1);
+            for i in 1..k {
+                let mut b = prev.clone();
+                if let Some(Some(c)) = b.cols.get_mut(op.target) {
+                    for (p, f) in figs.iter().enumerate() {
+                        if p < c.len() {
+                            c[p] = f[i.min(f.len() - 1)];
+                        }
+                    }
+                }
+                r.singly_whole = r.singly_whole.max(b.rod_count());
+            }
+            for (p, f) in figs.iter().enumerate() {
+                if chains[p].is_empty() {
+                    chains[p].push(f[0]);
+                }
+                chains[p].extend(&f[1..]);
+            }
+            prev = after.clone();
+        }
+        r.singly_whole = r.singly_whole.max(g.after.rod_count());
+        let others = g.before.rod_count()
+            - g.before.cols[g.target]
+                .as_ref()
+                .map(|c| c.iter().map(|&x| crate::board::Board::rods(x)).sum::<u32>())
+                .unwrap_or(0);
+        let costs: Vec<Vec<u32>> = chains
+            .iter()
+            .map(|c| c.iter().map(|&x| crate::board::Board::rods(x)).collect())
+            .collect();
+        let singly = least_peak(others, &costs);
+        r.singly_best = r.singly_best.max(singly).max(g.after.rod_count());
+        if singly > ends {
+            r.singly_over.push((g.line, g.what.clone(), singly, chains.clone()));
+        }
         if best > ends {
             r.over.push((g.line, g.what.clone(), best));
         }
@@ -574,8 +739,24 @@ pub fn rods(text: &str) -> i32 {
         "  {:>5}  each step worked a position at a time, in the best order for it",
         r.best
     );
+    println!(
+        "  {:>5}  each take done singly, one multiple at a time, on the whole column",
+        r.singly_whole
+    );
+    println!(
+        "  {:>5}  each take done singly, the positions in the best interleaving for each step",
+        r.singly_best
+    );
     for (line, what, n) in &r.over {
         println!("    line {}: {} needs {} at best", line + 1, what, n);
+    }
+    for (line, what, n, _) in r.singly_over.iter().filter(|o| o.2 > r.ends) {
+        println!(
+            "    line {}: {} needs {} at best, its takes done singly, more than the board holds at any step's end",
+            line + 1,
+            what,
+            n
+        );
     }
     0
 }
